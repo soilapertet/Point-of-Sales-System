@@ -6,26 +6,33 @@ import com.mongodb.MongoException;
 import com.mongodb.ServerApi;
 import com.mongodb.ServerApiVersion;
 import com.mongodb.client.*;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 // Singleton Design pattern
 public class StoreDatabase {
 
     // Initialise instance variables
     private static StoreDatabase storeDB;
+    private MongoClient mongoClient;
+    private MongoCollection<Document> employeesCollection;
 
     private static Iterator<Document> storeEmployees;
-    private List<Document> storeManagers = new ArrayList<>();
-    private List<Document> softGoodsAssociates = new ArrayList<>();
-    private List<Document> hardGoodsAssociates = new ArrayList<>();
-    private List<Document> storeCashiers = new ArrayList<>();
-    private List<Document> ecomAssociates = new ArrayList<>();
+    private static Iterator<Document> storeManagers;
+    private static Iterator<Document> softGoodsAssociates;
+    private static Iterator<Document> hardGoodsAssociates;
+    private static Iterator<Document> storeCashiers;
+    private static Iterator<Document> ecomAssociates;
 
-    private StoreDatabase() { };
+    private StoreDatabase() {
+
+        // Initialise MongoDB connection
+        MongoClientSettings settings = connectToStoreDatabase();
+        mongoClient = MongoClients.create(settings);
+    };
 
     public static StoreDatabase getInstance() {
 
@@ -36,8 +43,9 @@ public class StoreDatabase {
         return storeDB;
     }
 
-    // Initialise a methods to connect to MongoDB database
+    // Initialise a method to connect to MongoDB database
     private static MongoClientSettings connectToStoreDatabase() {
+
         String connectionString = "mongodb+srv://nicolepertet:vinsmoke.20.07@pos-cluster.wy7nnbe.mongodb.net/?retryWrites=true&w=majority&appName=POS-Cluster";
 
         ServerApi serverApi = ServerApi.builder()
@@ -48,36 +56,44 @@ public class StoreDatabase {
                 .applyConnectionString(new ConnectionString(connectionString))
                 .serverApi(serverApi)
                 .build();
+
+
     }
 
-    private static void getStoreEmployeesFromDB() {
+    // Get the "employees" collection from the database
+    private void initialiseEmployeesCollection() {
 
-        MongoClientSettings settings = connectToStoreDatabase();
-
-        // Create a new client and connect to the server
-        try (MongoClient mongoClient = MongoClients.create(settings)) {
+        if(employeesCollection == null) {
             try {
-
                 // Connect to the "Elite-Sports" database
                 MongoDatabase database = mongoClient.getDatabase("Elite-Sports");
 
                 // Connect to the "employees" collection
-                MongoCollection<Document> employees = database.getCollection("employees");
+                employeesCollection = database.getCollection("employees");
 
-                // Retrieve all store employees data
-                FindIterable<Document> employeesDocs = employees.find();
-                storeEmployees = employeesDocs.iterator();
-
-            } catch (MongoException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+
         }
+
     }
 
     // Define getter methods
-    public static Iterator<Document> getStoreEmployees() {
-        getStoreEmployeesFromDB();
+    public Iterator<Document> getStoreEmployees() {
+
+        initialiseEmployeesCollection();
+
+        FindIterable<Document> employeesDocs = employeesCollection.find();
+        storeEmployees = employeesDocs.iterator();
         return storeEmployees;
     }
+
+
+    public static void main(String[] args) {
+        StoreDatabase storeDB = StoreDatabase.getInstance();
+        storeDB.getStoreEmployees();
+    }
+
 }
 
