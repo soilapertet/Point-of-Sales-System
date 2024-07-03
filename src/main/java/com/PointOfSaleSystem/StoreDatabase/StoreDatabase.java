@@ -24,6 +24,7 @@ public class StoreDatabase {
     private static Iterator<Document> storeManagers;
     private static Iterator<Document> softGoodsAssociates;
     private static Iterator<Document> hardGoodsAssociates;
+    private static Iterator<Document> footwearAssociates;
     private static Iterator<Document> storeCashiers;
     private static Iterator<Document> ecomAssociates;
 
@@ -89,10 +90,76 @@ public class StoreDatabase {
         return storeEmployees;
     }
 
+    public Iterator<Document> getStoreManagers() {
+        initialiseEmployeesCollection();
+
+        Bson filter = Filters.eq("title", "Manager");
+        FindIterable<Document> managersDocs = employeesCollection.find(filter);
+        storeManagers = managersDocs.iterator();
+
+        return storeManagers;
+    }
+
+    public Iterator<Document> getSoftGoodsAssociates() {
+
+        initialiseEmployeesCollection();
+
+        Bson filter = Filters.eq("department", "Softgoods");
+        FindIterable<Document> softGoodsEmployeeDocs = employeesCollection.find(filter);
+        softGoodsAssociates = softGoodsEmployeeDocs.iterator();
+
+        return softGoodsAssociates;
+    }
+
+    public Iterator<Document> getHardGoodsAssociates() {
+
+        initialiseEmployeesCollection();
+
+        Bson filter = Filters.eq("department", "Hardgoods");
+        FindIterable<Document> hardGoodsEmployeeDocs = employeesCollection.find(filter);
+        hardGoodsAssociates = hardGoodsEmployeeDocs.iterator();
+
+        return hardGoodsAssociates;
+    }
+
+    public Iterator<Document> getFootwearAssociates() {
+
+        initialiseEmployeesCollection();
+
+        Bson filter = Filters.eq("department", "Footwear");
+        FindIterable<Document> footwearEmployeeDocs = employeesCollection.find(filter);
+        footwearAssociates = footwearEmployeeDocs.iterator();
+
+        return footwearAssociates;
+    }
+
+    public Iterator<Document> getEcomAssociates() {
+
+        initialiseEmployeesCollection();
+
+        Bson filter = Filters.eq("department", "E-Commerce");
+        FindIterable<Document> ecomAssociatesDocs = employeesCollection.find(filter);
+        ecomAssociates = ecomAssociatesDocs.iterator();
+
+        return ecomAssociates;
+    }
+
+    public Iterator<Document> getStoreCashiers() {
+
+        initialiseEmployeesCollection();
+
+        Bson filter = Filters.or(Filters.eq("department", "Cash"),
+                Filters.eq("title", "Manager"));
+        FindIterable<Document> cashiersDocs = employeesCollection.find(filter);
+        storeCashiers = cashiersDocs.iterator();
+
+        return storeCashiers;
+    }
+
 
     public static void main(String[] args) {
         StoreDatabase storeDB = StoreDatabase.getInstance();
-        storeDB.getStoreEmployees();
+        storeDB.getEcomAssociates();
     }
 
 }
