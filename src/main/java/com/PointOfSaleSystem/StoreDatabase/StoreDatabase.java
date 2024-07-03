@@ -18,12 +18,12 @@ public class StoreDatabase {
     // Initialise instance variables
     private static StoreDatabase storeDB;
 
-    private List storeEmployees = new ArrayList();
-    private List storeManagers = new ArrayList();
-    private List softGoodsAssociates = new ArrayList();
-    private List hardGoodsAssociates = new ArrayList();
-    private List storeCashiers = new ArrayList();
-    private List ecomAssociates = new ArrayList();
+    private static Iterator<Document> storeEmployees;
+    private List<Document> storeManagers = new ArrayList<>();
+    private List<Document> softGoodsAssociates = new ArrayList<>();
+    private List<Document> hardGoodsAssociates = new ArrayList<>();
+    private List<Document> storeCashiers = new ArrayList<>();
+    private List<Document> ecomAssociates = new ArrayList<>();
 
     private StoreDatabase() { };
 
@@ -36,18 +36,48 @@ public class StoreDatabase {
         return storeDB;
     }
 
-    // Initialise a method to connect to our MongoDB database
-    private void connectToDatabase() {
+    // Initialise a methods to connect to MongoDB database
+    private static MongoClientSettings connectToStoreDatabase() {
         String connectionString = "mongodb+srv://nicolepertet:vinsmoke.20.07@pos-cluster.wy7nnbe.mongodb.net/?retryWrites=true&w=majority&appName=POS-Cluster";
 
         ServerApi serverApi = ServerApi.builder()
                 .version(ServerApiVersion.V1)
                 .build();
 
-        MongoClientSettings settings = MongoClientSettings.builder()
+        return MongoClientSettings.builder()
                 .applyConnectionString(new ConnectionString(connectionString))
                 .serverApi(serverApi)
                 .build();
+    }
+
+    private static void getStoreEmployeesFromDB() {
+
+        MongoClientSettings settings = connectToStoreDatabase();
+
+        // Create a new client and connect to the server
+        try (MongoClient mongoClient = MongoClients.create(settings)) {
+            try {
+
+                // Connect to the "Elite-Sports" database
+                MongoDatabase database = mongoClient.getDatabase("Elite-Sports");
+
+                // Connect to the "employees" collection
+                MongoCollection<Document> employees = database.getCollection("employees");
+
+                // Retrieve all store employees data
+                FindIterable<Document> employeesDocs = employees.find();
+                storeEmployees = employeesDocs.iterator();
+
+            } catch (MongoException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Define getter methods
+    public static Iterator<Document> getStoreEmployees() {
+        getStoreEmployeesFromDB();
+        return storeEmployees;
     }
 }
 
