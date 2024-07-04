@@ -2,7 +2,6 @@ package com.PointOfSaleSystem.StoreDatabase;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
-import com.mongodb.MongoException;
 import com.mongodb.ServerApi;
 import com.mongodb.ServerApiVersion;
 import com.mongodb.client.*;
@@ -83,15 +82,12 @@ public class StoreDatabase {
     // Define getter methods
     public Iterator<Document> getStoreEmployees() {
 
-        initialiseEmployeesCollection();
-
         FindIterable<Document> employeesDocs = employeesCollection.find();
         storeEmployees = employeesDocs.iterator();
         return storeEmployees;
     }
 
     public Iterator<Document> getStoreManagers() {
-        initialiseEmployeesCollection();
 
         Bson filter = Filters.eq("title", "Manager");
         FindIterable<Document> managersDocs = employeesCollection.find(filter);
@@ -102,8 +98,6 @@ public class StoreDatabase {
 
     public Iterator<Document> getSoftGoodsAssociates() {
 
-        initialiseEmployeesCollection();
-
         Bson filter = Filters.eq("department", "Softgoods");
         FindIterable<Document> softGoodsEmployeeDocs = employeesCollection.find(filter);
         softGoodsAssociates = softGoodsEmployeeDocs.iterator();
@@ -112,8 +106,6 @@ public class StoreDatabase {
     }
 
     public Iterator<Document> getHardGoodsAssociates() {
-
-        initialiseEmployeesCollection();
 
         Bson filter = Filters.eq("department", "Hardgoods");
         FindIterable<Document> hardGoodsEmployeeDocs = employeesCollection.find(filter);
@@ -124,8 +116,6 @@ public class StoreDatabase {
 
     public Iterator<Document> getFootwearAssociates() {
 
-        initialiseEmployeesCollection();
-
         Bson filter = Filters.eq("department", "Footwear");
         FindIterable<Document> footwearEmployeeDocs = employeesCollection.find(filter);
         footwearAssociates = footwearEmployeeDocs.iterator();
@@ -134,8 +124,6 @@ public class StoreDatabase {
     }
 
     public Iterator<Document> getEcomAssociates() {
-
-        initialiseEmployeesCollection();
 
         Bson filter = Filters.eq("department", "E-Commerce");
         FindIterable<Document> ecomAssociatesDocs = employeesCollection.find(filter);
@@ -146,8 +134,6 @@ public class StoreDatabase {
 
     public Iterator<Document> getStoreCashiers() {
 
-        initialiseEmployeesCollection();
-
         Bson filter = Filters.or(Filters.eq("department", "Cash"),
                 Filters.eq("title", "Manager"));
         FindIterable<Document> cashiersDocs = employeesCollection.find(filter);
@@ -156,10 +142,20 @@ public class StoreDatabase {
         return storeCashiers;
     }
 
+    // Check if employee ID is in store database
+    public boolean isEmployeeInDatabase(int id) {
+
+        Bson filter = Filters.eq("employeeID", id);
+        FindIterable<Document> matchingDocs = employeesCollection.find(filter);
+
+        return matchingDocs.first() != null;
+    }
+
 
     public static void main(String[] args) {
         StoreDatabase storeDB = StoreDatabase.getInstance();
-        storeDB.getEcomAssociates();
+        storeDB.initialiseEmployeesCollection();
+        System.out.println(storeDB.isEmployeeInDatabase(110345));
     }
 
 }
