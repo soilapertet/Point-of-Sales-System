@@ -198,18 +198,22 @@ public class StoreDatabase {
     // Check if employee is in the Cash department
     public boolean isInCashDep(int id) {
 
-        Bson filter = Filters.and(Filters.eq("employeeID", id),
-                Filters.eq("department", "Cash"));
+        Bson filter = Filters.or(
+                Filters.and(Filters.eq("employeeID", id), Filters.eq("title", "Manager")),
+                Filters.and(Filters.eq("employeeID", id), Filters.eq("department", "Cash"))
+        );
+
         FindIterable<Document> matchingDocs = employeesCollection.find(filter);
         return matchingDocs.first() != null;
 
     }
 
-    public static void main(String[] args) {
-        StoreDatabase storeDB = StoreDatabase.getInstance();
-        storeDB.initialiseEmployeesCollection();
-        System.out.println(storeDB.isAManager(111915));
-    }
+/*    Main method for testing and debugging purposes */
+//    public static void main(String[] args) {
+//        StoreDatabase storeDB = StoreDatabase.getInstance();
+//        storeDB.initialiseEmployeesCollection();
+//        System.out.println(storeDB.isAManager(111915));
+//    }
 
 }
 

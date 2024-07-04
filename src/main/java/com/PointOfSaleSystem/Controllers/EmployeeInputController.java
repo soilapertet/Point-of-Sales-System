@@ -108,21 +108,23 @@ public class EmployeeInputController {
         return clockedInStatus;
     }
 
-    public static void main(String[] args) {
-        EmployeeInputController eic = new EmployeeInputController();
 
-        eic.getEmployeeIDInput();
-        System.out.println(eic.getEmployeeID() + " is a valid employee ID!");
-
-        eic.getLoginPasswordInput();
-        System.out.println(eic.getLoginPassword() + " is the correct password");
-        System.out.println("Login is successful!!");
-
-        eic.getClockedInStatusFromDB();
-
-        System.out.println(eic.getEmployeeID());
-        System.out.println(eic.getLoginPassword());
-        System.out.println(eic.getClockedInStatus());
-
-    }
+/* Main method for testing and debugging purposes */
+//    public static void main(String[] args) {
+//        EmployeeInputController eic = new EmployeeInputController();
+//
+//        eic.getEmployeeIDInput();
+//        System.out.println(eic.getEmployeeID() + " is a valid employee ID!");
+//
+//        eic.getLoginPasswordInput();
+//        System.out.println(eic.getLoginPassword() + " is the correct password");
+//        System.out.println("Login is successful!!");
+//
+//        eic.getClockedInStatusFromDB();
+//
+//        System.out.println(eic.getEmployeeID());
+//        System.out.println(eic.getLoginPassword());
+//        System.out.println(eic.getClockedInStatus());
+//
+//    }
 }
