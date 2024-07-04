@@ -143,7 +143,7 @@ public class StoreDatabase {
     }
 
     // Check if employee ID is in store database
-    public boolean isEmployeeInDatabase(int id) {
+    public boolean isInEmployeeDatabase(int id) {
 
         Bson filter = Filters.eq("employeeID", id);
         FindIterable<Document> matchingDocs = employeesCollection.find(filter);
@@ -151,11 +151,60 @@ public class StoreDatabase {
         return matchingDocs.first() != null;
     }
 
+    // Check if employee is a manager
+    public boolean isAManager(int id) {
+
+        Bson filter = Filters.and(Filters.eq("employeeID", id),
+                Filters.eq("title", "Manager"));
+        FindIterable<Document> matchingDocs = employeesCollection.find(filter);
+        return matchingDocs.first() != null;
+
+    }
+
+    // Check if employee is in the Softgoods department
+    public boolean isInSoftgoodsDep(int id) {
+
+        Bson filter = Filters.and(Filters.eq("employeeID", id),
+                Filters.eq("department", "Softgoods"));
+        FindIterable<Document> matchingDocs = employeesCollection.find(filter);
+        return matchingDocs.first() != null;
+
+    }
+
+    // Check if employee is in the Hardgoods department
+    public boolean isInHardgoodsDep(int id) {
+
+        Bson filter = Filters.and(Filters.eq("employeeID", id),
+                Filters.eq("department", "Hardgoods"));
+        FindIterable<Document> matchingDocs = employeesCollection.find(filter);
+        return matchingDocs.first() != null;
+
+    }
+
+    // Check if employee is in the Footwear department
+    public boolean isInFootwearDep(int id) {
+
+        Bson filter = Filters.and(Filters.eq("employeeID", id),
+                Filters.eq("department", "Footwear"));
+        FindIterable<Document> matchingDocs = employeesCollection.find(filter);
+        return matchingDocs.first() != null;
+
+    }
+
+    // Check if employee is in the Cash department
+    public boolean isInCashDep(int id) {
+
+        Bson filter = Filters.and(Filters.eq("employeeID", id),
+                Filters.eq("department", "Cash"));
+        FindIterable<Document> matchingDocs = employeesCollection.find(filter);
+        return matchingDocs.first() != null;
+
+    }
 
     public static void main(String[] args) {
         StoreDatabase storeDB = StoreDatabase.getInstance();
         storeDB.initialiseEmployeesCollection();
-        System.out.println(storeDB.isEmployeeInDatabase(110345));
+        System.out.println(storeDB.isAManager(111915));
     }
 
 }
