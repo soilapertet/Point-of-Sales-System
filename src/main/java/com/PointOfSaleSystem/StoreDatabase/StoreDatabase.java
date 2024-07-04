@@ -142,6 +142,10 @@ public class StoreDatabase {
         return storeCashiers;
     }
 
+    public MongoCollection<Document> getEmployeesCollection() {
+        return employeesCollection;
+    }
+
     // Check if employee ID is in store database
     public boolean isInEmployeeDatabase(int id) {
 

@@ -1,6 +1,8 @@
 package com.PointOfSaleSystem.Controllers;
 
 import com.PointOfSaleSystem.StoreDatabase.StoreDatabase;
+import com.mongodb.client.model.Filters;
+import org.bson.conversions.Bson;
 
 import java.util.Scanner;
 
@@ -9,12 +11,12 @@ public class EmployeeInputController {
     private int employeeID;
     private String loginPassword;
     private boolean clockedIn;
-    private StoreDatabase storeDb;
+    private StoreDatabase storeDB;
 
     // Define class constructor
     public EmployeeInputController() {
-        storeDb = StoreDatabase.getInstance();
-        storeDb.initialiseEmployeesCollection();
+        storeDB = StoreDatabase.getInstance();
+        storeDB.initialiseEmployeesCollection();
     }
 
     // Prompt user for their employee ID
@@ -27,12 +29,35 @@ public class EmployeeInputController {
         return idInput;
     }
 
-    // Validate user's employee ID
-    private boolean validateEmployeeID(int id) {
+    // Prompt user for their login password
+    private String promptForLoginPassword() {
 
-        boolean validEmployeeID;
-        validEmployeeID = storeDb.isInEmployeeDatabase(id);
-        return storeDb.isInEmployeeDatabase(id);
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter your login password here: ");
+        String passwordInput = scanner.nextLine();
+
+        return passwordInput;
+    }
+
+    // Check if user's employee ID is valid
+    private boolean checkIfEmployeeIDIsValid(int id) {
+
+        boolean isValidEmployeeID;
+        isValidEmployeeID = storeDB.isInEmployeeDatabase(id);
+        return isValidEmployeeID;
+    }
+
+    // Check if user's login password is valid
+    private boolean checkIfLoginPasswordIsValid(int employeeID, String password) {
+
+        boolean isValidLoginPassword;
+
+        Bson filter = Filters.and(Filters.eq("employeeID", employeeID),
+                Filters.eq("loginPassword", password));
+
+        isValidLoginPassword = storeDB.getEmployeesCollection().find(filter).iterator().hasNext();
+
+        return isValidLoginPassword;
     }
 
     // Get user's employee ID
@@ -40,12 +65,25 @@ public class EmployeeInputController {
 
         int idInput = promptForEmployeeID();
 
-        while(!validateEmployeeID(idInput)) {
-            System.err.println("Invalid Employee ID. Please try again.\n");
+        while(!checkIfEmployeeIDIsValid(idInput)) {
+            System.err.println("Employee ID not in database. Please try again.\n");
             idInput = promptForEmployeeID();
         }
 
-        employeeID = idInput;
+        this.employeeID = idInput;
+    }
+
+    // Get user's login password
+    public void getLoginPasswordInput() {
+
+        String passwordInput = promptForLoginPassword();
+
+        while(!checkIfLoginPasswordIsValid(getEmployeeID(), passwordInput)) {
+            System.err.println("Incorrect password. Please try again.\n");
+            passwordInput = promptForLoginPassword();
+        }
+
+        this.loginPassword = passwordInput;
     }
 
     // Define getter methods
@@ -53,9 +91,21 @@ public class EmployeeInputController {
         return employeeID;
     }
 
+    public String getLoginPassword() {
+        return loginPassword;
+    }
+
     public static void main(String[] args) {
         EmployeeInputController eic = new EmployeeInputController();
+
         eic.getEmployeeIDInput();
         System.out.println(eic.getEmployeeID() + " is a valid employee ID!");
+
+        eic.getLoginPasswordInput();
+        System.out.println(eic.getLoginPassword() + " is the correct password");
+        System.out.println("Login is successful!!");
+
+        System.out.println(eic.getEmployeeID());
+        System.out.println(eic.getLoginPassword());
     }
 }
