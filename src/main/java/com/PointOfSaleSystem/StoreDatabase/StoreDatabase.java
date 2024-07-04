@@ -61,7 +61,7 @@ public class StoreDatabase {
     }
 
     // Get the "employees" collection from the database
-    private void initialiseEmployeesCollection() {
+    public void initialiseEmployeesCollection() {
 
         if(employeesCollection == null) {
             try {
