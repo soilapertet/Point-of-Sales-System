@@ -7,6 +7,8 @@ import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.util.Scanner;
+
 public class CustomerDatabase extends Database {
 
     // Instance variables
@@ -104,25 +106,29 @@ public class CustomerDatabase extends Database {
             this.phoneNumber = iter.first().getLong("phoneNumber");
             this.emailAddress = iter.first().getString("emailAddress");
         }
-
     }
 
     // Define a method to create a new customer and add them to the database
     public void addCustomerToDB(String fName, String lName, long phoneNumber, String email,
                                 String city, String state, String postalCode) {
 
-        Document newCustomerAcc = new Document()
-                .append("firstName", fName)
-                .append("lastName", lName)
-                .append("phoneNumber", phoneNumber)
-                .append("emailAddress", email)
-                .append("city", city)
-                .append("state", state)
-                .append("postalCode", postalCode);
+        if(!isInCustomerDatabase(fName, lName) || !isInCustomerDatabase(getPhoneNumber()) ||
+        !isInCustomerDatabase(email)) {
+            Document newCustomerAcc = new Document()
+                    .append("firstName", fName)
+                    .append("lastName", lName)
+                    .append("phoneNumber", phoneNumber)
+                    .append("emailAddress", email)
+                    .append("city", city)
+                    .append("state", state)
+                    .append("postalCode", postalCode);
 
-        System.out.println("Adding customer to database ...");
-        customersCollection.insertOne(newCustomerAcc);
-        System.out.println("Customer has been added to database successfully!!");
+            System.out.println("Adding customer to database ...");
+            customersCollection.insertOne(newCustomerAcc);
+            System.out.println("Customer has been added to database successfully!!");
+        } else {
+            System.err.println("Customer is already in database.");
+        }
 
 
     }
@@ -172,7 +178,7 @@ public class CustomerDatabase extends Database {
         System.out.println(customerDB.getPhoneNumber());
         System.out.println(customerDB.getEmailAddress());
 
-        customerDB.addCustomerToDB("Roronoa", "Zoro", 4033804449L,
-                "kingOfHell@gmail.com", "Lethbridge", "AB", "T1J 0A1");
+        customerDB.addCustomerToDB("Eliud", "Lang'at", 4032529444L,
+                "eliud.lang'at@dalhousie.ca", "Calgary", "AB", "T3B 2R6");
     }
 }
