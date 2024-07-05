@@ -7,8 +7,6 @@ import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import java.util.Iterator;
-
 public class CustomerDatabase extends Database {
 
     // Instance variables
@@ -83,6 +81,21 @@ public class CustomerDatabase extends Database {
         return isInCustomerDB;
     }
 
+    // Check if customer is in database through their email address
+    public boolean isInCustomerDatabase(String emailAddress) {
+
+        boolean isInCustomerDB;
+
+        Bson filter = Filters.eq("emailAddress", emailAddress);
+        FindIterable<Document> matchingDocs = customersCollection.find(filter);
+        isInCustomerDB = matchingDocs.iterator().hasNext();
+
+        if(isInCustomerDB) {
+            this.emailAddress = emailAddress;
+        }
+
+        return isInCustomerDB;
+    }
 
     public static void main(String[] args) {
         CustomerDatabase customerDB = CustomerDatabase.getInstance();
@@ -95,5 +108,13 @@ public class CustomerDatabase extends Database {
         long phone2 = 4032553653L;
         System.out.println(customerDB.isInCustomerDatabase(phone1));
         System.out.println(customerDB.isInCustomerDatabase(phone2));
+
+        String email1 = "nicolepertet@gmail.com";
+        String email2 = "king0fTheNorth@telus.net";
+        String email3 = "theBoyWhoLived@gmail.com";
+
+        System.out.println(customerDB.isInCustomerDatabase(email1));
+        System.out.println(customerDB.isInCustomerDatabase(email2));
+        System.out.println(customerDB.isInCustomerDatabase(email3));
     }
 }
