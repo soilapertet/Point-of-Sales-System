@@ -43,7 +43,7 @@ public class CustomerDatabase extends Database {
                 // Connect to the "Elite-Sports" database
                 MongoDatabase database = super.getMongoClient().getDatabase("Elite-Sports");
 
-                // Connect to the "employees" collection
+                // Connect to the "customer_accounts" collection
                 customersCollection = database.getCollection("customer_accounts");
 
             } catch (Exception e) {
@@ -67,6 +67,22 @@ public class CustomerDatabase extends Database {
         return isInCustomerDB;
     }
 
+    // Check if customer is in database through their phone number
+    public boolean isInCustomerDatabase(long phoneNumber) {
+
+        boolean isInCustomerDB;
+
+        Bson filter = Filters.eq("phoneNumber", phoneNumber);
+        FindIterable<Document> matchingDocs = customersCollection.find(filter);
+        isInCustomerDB = matchingDocs.iterator().hasNext();
+
+        if(isInCustomerDB) {
+            this.phoneNumber = phoneNumber;
+        }
+
+        return isInCustomerDB;
+    }
+
 
     public static void main(String[] args) {
         CustomerDatabase customerDB = CustomerDatabase.getInstance();
@@ -74,5 +90,10 @@ public class CustomerDatabase extends Database {
 
         System.out.println(customerDB.isInCustomerDatabase("Soila", "Pertet"));
         System.out.println(customerDB.isInCustomerDatabase("Ginny", "Weasley"));
+
+        long phone1 = 8253659243L;
+        long phone2 = 4032553653L;
+        System.out.println(customerDB.isInCustomerDatabase(phone1));
+        System.out.println(customerDB.isInCustomerDatabase(phone2));
     }
 }
