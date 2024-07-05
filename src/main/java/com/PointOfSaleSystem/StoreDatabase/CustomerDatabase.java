@@ -1,6 +1,7 @@
 package com.PointOfSaleSystem.StoreDatabase;
 
-public class CustomerDatabase {
+public class CustomerDatabase extends Database {
 
+    //
 
 }

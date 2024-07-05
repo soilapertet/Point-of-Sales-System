@@ -1,9 +1,5 @@
 package com.PointOfSaleSystem.StoreDatabase;
 
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.ServerApi;
-import com.mongodb.ServerApiVersion;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
@@ -12,7 +8,7 @@ import org.bson.conversions.Bson;
 import java.util.Iterator;
 
 // Singleton Design pattern
-public class EmployeeDatabase {
+public class EmployeeDatabase extends Database {
 
     // Initialise instance variables
     private static EmployeeDatabase employeeDB;
@@ -28,10 +24,7 @@ public class EmployeeDatabase {
     private static Iterator<Document> ecomAssociates;
 
     private EmployeeDatabase() {
-
-        // Initialise MongoDB connection
-        MongoClientSettings settings = connectToStoreDatabase();
-        mongoClient = MongoClients.create(settings);
+        super();
     };
 
     public static EmployeeDatabase getInstance() {
@@ -43,30 +36,13 @@ public class EmployeeDatabase {
         return employeeDB;
     }
 
-    // Initialise a method to connect to MongoDB database
-    private static MongoClientSettings connectToStoreDatabase() {
-
-        String connectionString = "mongodb+srv://nicolepertet:vinsmoke.20.07@pos-cluster.wy7nnbe.mongodb.net/?retryWrites=true&w=majority&appName=POS-Cluster";
-
-        ServerApi serverApi = ServerApi.builder()
-                .version(ServerApiVersion.V1)
-                .build();
-
-        return MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString(connectionString))
-                .serverApi(serverApi)
-                .build();
-
-
-    }
-
     // Get the "employees" collection from the database
     public void initialiseEmployeesCollection() {
 
         if(employeesCollection == null) {
             try {
                 // Connect to the "Elite-Sports" database
-                MongoDatabase database = mongoClient.getDatabase("Elite-Sports");
+                MongoDatabase database = super.getMongoClient().getDatabase("Elite-Sports");
 
                 // Connect to the "employees" collection
                 employeesCollection = database.getCollection("employees");
@@ -76,7 +52,6 @@ public class EmployeeDatabase {
             }
 
         }
-
     }
 
     // Define getter methods
@@ -209,11 +184,11 @@ public class EmployeeDatabase {
     }
 
 /*    Main method for testing and debugging purposes */
-//    public static void main(String[] args) {
-//        StoreDatabase storeDB = StoreDatabase.getInstance();
-//        storeDB.initialiseEmployeesCollection();
-//        System.out.println(storeDB.isAManager(111915));
-//    }
+    public static void main(String[] args) {
+        EmployeeDatabase employeeDB = EmployeeDatabase.getInstance();
+        employeeDB.initialiseEmployeesCollection();
+        System.out.println(employeeDB.isAManager(112240));
+    }
 
 }
 
