@@ -13,7 +13,7 @@ public class EmployeeDatabase extends Database {
     // Initialise instance variables
     private static EmployeeDatabase employeeDB = null;
     private MongoClient mongoClient;
-    private MongoCollection<Document> employeesCollection;
+    private MongoCollection<Document> employeesCollection = null;
 
     private static Iterator<Document> storeEmployees;
     private static Iterator<Document> storeManagers;
