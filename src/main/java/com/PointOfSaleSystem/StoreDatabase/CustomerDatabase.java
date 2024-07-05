@@ -62,6 +62,8 @@ public class CustomerDatabase extends Database {
         FindIterable<Document> matchingDocs = customersCollection.find(filter);
         isInCustomerDB = matchingDocs.iterator().hasNext();
 
+        setCustomerInfo(isInCustomerDB, matchingDocs);
+
         return isInCustomerDB;
     }
 
@@ -74,9 +76,7 @@ public class CustomerDatabase extends Database {
         FindIterable<Document> matchingDocs = customersCollection.find(filter);
         isInCustomerDB = matchingDocs.iterator().hasNext();
 
-        if(isInCustomerDB) {
-            this.phoneNumber = phoneNumber;
-        }
+        setCustomerInfo(isInCustomerDB, matchingDocs);
 
         return isInCustomerDB;
     }
@@ -90,11 +90,37 @@ public class CustomerDatabase extends Database {
         FindIterable<Document> matchingDocs = customersCollection.find(filter);
         isInCustomerDB = matchingDocs.iterator().hasNext();
 
-        if(isInCustomerDB) {
-            this.emailAddress = emailAddress;
-        }
+        setCustomerInfo(isInCustomerDB, matchingDocs);
 
         return isInCustomerDB;
+    }
+
+    public void setCustomerInfo(boolean isInDB, FindIterable<Document> iter) {
+
+        if(isInDB) {
+            this.customerFirstName = iter.first().getString("firstName");
+            this.customerLastName = iter.first().getString("lastName");
+            this.phoneNumber = iter.first().getLong("phoneNumber");
+            this.emailAddress = iter.first().getString("emailAddress");
+        }
+
+    }
+
+    // Define getter methods
+    public long getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getCustomerFirstName() {
+        return customerFirstName;
+    }
+
+    public String getCustomerLastName() {
+        return customerLastName;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
     public static void main(String[] args) {
@@ -113,8 +139,19 @@ public class CustomerDatabase extends Database {
         String email2 = "king0fTheNorth@telus.net";
         String email3 = "theBoyWhoLived@gmail.com";
 
-        System.out.println(customerDB.isInCustomerDatabase(email1));
         System.out.println(customerDB.isInCustomerDatabase(email2));
+
         System.out.println(customerDB.isInCustomerDatabase(email3));
+        System.out.println(customerDB.getCustomerFirstName());
+        System.out.println(customerDB.getCustomerLastName());
+        System.out.println(customerDB.getPhoneNumber());
+        System.out.println(customerDB.getEmailAddress());
+
+        long phone3 = 4037623008L;
+        System.out.println(customerDB.isInCustomerDatabase(phone3));
+        System.out.println(customerDB.getCustomerFirstName());
+        System.out.println(customerDB.getCustomerLastName());
+        System.out.println(customerDB.getPhoneNumber());
+        System.out.println(customerDB.getEmailAddress());
     }
 }
