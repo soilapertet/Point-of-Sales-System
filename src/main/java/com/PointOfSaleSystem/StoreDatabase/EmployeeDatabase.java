@@ -11,7 +11,7 @@ import java.util.Iterator;
 public class EmployeeDatabase extends Database {
 
     // Initialise instance variables
-    private static EmployeeDatabase employeeDB;
+    private static EmployeeDatabase employeeDB = null;
     private MongoClient mongoClient;
     private MongoCollection<Document> employeesCollection;
 
