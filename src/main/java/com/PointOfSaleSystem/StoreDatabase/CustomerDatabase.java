@@ -1,8 +1,13 @@
 package com.PointOfSaleSystem.StoreDatabase;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
+import org.bson.conversions.Bson;
+
+import java.util.Iterator;
 
 public class CustomerDatabase extends Database {
 
@@ -48,5 +53,26 @@ public class CustomerDatabase extends Database {
         }
     }
 
+    // Check if customer is in database through their first and last name
+    public boolean isInCustomerDatabase(String fName, String lName) {
 
+        boolean isInCustomerDB;
+
+        Bson filter = Filters.and(Filters.eq("firstName", fName),
+                Filters.eq("lastName", lName));
+
+        FindIterable<Document> matchingDocs = customersCollection.find(filter);
+        isInCustomerDB = matchingDocs.iterator().hasNext();
+
+        return isInCustomerDB;
+    }
+
+
+    public static void main(String[] args) {
+        CustomerDatabase customerDB = CustomerDatabase.getInstance();
+        customerDB.initialiseCustomersCollection();
+
+        System.out.println(customerDB.isInCustomerDatabase("Soila", "Pertet"));
+        System.out.println(customerDB.isInCustomerDatabase("Ginny", "Weasley"));
+    }
 }
