@@ -95,6 +95,7 @@ public class CustomerDatabase extends Database {
         return isInCustomerDB;
     }
 
+    // Define method to set customer info
     public void setCustomerInfo(boolean isInDB, FindIterable<Document> iter) {
 
         if(isInDB) {
@@ -106,6 +107,25 @@ public class CustomerDatabase extends Database {
 
     }
 
+    // Define a method to create a new customer and add them to the database
+    public void addCustomerToDB(String fName, String lName, long phoneNumber, String email,
+                                String city, String state, String postalCode) {
+
+        Document newCustomerAcc = new Document()
+                .append("firstName", fName)
+                .append("lastName", lName)
+                .append("phoneNumber", phoneNumber)
+                .append("emailAddress", email)
+                .append("city", city)
+                .append("state", state)
+                .append("postalCode", postalCode);
+
+        System.out.println("Adding customer to database ...");
+        customersCollection.insertOne(newCustomerAcc);
+        System.out.println("Customer has been added to database successfully!!");
+
+
+    }
     // Define getter methods
     public long getPhoneNumber() {
         return phoneNumber;
@@ -130,18 +150,16 @@ public class CustomerDatabase extends Database {
         System.out.println(customerDB.isInCustomerDatabase("Soila", "Pertet"));
         System.out.println(customerDB.isInCustomerDatabase("Ginny", "Weasley"));
 
-        long phone1 = 8253659243L;
-        long phone2 = 4032553653L;
-        System.out.println(customerDB.isInCustomerDatabase(phone1));
-        System.out.println(customerDB.isInCustomerDatabase(phone2));
+        long phone = 4032553653L;
+        System.out.println(customerDB.isInCustomerDatabase(phone));
+        System.out.println(customerDB.getCustomerFirstName());
+        System.out.println(customerDB.getCustomerLastName());
+        System.out.println(customerDB.getPhoneNumber());
+        System.out.println(customerDB.getEmailAddress());
 
-        String email1 = "nicolepertet@gmail.com";
-        String email2 = "king0fTheNorth@telus.net";
-        String email3 = "theBoyWhoLived@gmail.com";
+        String email = "theBoyWhoLived@gmail.com";
 
-        System.out.println(customerDB.isInCustomerDatabase(email2));
-
-        System.out.println(customerDB.isInCustomerDatabase(email3));
+        System.out.println(customerDB.isInCustomerDatabase(email));
         System.out.println(customerDB.getCustomerFirstName());
         System.out.println(customerDB.getCustomerLastName());
         System.out.println(customerDB.getPhoneNumber());
@@ -153,5 +171,8 @@ public class CustomerDatabase extends Database {
         System.out.println(customerDB.getCustomerLastName());
         System.out.println(customerDB.getPhoneNumber());
         System.out.println(customerDB.getEmailAddress());
+
+        customerDB.addCustomerToDB("Roronoa", "Zoro", 4033804449L,
+                "kingOfHell@gmail.com", "Lethbridge", "AB", "T1J 0A1");
     }
 }
