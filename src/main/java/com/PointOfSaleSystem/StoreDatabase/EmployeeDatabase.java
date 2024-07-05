@@ -12,10 +12,10 @@ import org.bson.conversions.Bson;
 import java.util.Iterator;
 
 // Singleton Design pattern
-public class StoreDatabase {
+public class EmployeeDatabase {
 
     // Initialise instance variables
-    private static StoreDatabase storeDB;
+    private static EmployeeDatabase employeeDB;
     private MongoClient mongoClient;
     private MongoCollection<Document> employeesCollection;
 
@@ -27,20 +27,20 @@ public class StoreDatabase {
     private static Iterator<Document> storeCashiers;
     private static Iterator<Document> ecomAssociates;
 
-    private StoreDatabase() {
+    private EmployeeDatabase() {
 
         // Initialise MongoDB connection
         MongoClientSettings settings = connectToStoreDatabase();
         mongoClient = MongoClients.create(settings);
     };
 
-    public static StoreDatabase getInstance() {
+    public static EmployeeDatabase getInstance() {
 
-        if(storeDB == null) {
-            storeDB = new StoreDatabase();
+        if(employeeDB == null) {
+            employeeDB = new EmployeeDatabase();
         }
 
-        return storeDB;
+        return employeeDB;
     }
 
     // Initialise a method to connect to MongoDB database

@@ -1,6 +1,6 @@
 package com.PointOfSaleSystem.Controllers;
 
-import com.PointOfSaleSystem.StoreDatabase.StoreDatabase;
+import com.PointOfSaleSystem.StoreDatabase.EmployeeDatabase;
 import com.mongodb.client.model.Filters;
 import org.bson.conversions.Bson;
 
@@ -11,12 +11,12 @@ public class EmployeeInputController {
     private int employeeID;
     private String loginPassword;
     private boolean clockedInStatus;
-    private StoreDatabase storeDB;
+    private EmployeeDatabase employeeDB;
 
     // Define class constructor
     public EmployeeInputController() {
-        storeDB = StoreDatabase.getInstance();
-        storeDB.initialiseEmployeesCollection();
+        employeeDB = EmployeeDatabase.getInstance();
+        employeeDB.initialiseEmployeesCollection();
     }
 
     // Prompt user for their employee ID
@@ -43,7 +43,7 @@ public class EmployeeInputController {
     private boolean checkIfEmployeeIDIsValid(int id) {
 
         boolean isValidEmployeeID;
-        isValidEmployeeID = storeDB.isInEmployeeDatabase(id);
+        isValidEmployeeID = employeeDB.isInEmployeeDatabase(id);
         return isValidEmployeeID;
     }
 
@@ -55,7 +55,7 @@ public class EmployeeInputController {
         Bson filter = Filters.and(Filters.eq("employeeID", employeeID),
                 Filters.eq("loginPassword", password));
 
-        isValidLoginPassword = storeDB.getEmployeesCollection().find(filter).iterator().hasNext();
+        isValidLoginPassword = employeeDB.getEmployeesCollection().find(filter).iterator().hasNext();
 
         return isValidLoginPassword;
     }
@@ -92,7 +92,7 @@ public class EmployeeInputController {
         Bson filter = Filters.and(Filters.eq("employeeID", employeeID),
                 Filters.eq("loginPassword", loginPassword));
 
-        clockedInStatus = storeDB.getEmployeesCollection().find(filter).first().getBoolean("clockedIn");
+        clockedInStatus = employeeDB.getEmployeesCollection().find(filter).first().getBoolean("clockedIn");
     }
 
     // Define getter methods
