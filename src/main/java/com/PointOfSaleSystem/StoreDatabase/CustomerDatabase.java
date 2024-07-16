@@ -73,16 +73,6 @@ public class CustomerDatabase extends Database {
         return matchingDocs.iterator().hasNext();
     }
 
-    // Define method to set customer info
-    public void setCustomerInfo(boolean isInDB, FindIterable<Document> iter) {
-
-            this.customerFirstName = iter.first().getString("firstName");
-            this.customerLastName = iter.first().getString("lastName");
-            this.phoneNumber = iter.first().getLong("phoneNumber");
-            this.emailAddress = iter.first().getString("emailAddress");
-
-    }
-
     // Define a method to create a new customer and add them to the database
     public void addCustomerToDB(String fName, String lName, long phoneNumber, String email,
                                 String city, String state, String postalCode) {
@@ -121,42 +111,7 @@ public class CustomerDatabase extends Database {
         return customerLastName;
     }
 
-    public String getEmailAddress() {
+    public String getEmailAddress() {return emailAddress;}
 
-        return emailAddress;
-    }
-
-
-    public static void main(String[] args) {
-        CustomerDatabase customerDB = CustomerDatabase.getInstance();
-        customerDB.initialiseCustomersCollection();
-
-        System.out.println(customerDB.isInCustomerDatabase("Soila", "Pertet"));
-        System.out.println(customerDB.isInCustomerDatabase("Ginny", "Weasley"));
-
-        long phone = 4032553653L;
-        System.out.println(customerDB.isInCustomerDatabase(phone));
-        System.out.println(customerDB.getCustomerFirstName());
-        System.out.println(customerDB.getCustomerLastName());
-        System.out.println(customerDB.getPhoneNumber());
-        System.out.println(customerDB.getEmailAddress());
-
-        String email = "theBoyWhoLived@gmail.com";
-
-        System.out.println(customerDB.isInCustomerDatabase(email));
-        System.out.println(customerDB.getCustomerFirstName());
-        System.out.println(customerDB.getCustomerLastName());
-        System.out.println(customerDB.getPhoneNumber());
-        System.out.println(customerDB.getEmailAddress());
-
-        long phone3 = 4037623008L;
-        System.out.println(customerDB.isInCustomerDatabase(phone3));
-        System.out.println(customerDB.getCustomerFirstName());
-        System.out.println(customerDB.getCustomerLastName());
-        System.out.println(customerDB.getPhoneNumber());
-        System.out.println(customerDB.getEmailAddress());
-
-        customerDB.addCustomerToDB("Clara", "Lang'at", 4032529444L,
-                "clara.lang'at@dalhousie.ca", "Calgary", "AB", "T3B 2R6");
-    }
+    public MongoCollection<Document> getCustomersCollection() { return customersCollection; }
 }

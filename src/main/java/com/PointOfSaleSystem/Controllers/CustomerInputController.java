@@ -1,6 +1,10 @@
 package com.PointOfSaleSystem.Controllers;
 
 import com.PointOfSaleSystem.StoreDatabase.CustomerDatabase;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.model.Filters;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import java.util.Scanner;
 
@@ -8,8 +12,8 @@ public class CustomerInputController {
 
     // Define instance variables
     private CustomerDatabase customerDB;
-    private String firstName;
-    private String lastName;
+    private String customerFirstName;
+    private String customerLastName;
     private long phoneNumber;
     private String emailAddress;
 
@@ -63,6 +67,33 @@ public class CustomerInputController {
         }
 
         return isInCustomerDB;
+    }
+
+    // Set the customer info based on customer details in customer DB
+    private void setCustomerInfo() {
+
+        Bson filter;
+        FindIterable<Document> matchingDocs;
+
+        if(hasACustomerAccount()) {
+            if(inputEmail != null) {
+                filter = Filters.eq("emailAddress", inputEmail);
+                matchingDocs = customerDB.getCustomersCollection().find(filter);
+            } else if(inputPhoneNumber != 0) {
+                filter = Filters.eq("phoneNumber", inputPhoneNumber);
+                matchingDocs = customerDB.getCustomersCollection().find(filter);
+            } else {
+                filter = Filters.and(Filters.eq("firstName", firstNameInput),
+                        Filters.eq("lastName", lastNameInput));
+                matchingDocs = customerDB.getCustomersCollection().find(filter);
+            }
+
+            this.customerFirstName = matchingDocs.first().getString("firstName");
+            this.customerLastName = matchingDocs.first().getString("lastName");
+            this.phoneNumber = matchingDocs.first().getLong("phoneNumber");
+            this.emailAddress = matchingDocs.first().getString("emailAddress");
+
+        }
     }
 
     public static void main(String[] args) {
