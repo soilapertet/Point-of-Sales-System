@@ -16,12 +16,12 @@ public class CustomerInputController {
     private String customerLastName;
     private long phoneNumber;
     private String emailAddress;
+    private boolean guestMode;
 
     private String inputEmail;
     private String firstNameInput;
     private String lastNameInput;
     private long inputPhoneNumber;
-    private int inputAccountNo;
 
     // Define class constructor
     public CustomerInputController() {
@@ -85,11 +85,48 @@ public class CustomerInputController {
             this.customerLastName = matchingDocs.first().getString("lastName");
             this.phoneNumber = matchingDocs.first().getLong("phoneNumber");
             this.emailAddress = matchingDocs.first().getString("emailAddress");
+            this.guestMode = false;
 
-            System.out.println("Customer info has been set for the transaction");
         } else {
             System.err.println("Customer account is not in database");
+            promptToCreateAccount();
         }
+    }
+
+    // Check if user would like to create a customer account or continue as a guest
+    private void promptToCreateAccount() {
+
+        System.out.println("Would you like to create a Customer Rewards Account? ");
+
+        Scanner scanner = new Scanner(System.in);
+        String response = scanner.next();
+
+        if(response.equalsIgnoreCase("Yes")) {
+            createCustomerAccount();
+        } else {
+            System.out.println("Continuing in Guest Mode...");
+            this.guestMode = true;
+        }
+    }
+
+    private void createCustomerAccount() {
+        System.out.println("Creating customer account...");
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("First Name: ");
+        this.customerFirstName =  scanner.next();
+
+        System.out.println("Last Name: ");
+        this.customerLastName = scanner.next();
+
+        System.out.println("Phone Number: ");
+        this.phoneNumber = scanner.nextLong();
+
+        System.out.println("Email Address: ");
+        this.emailAddress = scanner.next();
+
+        customerDB.addCustomerToDB(customerFirstName, customerLastName, phoneNumber, emailAddress);
     }
 
     // Define getter methods
@@ -107,6 +144,8 @@ public class CustomerInputController {
 
     public String getEmailAddress() {return emailAddress;}
 
+    public boolean getGuestModeStatus() {return guestMode;}
+
     public static void main(String[] args) {
 
         CustomerInputController cic = new CustomerInputController();
@@ -116,13 +155,9 @@ public class CustomerInputController {
 
         // 2. Check if customer is in the database
         boolean isInCustomerDB = cic.hasACustomerAccount();
-        System.out.println(isInCustomerDB);
-        cic.setCustomerInfo(isInCustomerDB);
 
-        System.out.println(cic.getCustomerFirstName());
-        System.out.println(cic.getCustomerLastName());
-        System.out.println(cic.getEmailAddress());
-        System.out.println(cic.getPhoneNumber());
+        // 3. Set customer info if customer is in database
+        cic.setCustomerInfo(isInCustomerDB);
     }
 
 }

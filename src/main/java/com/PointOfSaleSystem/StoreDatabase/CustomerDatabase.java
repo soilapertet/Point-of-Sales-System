@@ -56,7 +56,6 @@ public class CustomerDatabase extends Database {
         Bson filter = Filters.and(Filters.eq("firstName", fName),
                 Filters.eq("lastName", lName));
         FindIterable<Document> matchingDocs = customersCollection.find(filter);
-        System.out.println("Checking db");
         return matchingDocs.iterator().hasNext();
     }
 
@@ -75,8 +74,7 @@ public class CustomerDatabase extends Database {
     }
 
     // Define a method to create a new customer and add them to the database
-    public void addCustomerToDB(String fName, String lName, long phoneNumber, String email,
-                                String city, String state, String postalCode) {
+    public void addCustomerToDB(String fName, String lName, long phoneNumber, String email) {
 
         if(!isInCustomerDatabase(fName, lName) || !isInCustomerDatabase(phoneNumber) ||
         !isInCustomerDatabase(email)) {
@@ -84,10 +82,7 @@ public class CustomerDatabase extends Database {
                     .append("firstName", fName)
                     .append("lastName", lName)
                     .append("phoneNumber", phoneNumber)
-                    .append("emailAddress", email)
-                    .append("city", city)
-                    .append("state", state)
-                    .append("postalCode", postalCode);
+                    .append("emailAddress", email);
 
             System.out.println("Adding customer to database ...");
             customersCollection.insertOne(newCustomerAcc);
