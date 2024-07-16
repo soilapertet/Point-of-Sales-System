@@ -56,6 +56,7 @@ public class CustomerDatabase extends Database {
         Bson filter = Filters.and(Filters.eq("firstName", fName),
                 Filters.eq("lastName", lName));
         FindIterable<Document> matchingDocs = customersCollection.find(filter);
+        System.out.println("Checking db");
         return matchingDocs.iterator().hasNext();
     }
 
@@ -77,7 +78,7 @@ public class CustomerDatabase extends Database {
     public void addCustomerToDB(String fName, String lName, long phoneNumber, String email,
                                 String city, String state, String postalCode) {
 
-        if(!isInCustomerDatabase(fName, lName) || !isInCustomerDatabase(getPhoneNumber()) ||
+        if(!isInCustomerDatabase(fName, lName) || !isInCustomerDatabase(phoneNumber) ||
         !isInCustomerDatabase(email)) {
             Document newCustomerAcc = new Document()
                     .append("firstName", fName)
@@ -94,24 +95,8 @@ public class CustomerDatabase extends Database {
         } else {
             System.err.println("Customer is already in database.");
         }
-
-
     }
 
     // Define getter methods
-    public long getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public String getCustomerFirstName() {
-        return customerFirstName;
-    }
-
-    public String getCustomerLastName() {
-        return customerLastName;
-    }
-
-    public String getEmailAddress() {return emailAddress;}
-
     public MongoCollection<Document> getCustomersCollection() { return customersCollection; }
 }

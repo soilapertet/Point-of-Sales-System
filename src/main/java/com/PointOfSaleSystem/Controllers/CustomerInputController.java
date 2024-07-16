@@ -38,17 +38,14 @@ public class CustomerInputController {
         // check if input is a phone number; else check if it's an email address or customer name+0
         if(scanner.hasNextLong()) {
             inputPhoneNumber = scanner.nextLong();
-            System.out.println(inputPhoneNumber);
         } else {
             String input = scanner.nextLine();
 
             if(input.contains("@")) {
                 inputEmail = input;
-                System.out.println(inputEmail);
             } else {
                 firstNameInput = input.split(" ")[0];
                 lastNameInput = input.split(" ")[1];
-                System.out.println(firstNameInput + " " + lastNameInput);
             }
         }
     }
@@ -56,26 +53,22 @@ public class CustomerInputController {
     // Define a method to check if the user has a customer account
     private boolean hasACustomerAccount() {
 
-        boolean isInCustomerDB;
-
         if(inputPhoneNumber != 0) {
-            isInCustomerDB = customerDB.isInCustomerDatabase(inputPhoneNumber);
+            return customerDB.isInCustomerDatabase(inputPhoneNumber);
         } else if(inputEmail != null) {
-            isInCustomerDB = customerDB.isInCustomerDatabase(inputEmail);
+            return customerDB.isInCustomerDatabase(inputEmail);
         } else {
-            isInCustomerDB = customerDB.isInCustomerDatabase(firstNameInput, lastNameInput);
+            return customerDB.isInCustomerDatabase(firstNameInput, lastNameInput);
         }
-
-        return isInCustomerDB;
     }
 
     // Set the customer info based on customer details in customer DB
-    private void setCustomerInfo() {
+    private void setCustomerInfo(boolean inDB) {
 
         Bson filter;
         FindIterable<Document> matchingDocs;
 
-        if(hasACustomerAccount()) {
+        if(inDB) {
             if(inputEmail != null) {
                 filter = Filters.eq("emailAddress", inputEmail);
                 matchingDocs = customerDB.getCustomersCollection().find(filter);
@@ -93,18 +86,43 @@ public class CustomerInputController {
             this.phoneNumber = matchingDocs.first().getLong("phoneNumber");
             this.emailAddress = matchingDocs.first().getString("emailAddress");
 
+            System.out.println("Customer info has been set for the transaction");
+        } else {
+            System.err.println("Customer account is not in database");
         }
     }
+
+    // Define getter methods
+    public long getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getCustomerFirstName() {
+        return customerFirstName;
+    }
+
+    public String getCustomerLastName() {
+        return customerLastName;
+    }
+
+    public String getEmailAddress() {return emailAddress;}
 
     public static void main(String[] args) {
 
         CustomerInputController cic = new CustomerInputController();
-        System.out.println(cic.inputPhoneNumber);
-        System.out.println(cic.inputEmail);
-        System.out.println(cic.firstNameInput);
-        System.out.println(cic.lastNameInput);
+
+        // 1. Get customer details: email, phone number, first name and last name
         cic.promptForCustomerDetails();
 
+        // 2. Check if customer is in the database
+        boolean isInCustomerDB = cic.hasACustomerAccount();
+        System.out.println(isInCustomerDB);
+        cic.setCustomerInfo(isInCustomerDB);
+
+        System.out.println(cic.getCustomerFirstName());
+        System.out.println(cic.getCustomerLastName());
+        System.out.println(cic.getEmailAddress());
+        System.out.println(cic.getPhoneNumber());
     }
 
 }
