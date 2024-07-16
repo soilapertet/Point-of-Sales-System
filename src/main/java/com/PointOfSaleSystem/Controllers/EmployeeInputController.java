@@ -24,9 +24,7 @@ public class EmployeeInputController {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your Employee ID here: ");
-        int idInput = scanner.nextInt();
-
-        return idInput;
+        return scanner.nextInt();
     }
 
     // Prompt user for their login password
@@ -34,9 +32,7 @@ public class EmployeeInputController {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your login password here: ");
-        String passwordInput = scanner.nextLine();
-
-        return passwordInput;
+        return scanner.nextLine();
     }
 
     // Check if user's employee ID is valid
