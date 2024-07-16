@@ -13,42 +13,50 @@ public class CustomerInputController {
     private long phoneNumber;
     private String emailAddress;
 
+    private String inputEmail;
+    private String firstNameInput;
+    private String lastNameInput;
+    private long inputPhoneNumber;
+    private int inputAccountNo;
+
     // Define class constructor
     public CustomerInputController() {
         customerDB = CustomerDatabase.getInstance();
         customerDB.initialiseCustomersCollection();
     }
 
-    // Prompt user for their phone number
-    public long promptForPhoneNumber() {
+    // Prompt for customer details : Phone number, Email address, First name, Last name
+    public void promptForCustomerDetails() {
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Add customer to sale");
-        return scanner.nextLong();
+        System.out.println("Getting customer information: ");
+
+        // check if input is a phone number; else check if it's an email address or customer name+0
+        if(scanner.hasNextLong()) {
+            inputPhoneNumber = scanner.nextLong();
+            System.out.println(inputPhoneNumber);
+        } else if(scanner.hasNextInt()) {
+            inputAccountNo = scanner.nextInt();
+            System.out.println(inputAccountNo);
+        } else {
+            String input = scanner.nextLine();
+
+            if(input.contains("@")) {
+                inputEmail = input;
+                System.out.println(inputEmail);
+            } else {
+                firstNameInput = input.split(" ")[0];
+                lastNameInput = input.split(" ")[1];
+                System.out.println(firstNameInput + " " + lastNameInput);
+            }
+        }
     }
 
-    // Prompt user for their email address
-    public String promptForEmailAddress() {
+    public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Add customer to sale");
-        return scanner.next();
-    }
+        CustomerInputController cic = new CustomerInputController();
+        cic.promptForCustomerDetails();
 
-    // Prompt user for their first name
-    public String promptForFirstName() {
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Add customer to sale");
-        return scanner.next();
-    }
-
-    // Prompt user for their last name
-    public String promptForLastName() {
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Add customer to sale");
-        return scanner.next();
     }
 
 }

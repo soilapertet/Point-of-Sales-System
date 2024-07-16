@@ -103,6 +103,8 @@ public class CustomerDatabase extends Database {
             this.customerLastName = iter.first().getString("lastName");
             this.phoneNumber = iter.first().getLong("phoneNumber");
             this.emailAddress = iter.first().getString("emailAddress");
+        } else {
+            System.err.println("Customer account cannot be found in database");
         }
     }
 
@@ -150,36 +152,36 @@ public class CustomerDatabase extends Database {
     }
 
 
-//    public static void main(String[] args) {
-//        CustomerDatabase customerDB = CustomerDatabase.getInstance();
-//        customerDB.initialiseCustomersCollection();
-//
-//        System.out.println(customerDB.isInCustomerDatabase("Soila", "Pertet"));
-//        System.out.println(customerDB.isInCustomerDatabase("Ginny", "Weasley"));
-//
-//        long phone = 4032553653L;
-//        System.out.println(customerDB.isInCustomerDatabase(phone));
-//        System.out.println(customerDB.getCustomerFirstName());
-//        System.out.println(customerDB.getCustomerLastName());
-//        System.out.println(customerDB.getPhoneNumber());
-//        System.out.println(customerDB.getEmailAddress());
-//
-//        String email = "theBoyWhoLived@gmail.com";
-//
-//        System.out.println(customerDB.isInCustomerDatabase(email));
-//        System.out.println(customerDB.getCustomerFirstName());
-//        System.out.println(customerDB.getCustomerLastName());
-//        System.out.println(customerDB.getPhoneNumber());
-//        System.out.println(customerDB.getEmailAddress());
-//
-//        long phone3 = 4037623008L;
-//        System.out.println(customerDB.isInCustomerDatabase(phone3));
-//        System.out.println(customerDB.getCustomerFirstName());
-//        System.out.println(customerDB.getCustomerLastName());
-//        System.out.println(customerDB.getPhoneNumber());
-//        System.out.println(customerDB.getEmailAddress());
-//
-//        customerDB.addCustomerToDB("Clara", "Lang'at", 4032529444L,
-//                "clara.lang'at@dalhousie.ca", "Calgary", "AB", "T3B 2R6");
-//    }
+    public static void main(String[] args) {
+        CustomerDatabase customerDB = CustomerDatabase.getInstance();
+        customerDB.initialiseCustomersCollection();
+
+        System.out.println(customerDB.isInCustomerDatabase("Soila", "Pertet"));
+        System.out.println(customerDB.isInCustomerDatabase("Ginny", "Weasley"));
+
+        long phone = 4032553653L;
+        System.out.println(customerDB.isInCustomerDatabase(phone));
+        System.out.println(customerDB.getCustomerFirstName());
+        System.out.println(customerDB.getCustomerLastName());
+        System.out.println(customerDB.getPhoneNumber());
+        System.out.println(customerDB.getEmailAddress());
+
+        String email = "theBoyWhoLived@gmail.com";
+
+        System.out.println(customerDB.isInCustomerDatabase(email));
+        System.out.println(customerDB.getCustomerFirstName());
+        System.out.println(customerDB.getCustomerLastName());
+        System.out.println(customerDB.getPhoneNumber());
+        System.out.println(customerDB.getEmailAddress());
+
+        long phone3 = 4037623008L;
+        System.out.println(customerDB.isInCustomerDatabase(phone3));
+        System.out.println(customerDB.getCustomerFirstName());
+        System.out.println(customerDB.getCustomerLastName());
+        System.out.println(customerDB.getPhoneNumber());
+        System.out.println(customerDB.getEmailAddress());
+
+        customerDB.addCustomerToDB("Clara", "Lang'at", 4032529444L,
+                "clara.lang'at@dalhousie.ca", "Calgary", "AB", "T3B 2R6");
+    }
 }
