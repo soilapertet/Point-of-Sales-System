@@ -53,59 +53,34 @@ public class CustomerDatabase extends Database {
 
     // Check if customer is in database through their first and last name
     public boolean isInCustomerDatabase(String fName, String lName) {
-
-        boolean isInCustomerDB;
-
         Bson filter = Filters.and(Filters.eq("firstName", fName),
                 Filters.eq("lastName", lName));
-
         FindIterable<Document> matchingDocs = customersCollection.find(filter);
-        isInCustomerDB = matchingDocs.iterator().hasNext();
-
-        setCustomerInfo(isInCustomerDB, matchingDocs);
-
-        return isInCustomerDB;
+        return matchingDocs.iterator().hasNext();
     }
 
     // Check if customer is in database through their phone number
     public boolean isInCustomerDatabase(long phoneNumber) {
-
-        boolean isInCustomerDB;
-
         Bson filter = Filters.eq("phoneNumber", phoneNumber);
         FindIterable<Document> matchingDocs = customersCollection.find(filter);
-        isInCustomerDB = matchingDocs.iterator().hasNext();
-
-        setCustomerInfo(isInCustomerDB, matchingDocs);
-
-        return isInCustomerDB;
+        return matchingDocs.iterator().hasNext();
     }
 
     // Check if customer is in database through their email address
     public boolean isInCustomerDatabase(String emailAddress) {
-
-        boolean isInCustomerDB;
-
         Bson filter = Filters.eq("emailAddress", emailAddress);
         FindIterable<Document> matchingDocs = customersCollection.find(filter);
-        isInCustomerDB = matchingDocs.iterator().hasNext();
-
-        setCustomerInfo(isInCustomerDB, matchingDocs);
-
-        return isInCustomerDB;
+        return matchingDocs.iterator().hasNext();
     }
 
     // Define method to set customer info
     public void setCustomerInfo(boolean isInDB, FindIterable<Document> iter) {
 
-        if(isInDB) {
             this.customerFirstName = iter.first().getString("firstName");
             this.customerLastName = iter.first().getString("lastName");
             this.phoneNumber = iter.first().getLong("phoneNumber");
             this.emailAddress = iter.first().getString("emailAddress");
-        } else {
-            System.err.println("Customer account cannot be found in database");
-        }
+
     }
 
     // Define a method to create a new customer and add them to the database

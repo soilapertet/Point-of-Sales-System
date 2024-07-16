@@ -35,9 +35,6 @@ public class CustomerInputController {
         if(scanner.hasNextLong()) {
             inputPhoneNumber = scanner.nextLong();
             System.out.println(inputPhoneNumber);
-        } else if(scanner.hasNextInt()) {
-            inputAccountNo = scanner.nextInt();
-            System.out.println(inputAccountNo);
         } else {
             String input = scanner.nextLine();
 
@@ -52,9 +49,29 @@ public class CustomerInputController {
         }
     }
 
+    // Define a method to check if the user has a customer account
+    private boolean hasACustomerAccount() {
+
+        boolean isInCustomerDB;
+
+        if(inputPhoneNumber != 0) {
+            isInCustomerDB = customerDB.isInCustomerDatabase(inputPhoneNumber);
+        } else if(inputEmail != null) {
+            isInCustomerDB = customerDB.isInCustomerDatabase(inputEmail);
+        } else {
+            isInCustomerDB = customerDB.isInCustomerDatabase(firstNameInput, lastNameInput);
+        }
+
+        return isInCustomerDB;
+    }
+
     public static void main(String[] args) {
 
         CustomerInputController cic = new CustomerInputController();
+        System.out.println(cic.inputPhoneNumber);
+        System.out.println(cic.inputEmail);
+        System.out.println(cic.firstNameInput);
+        System.out.println(cic.lastNameInput);
         cic.promptForCustomerDetails();
 
     }
