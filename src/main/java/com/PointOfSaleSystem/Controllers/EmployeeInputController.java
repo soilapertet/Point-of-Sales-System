@@ -1,7 +1,9 @@
 package com.PointOfSaleSystem.Controllers;
 
 import com.PointOfSaleSystem.StoreDatabase.EmployeeDatabase;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
+import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.util.Scanner;
@@ -10,7 +12,6 @@ public class EmployeeInputController {
 
     private int employeeID;
     private String loginPassword;
-    private boolean clockedInStatus;
     private EmployeeDatabase employeeDB;
 
     // Define class constructor
@@ -82,15 +83,6 @@ public class EmployeeInputController {
         this.loginPassword = passwordInput;
     }
 
-    // Get the clocked in status of the user from the MongoDB database
-    private void getClockedInStatusFromDB() {
-
-        Bson filter = Filters.and(Filters.eq("employeeID", employeeID),
-                Filters.eq("loginPassword", loginPassword));
-
-        clockedInStatus = employeeDB.getEmployeesCollection().find(filter).first().getBoolean("clockedIn");
-    }
-
     // Define getter methods
     public int getEmployeeID() {
         return employeeID;
@@ -99,28 +91,4 @@ public class EmployeeInputController {
     public String getLoginPassword() {
         return loginPassword;
     }
-
-    public boolean getClockedInStatus() {
-        return clockedInStatus;
-    }
-
-
-/* Main method for testing and debugging purposes */
-//    public static void main(String[] args) {
-//        EmployeeInputController eic = new EmployeeInputController();
-//
-//        eic.getEmployeeIDInput();
-//        System.out.println(eic.getEmployeeID() + " is a valid employee ID!");
-//
-//        eic.getLoginPasswordInput();
-//        System.out.println(eic.getLoginPassword() + " is the correct password");
-//        System.out.println("Login is successful!!");
-//
-//        eic.getClockedInStatusFromDB();
-//
-//        System.out.println(eic.getEmployeeID());
-//        System.out.println(eic.getLoginPassword());
-//        System.out.println(eic.getClockedInStatus());
-//
-//    }
 }

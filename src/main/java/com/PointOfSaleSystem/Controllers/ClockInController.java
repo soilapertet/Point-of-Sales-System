@@ -1,6 +1,8 @@
 package com.PointOfSaleSystem.Controllers;
 
 import com.PointOfSaleSystem.StoreDatabase.EmployeeDatabase;
+import com.mongodb.client.model.Filters;
+import org.bson.conversions.Bson;
 
 public class ClockInController {
 
@@ -8,6 +10,7 @@ public class ClockInController {
     private boolean clockedIn;
     private int cashEmployeeID;
     private String clockInPassword;
+    private boolean clockedInStatus;
 
     public ClockInController() {
 
@@ -39,6 +42,15 @@ public class ClockInController {
         }
     }
 
+    // Get the clocked in status of the user from the MongoDB database
+    private void getClockedInStatusFromDB() {
+
+        Bson filter = Filters.and(Filters.eq("employeeID", cashEmployeeID),
+                Filters.eq("loginPassword", clockInPassword));
+
+        clockedInStatus = employeeDB.getEmployeesCollection().find(filter).first().getBoolean("clockedIn");
+    }
+
     // Define getter methods
     public boolean getClockedIn() {
         return clockedIn;
@@ -51,6 +63,11 @@ public class ClockInController {
     public String getClockInPassword() {
         return clockInPassword;
     }
+
+    public boolean getClockedInStatus() {
+        return clockedInStatus;
+    }
+
 
     public static void main(String[] args) {
         ClockInController cic = new ClockInController();

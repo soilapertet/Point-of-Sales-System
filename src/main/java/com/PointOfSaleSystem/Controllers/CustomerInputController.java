@@ -86,6 +86,7 @@ public class CustomerInputController {
             this.phoneNumber = matchingDocs.first().getLong("phoneNumber");
             this.emailAddress = matchingDocs.first().getString("emailAddress");
             this.guestMode = false;
+            System.out.println("Customer info has been set for transaction");
 
         } else {
             System.err.println("Customer account is not in database");
@@ -125,6 +126,8 @@ public class CustomerInputController {
 
         System.out.println("Email Address: ");
         this.emailAddress = scanner.next();
+
+        this.guestMode = false;
 
         customerDB.addCustomerToDB(customerFirstName, customerLastName, phoneNumber, emailAddress);
     }

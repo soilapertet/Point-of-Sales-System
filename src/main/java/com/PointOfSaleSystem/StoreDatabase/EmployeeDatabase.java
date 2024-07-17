@@ -117,15 +117,11 @@ public class EmployeeDatabase extends Database {
         return storeCashiers;
     }
 
-    public MongoCollection<Document> getEmployeesCollection() {
-        return employeesCollection;
-    }
-
     // Check if employee ID is in store database
     public boolean isInEmployeeDatabase(int id) {
 
         Bson filter = Filters.eq("employeeID", id);
-        FindIterable<Document> matchingDocs = employeesCollection.find(filter);
+        FindIterable<Document> matchingDocs = employeeDB.getEmployeesCollection().find(filter);
 
         return matchingDocs.first() != null;
     }
@@ -183,12 +179,8 @@ public class EmployeeDatabase extends Database {
 
     }
 
-/*    Main method for testing and debugging purposes */
-    public static void main(String[] args) {
-        EmployeeDatabase employeeDB = EmployeeDatabase.getInstance();
-        employeeDB.initialiseEmployeesCollection();
-        System.out.println(employeeDB.isAManager(112240));
+    public MongoCollection<Document> getEmployeesCollection() {
+        return employeesCollection;
     }
-
 }
 
