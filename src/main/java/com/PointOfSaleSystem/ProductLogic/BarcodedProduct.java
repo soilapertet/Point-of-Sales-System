@@ -16,5 +16,7 @@ public class BarcodedProduct {
         this.productUPC = productUPC;
     }
 
+    // Define the getter methods
+    public long getProductUPC() { return productUPC; }
 
 }
