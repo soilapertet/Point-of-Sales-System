@@ -5,6 +5,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 import java.util.Scanner;
 
@@ -12,6 +13,7 @@ public class CustomerInputController {
 
     // Define instance variables
     private CustomerDatabase customerDB;
+    private ObjectId uniqueID;
     private String customerFirstName;
     private String customerLastName;
     private long phoneNumber;
@@ -81,6 +83,7 @@ public class CustomerInputController {
                 matchingDocs = customerDB.getCustomersCollection().find(filter);
             }
 
+            this.uniqueID = matchingDocs.first().getObjectId("_id");
             this.customerFirstName = matchingDocs.first().getString("firstName");
             this.customerLastName = matchingDocs.first().getString("lastName");
             this.phoneNumber = matchingDocs.first().getLong("phoneNumber");
@@ -110,6 +113,7 @@ public class CustomerInputController {
         }
     }
 
+    // Create a customer account based on user input
     private void createCustomerAccount() {
         System.out.println("Creating customer account...");
 
@@ -149,6 +153,8 @@ public class CustomerInputController {
 
     public boolean getGuestModeStatus() {return guestMode;}
 
+    public ObjectId getUniqueID() { return uniqueID;}
+
     public static void main(String[] args) {
 
         CustomerInputController cic = new CustomerInputController();
@@ -161,6 +167,8 @@ public class CustomerInputController {
 
         // 3. Set customer info if customer is in database
         cic.setCustomerInfo(isInCustomerDB);
+
+        System.out.println(cic.getUniqueID());
     }
 
 }
