@@ -4,6 +4,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import java.util.List;
+
 public class InventoryDatabase extends Database {
 
     // Define instance variables
@@ -56,10 +58,17 @@ public class InventoryDatabase extends Database {
         return matchingProduct != null;
     }
 
+    // Define getter methods
+    public Document getMatchingProduct() {
+        return matchingProduct;
+    }
+
     public static void main(String[] args) {
         InventoryDatabase inventoryDB = InventoryDatabase.getInstance();
         inventoryDB.initialiseInventoryCollection();
-        long upc = 4006381333932L;
+//        long upc = 4006381333932L;
+        long upc = 8901030726912L;
         System.out.println(inventoryDB.isProductUPCInDB(upc));
+        System.out.println(inventoryDB.getMatchingProduct());
     }
 }
