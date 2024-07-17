@@ -3,6 +3,9 @@ package com.PointOfSaleSystem.Controllers;
 import com.PointOfSaleSystem.StoreDatabase.CustomerDatabase;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.UpdateOptions;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -35,7 +38,7 @@ public class CustomerInputController {
     public void promptForCustomerDetails() {
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Getting customer information: ");
+        System.out.println("Enter customer information here: ");
 
         // check if input is a phone number; else check if it's an email address or customer name+0
         if(scanner.hasNextLong()) {
@@ -67,8 +70,7 @@ public class CustomerInputController {
     // Set the customer info based on customer details in customer DB
     private void setCustomerInfo(boolean inDB) {
 
-        Bson filter;
-        FindIterable<Document> matchingDocs;
+        Bson filter; FindIterable<Document> matchingDocs;
 
         if(inDB) {
             if(inputEmail != null) {
@@ -115,7 +117,7 @@ public class CustomerInputController {
 
     // Create a customer account based on user input
     private void createCustomerAccount() {
-        System.out.println("Creating customer account...");
+        System.out.println("Creating customer account: ");
 
         Scanner scanner = new Scanner(System.in);
 
@@ -134,6 +136,33 @@ public class CustomerInputController {
         this.guestMode = false;
 
         customerDB.addCustomerToDB(customerFirstName, customerLastName, phoneNumber, emailAddress);
+    }
+
+    // Update customer info
+    public void updateCustomerInfo(String fName, String lName, long phoneNumber, String email) {
+
+        // Define a filter for the document
+        Bson filter = Filters.eq("_id", getUniqueID());
+
+        // Define the updates to the documents (making changes to all the fields if there are any)
+        Bson updates = Updates.combine(
+                Updates.set("firstName", fName),
+                Updates.set("lastName", lName),
+                Updates.set("phoneNumber", phoneNumber),
+                Updates.set("emailAddress", email)
+        );
+
+        try {
+            // Updates the first document that matches the filter
+            UpdateResult result = customerDB.getCustomersCollection().updateOne(filter, updates);
+
+            // Prints the number of updated documents and the upserted document ID, if an upsert was performed
+            System.out.println("Modified document count: " + result.getModifiedCount());
+
+            // Prints a message if any exceptions occur during the operation
+        } catch (Exception me) {
+            System.err.println("Unable to update due to an error: " + me);
+        }
     }
 
     // Define getter methods
@@ -169,6 +198,13 @@ public class CustomerInputController {
         cic.setCustomerInfo(isInCustomerDB);
 
         System.out.println(cic.getUniqueID());
+
+        // Update the phone number of a customer in the DB
+        long newPhoneNum = 7804813192L;
+        String fName = "Christina";
+        String lName = "Yang";
+        String email = "christinaYang24@outlook.com";
+        cic.updateCustomerInfo(fName, lName, newPhoneNum, email);
     }
 
 }
