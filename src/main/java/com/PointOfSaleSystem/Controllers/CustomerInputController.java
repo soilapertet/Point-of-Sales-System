@@ -75,16 +75,14 @@ public class CustomerInputController {
         if(inDB) {
             if(inputEmail != null) {
                 filter = Filters.eq("emailAddress", inputEmail);
-                matchingDocs = customerDB.getCustomersCollection().find(filter);
             } else if(inputPhoneNumber != 0) {
                 filter = Filters.eq("phoneNumber", inputPhoneNumber);
-                matchingDocs = customerDB.getCustomersCollection().find(filter);
             } else {
                 filter = Filters.and(Filters.eq("firstName", firstNameInput),
                         Filters.eq("lastName", lastNameInput));
-                matchingDocs = customerDB.getCustomersCollection().find(filter);
             }
 
+            matchingDocs = customerDB.getCustomersCollection().find(filter);
             this.uniqueID = matchingDocs.first().getObjectId("_id");
             this.customerFirstName = matchingDocs.first().getString("firstName");
             this.customerLastName = matchingDocs.first().getString("lastName");
@@ -152,59 +150,23 @@ public class CustomerInputController {
                 Updates.set("emailAddress", email)
         );
 
-        try {
-            // Updates the first document that matches the filter
-            UpdateResult result = customerDB.getCustomersCollection().updateOne(filter, updates);
+        // Update the first document that matches the filter
+        UpdateResult result = customerDB.getCustomersCollection().updateOne(filter, updates);
 
-            // Prints the number of updated documents and the upserted document ID, if an upsert was performed
-            System.out.println("Modified document count: " + result.getModifiedCount());
-
-            // Prints a message if any exceptions occur during the operation
-        } catch (Exception me) {
-            System.err.println("Unable to update due to an error: " + me);
-        }
+        // Prints the number of updated documents and the upserted document ID, if an upsert was performed
+        System.out.println("Modified document count: " + result.getModifiedCount());
     }
 
     // Define getter methods
-    public long getPhoneNumber() {
-        return phoneNumber;
-    }
+    public long getPhoneNumber() {return phoneNumber;}
 
-    public String getCustomerFirstName() {
-        return customerFirstName;
-    }
+    public String getCustomerFirstName() {return customerFirstName;}
 
-    public String getCustomerLastName() {
-        return customerLastName;
-    }
+    public String getCustomerLastName() {return customerLastName;}
 
     public String getEmailAddress() {return emailAddress;}
 
     public boolean getGuestModeStatus() {return guestMode;}
 
     public ObjectId getUniqueID() { return uniqueID;}
-
-    public static void main(String[] args) {
-
-        CustomerInputController cic = new CustomerInputController();
-
-        // 1. Get customer details: email, phone number, first name and last name
-        cic.promptForCustomerDetails();
-
-        // 2. Check if customer is in the database
-        boolean isInCustomerDB = cic.hasACustomerAccount();
-
-        // 3. Set customer info if customer is in database
-        cic.setCustomerInfo(isInCustomerDB);
-
-        System.out.println(cic.getUniqueID());
-
-        // Update the phone number of a customer in the DB
-        long newPhoneNum = 7804813192L;
-        String fName = "Christina";
-        String lName = "Yang";
-        String email = "christinaYang24@outlook.com";
-        cic.updateCustomerInfo(fName, lName, newPhoneNum, email);
-    }
-
 }
