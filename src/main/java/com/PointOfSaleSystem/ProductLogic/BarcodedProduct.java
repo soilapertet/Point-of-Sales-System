@@ -11,6 +11,7 @@ public class BarcodedProduct {
     private InventoryDatabase inventoryDB;
     private String productName;
     private long productUPC;
+    private int productID;
     private String productCategory;
     private double price;
     private int quantity;
@@ -42,8 +43,9 @@ public class BarcodedProduct {
 
             // Set the name, price and category of the product
             this.productName = matchedProduct.getString("abbreviation");
-            this.price = matchedProduct.getDouble("price");
             this.productCategory = matchedProduct.getString("category");
+            this.productID = matchedProduct.getInteger("product_id");
+            this.price = matchedProduct.getDouble("price");
 
             // Get the product variants
             List<Document> productVariants = (List<Document>) matchedProduct.get("variants");
@@ -68,6 +70,7 @@ public class BarcodedProduct {
     public long getProductUPC() { return productUPC; }
     public String getProductName() { return productName; }
     public String getProductCategory() { return productCategory; }
+    public int getProductID() { return productID; }
     public double getPrice() { return price; }
     public String getColour() { return colour; }
     public String getClothingSize() { return clothingSize; }
