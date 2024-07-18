@@ -51,9 +51,11 @@ public class BarcodedProduct {
             // Loop through the variants and find the variants matching the provided upc
             for(Document productVariant : productVariants) {
                 if(productVariant.get("upc").equals(productUPC)) {
+                    this.colour = productVariant.getString("colour");
                     if(productCategory.equals("Softgoods")) {
-                        this.colour = productVariant.getString("colour");
                         this.clothingSize = productVariant.getString("size");
+                    } else if(productCategory.equals("Footwear")) {
+                        this.shoeSize = productVariant.getDouble("size");
                     }
                 }
           }
@@ -64,15 +66,22 @@ public class BarcodedProduct {
 
     // Define the getter methods
     public long getProductUPC() { return productUPC; }
+    public String getProductName() { return productName; }
+    public String getProductCategory() { return productCategory; }
+    public double getPrice() { return price; }
+    public String getColour() { return colour; }
+    public String getClothingSize() { return clothingSize; }
+    public double getShoeSize() { return shoeSize; }
 
     public static void main(String[] args) {
-        long upc = 5411188113006L;
+        long upc = 8888001215225L;
         BarcodedProduct barcodedProduct = new BarcodedProduct(upc);
         barcodedProduct.setProductDetails();
-        System.out.println(barcodedProduct.productName);
-        System.out.println(barcodedProduct.price);
-        System.out.println(barcodedProduct.colour);
-        System.out.println(barcodedProduct.clothingSize);
+        System.out.println(barcodedProduct.getProductName());
+        System.out.println(barcodedProduct.getPrice());
+        System.out.println(barcodedProduct.getColour());
+        System.out.println(barcodedProduct.getClothingSize());
+        System.out.println(barcodedProduct.getShoeSize());
     }
 }
 
