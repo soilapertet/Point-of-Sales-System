@@ -28,42 +28,41 @@ public class BarcodedProduct {
 
         // Initialise and get the "inventory" collection
         inventoryDB.initialiseInventoryCollection();
+
+        // Set the product details base on the provided upc
+        setProductDetails();
     }
 
-    // Set product details if the scanned barcode is in the inventory database
-    public void setProductDetails() {
+    // Set product details if the scanned barcode
+    private void setProductDetails() {
 
         boolean isProductInDB = inventoryDB.isProductUPCInDB(productUPC);
         Document matchedProduct;
 
-        if(isProductInDB) {
+        // Get the matched product
+        matchedProduct = inventoryDB.getMatchingProduct();
 
-            // Get the matched product
-            matchedProduct = inventoryDB.getMatchingProduct();
+        // Set the name, price and category of the product
+        this.productName = matchedProduct.getString("abbreviation");
+        this.productCategory = matchedProduct.getString("category");
+        this.productID = matchedProduct.getInteger("product_id");
+        this.price = matchedProduct.getDouble("price");
 
-            // Set the name, price and category of the product
-            this.productName = matchedProduct.getString("abbreviation");
-            this.productCategory = matchedProduct.getString("category");
-            this.productID = matchedProduct.getInteger("product_id");
-            this.price = matchedProduct.getDouble("price");
+        // Get the product variants
+        List<Document> productVariants = (List<Document>) matchedProduct.get("variants");
 
-            // Get the product variants
-            List<Document> productVariants = (List<Document>) matchedProduct.get("variants");
-
-            // Loop through the variants and find the variants matching the provided upc
-            for(Document productVariant : productVariants) {
-                if(productVariant.get("upc").equals(productUPC)) {
-                    this.colour = productVariant.getString("colour");
-                    if(productCategory.equals("Softgoods")) {
-                        this.clothingSize = productVariant.getString("size");
-                    } else if(productCategory.equals("Footwear")) {
-                        this.shoeSize = productVariant.getDouble("size");
-                    }
+        // Loop through the variants and find the variants matching the provided upc
+        for(Document productVariant : productVariants) {
+            if(productVariant.get("upc").equals(productUPC)) {
+                this.colour = productVariant.getString("colour");
+                if(productCategory.equals("Softgoods")) {
+                    this.clothingSize = productVariant.getString("size");
+                } else if(productCategory.equals("Footwear")) {
+                    this.shoeSize = productVariant.getDouble("size");
                 }
+            }
           }
-        } else {
-            System.err.println("Product could not be found in database");
-        }
+
     }
 
     // Define the getter methods
@@ -76,16 +75,6 @@ public class BarcodedProduct {
     public String getClothingSize() { return clothingSize; }
     public double getShoeSize() { return shoeSize; }
 
-    public static void main(String[] args) {
-        long upc = 8888001215225L;
-        BarcodedProduct barcodedProduct = new BarcodedProduct(upc);
-        barcodedProduct.setProductDetails();
-        System.out.println(barcodedProduct.getProductName());
-        System.out.println(barcodedProduct.getPrice());
-        System.out.println(barcodedProduct.getColour());
-        System.out.println(barcodedProduct.getClothingSize());
-        System.out.println(barcodedProduct.getShoeSize());
-    }
 }
 
 

@@ -40,12 +40,23 @@ public class BarcodeScanner {
 
     public static void main(String[] args) {
         BarcodeScanner barcodeScanner = new BarcodeScanner();
+        BarcodedProduct barcodedProduct;
 
         // 1. Get the scanned upc
         barcodeScanner.scanBarcodeProduct();
-        System.out.println(barcodeScanner.getScannedUPC());
 
-        // 2. Check if scanned UPC is in the database
-        System.out.println(barcodeScanner.isScannedUPCInDB());
+        // 2a. Check if scanned UPC is in the database
+        // 2b. If in database, create a new Barcode product
+        // 2c. Else, print error message
+        if(barcodeScanner.isScannedUPCInDB()) {
+           barcodedProduct = new BarcodedProduct(barcodeScanner.getScannedUPC());
+            System.out.println(barcodedProduct.getProductName());
+            System.out.println(barcodedProduct.getPrice());
+            System.out.println(barcodedProduct.getColour());
+            System.out.println(barcodedProduct.getClothingSize());
+            System.out.println(barcodedProduct.getShoeSize());
+        } else {
+            System.err.println("Scanned UPC could not be found in the inventory database");
+        }
     }
 }
