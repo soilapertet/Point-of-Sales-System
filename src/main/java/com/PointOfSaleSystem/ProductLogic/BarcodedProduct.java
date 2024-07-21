@@ -55,6 +55,7 @@ public class BarcodedProduct {
         for(Document productVariant : productVariants) {
             if(productVariant.get("upc").equals(productUPC)) {
                 this.colour = productVariant.getString("colour");
+                this.quantity = productVariant.getInteger("stock_quantity");
                 if(productCategory.equals("Softgoods")) {
                     this.clothingSize = productVariant.getString("size");
                 } else if(productCategory.equals("Footwear")) {
