@@ -14,7 +14,7 @@ public class BarcodedProduct {
     private int productID;
     private String productCategory;
     private double price;
-    private int quantity;
+    private int stockQuantity;
     private double shoeSize;
     private String clothingSize;
     private String colour;
@@ -55,7 +55,7 @@ public class BarcodedProduct {
         for(Document productVariant : productVariants) {
             if(productVariant.get("upc").equals(productUPC)) {
                 this.colour = productVariant.getString("colour");
-                this.quantity = productVariant.getInteger("stock_quantity");
+                this.stockQuantity = productVariant.getInteger("stock_quantity");
                 if(productCategory.equals("Softgoods")) {
                     this.clothingSize = productVariant.getString("size");
                 } else if(productCategory.equals("Footwear")) {
@@ -75,6 +75,7 @@ public class BarcodedProduct {
     public String getColour() { return colour; }
     public String getClothingSize() { return clothingSize; }
     public double getShoeSize() { return shoeSize; }
+    public int getStockQuantity() { return stockQuantity; }
 
 }
 
