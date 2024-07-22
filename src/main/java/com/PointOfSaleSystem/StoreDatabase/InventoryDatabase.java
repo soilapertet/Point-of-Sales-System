@@ -67,7 +67,7 @@ public class InventoryDatabase extends Database {
         Bson filter = Filters.eq("product_id", sku);
 
         // Find document with matching sku
-        Document matchingProduct = inventoryCollection.find(filter).first();
+        matchingProduct = inventoryCollection.find(filter).first();
 
         // Check if matchingProduct exists or is null
         return matchingProduct != null;
@@ -87,5 +87,6 @@ public class InventoryDatabase extends Database {
 
         int sku = 25828179;
         System.out.println(inventoryDB.isProductSKUInDB(sku));
+        System.out.println(inventoryDB.getMatchingProduct());
     }
 }
