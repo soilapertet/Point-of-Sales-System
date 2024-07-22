@@ -61,10 +61,10 @@ public class InventoryDatabase extends Database {
     }
 
     // Chec if the provided sku is in the database
-    public boolean isProductSKUInDB(int sku) {
+    public boolean isProductIDInDB(int productID) {
 
         // Create a filter using the provided sku
-        Bson filter = Filters.eq("product_id", sku);
+        Bson filter = Filters.eq("product_id", productID);
 
         // Find document with matching sku
         matchingProduct = inventoryCollection.find(filter).first();
@@ -72,6 +72,7 @@ public class InventoryDatabase extends Database {
         // Check if matchingProduct exists or is null
         return matchingProduct != null;
     }
+
     // Define getter methods
     public Document getMatchingProduct() {
         return matchingProduct;
@@ -86,7 +87,7 @@ public class InventoryDatabase extends Database {
         System.out.println(inventoryDB.getMatchingProduct());
 
         int sku = 25828179;
-        System.out.println(inventoryDB.isProductSKUInDB(sku));
+        System.out.println(inventoryDB.isProductIDInDB(sku));
         System.out.println(inventoryDB.getMatchingProduct());
     }
 }

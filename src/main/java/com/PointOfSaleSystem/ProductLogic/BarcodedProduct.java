@@ -23,29 +23,45 @@ public class BarcodedProduct {
     public BarcodedProduct(long productUPC) {
         this.productUPC = productUPC;
 
-        // Get instance of the inventory database
-        inventoryDB = InventoryDatabase.getInstance();
-
-        // Initialise and get the "inventory" collection
-        inventoryDB.initialiseInventoryCollection();
+        // Initialise database and collection for product inventory
+        accessInventoryDatabaseAndCollection();
 
         // Set the product details base on the provided upc
         setProductDetails();
     }
 
+    public BarcodedProduct(int productID, String colour, String clothingSize) {
+        this.productID = productID;
+        this.colour = colour;
+        this.clothingSize = clothingSize;
+
+        // Initialise database and collection for product inventory
+        accessInventoryDatabaseAndCollection();
+
+        // Set the product details base on the provided productID
+        setProductDetails();
+    }
+
+    // Get the inventory database and collection
+    private void accessInventoryDatabaseAndCollection() {
+
+        // Get instance of the inventory database
+        inventoryDB = InventoryDatabase.getInstance();
+
+        // Initialise and get the "inventory" collection
+        inventoryDB.initialiseInventoryCollection();
+    }
+
     // Set product details if the scanned barcode
     private void setProductDetails() {
 
-        boolean isProductInDB = inventoryDB.isProductUPCInDB(productUPC);
-        Document matchedProduct;
-
         // Get the matched product
-        matchedProduct = inventoryDB.getMatchingProduct();
+        inventoryDB.isProductIDInDB(productID);
+        Document matchedProduct = inventoryDB.getMatchingProduct();
 
         // Set the name, price and category of the product
         this.productName = matchedProduct.getString("abbreviation");
         this.productCategory = matchedProduct.getString("category");
-        this.productID = matchedProduct.getInteger("product_id");
         this.price = matchedProduct.getDouble("price");
 
         // Get the product variants
@@ -53,13 +69,29 @@ public class BarcodedProduct {
 
         // Loop through the variants and find the variants matching the provided upc
         for(Document productVariant : productVariants) {
-            if(productVariant.get("upc").equals(productUPC)) {
-                this.colour = productVariant.getString("colour");
-                this.stockQuantity = productVariant.getInteger("stock_quantity");
-                if(productCategory.equals("Softgoods")) {
-                    this.clothingSize = productVariant.getString("size");
-                } else if(productCategory.equals("Footwear")) {
-                    this.shoeSize = productVariant.getDouble("size");
+
+            // Enter if-block if productID has not been initialised
+            if(productID == 0) {
+                if(productVariant.get("upc").equals(productUPC)) {
+
+                    this.productID = matchedProduct.getInteger("product_id");
+                    this.colour = productVariant.getString("colour");
+                    this.stockQuantity = productVariant.getInteger("stock_quantity");
+
+                    if(productCategory.equals("Softgoods")) {
+                        this.clothingSize = productVariant.getString("size");
+                    } else if(productCategory.equals("Footwear")) {
+                        this.shoeSize = productVariant.getDouble("size");
+                    }
+
+                }
+            }
+
+            // Enter else-block if productID has been initialised
+            else {
+                if(productVariant.get("colour").equals(colour) && productVariant.get("size").equals(clothingSize)) {
+                    this.productUPC = productVariant.getLong("upc");
+                    this.stockQuantity = productVariant.getInteger("stock_quantity");
                 }
             }
           }
@@ -68,15 +100,28 @@ public class BarcodedProduct {
 
     // Define the getter methods
     public long getProductUPC() { return productUPC; }
+    public int getProductID() { return productID; }
     public String getProductName() { return productName; }
     public String getProductCategory() { return productCategory; }
-    public int getProductID() { return productID; }
     public double getPrice() { return price; }
     public String getColour() { return colour; }
     public String getClothingSize() { return clothingSize; }
     public double getShoeSize() { return shoeSize; }
     public int getStockQuantity() { return stockQuantity; }
 
+    public static void main(String[] args) {
+
+        BarcodedProduct barcodedProduct = new BarcodedProduct(25828179, "Birch White", "M");
+        System.out.println(barcodedProduct.getProductID());
+        System.out.println(barcodedProduct.getProductName());
+        System.out.println(barcodedProduct.getProductUPC());
+        System.out.println(barcodedProduct.getProductCategory());
+        System.out.println(barcodedProduct.getPrice());
+        System.out.println(barcodedProduct.getColour());
+        System.out.println(barcodedProduct.getShoeSize());
+        System.out.println(barcodedProduct.getClothingSize());
+        System.out.println(barcodedProduct.getStockQuantity());
+    }
 }
 
 
