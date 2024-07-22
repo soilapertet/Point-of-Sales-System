@@ -11,17 +11,17 @@ public class ScanProductsController {
 
     // Define the instance variables
     private InventoryDatabase inventoryDB;
-    private List<BarcodedProduct> scannedProducts;
-    private BarcodedProduct scannedProduct;
-    private double totalPrice;
-    private double subtotalPrice;
     private long scannedUPC;
+    private List<BarcodedProduct> scannedBarcodedProducts;
+    private BarcodedProduct barcodedProduct;
+    private double subtotalPrice;
+    private double totalPrice;
 
     // Define the class constructor
     public ScanProductsController() {
         inventoryDB = InventoryDatabase.getInstance();
         inventoryDB.initialiseInventoryCollection();
-        this.scannedProducts = new ArrayList<>();
+        this.scannedBarcodedProducts = new ArrayList<>();
     }
 
     // Scan the upc of the product
@@ -33,8 +33,8 @@ public class ScanProductsController {
 
     // Create an instance of the scanned product and add it to the "cart" list
     private void addBarcodedProducts() {
-        BarcodedProduct barcodedProduct = new BarcodedProduct(this.scannedUPC);
-        this.scannedProducts.add(barcodedProduct);
+        barcodedProduct = new BarcodedProduct(this.scannedUPC);
+        this.scannedBarcodedProducts.add(barcodedProduct);
 
         // Testing purposes
         System.out.println(barcodedProduct.getProductName());
@@ -44,17 +44,23 @@ public class ScanProductsController {
         System.out.println(barcodedProduct.getShoeSize());
     }
 
+    private void updateSubtotalPrice() {
+        this.subtotalPrice += barcodedProduct.getPrice();
+        System.out.println("Current subtotal: $ " + subtotalPrice);
+    }
+
     // Main method which deals with scanning products
     public void scanBarcodeProduct() {
 
-        // 1. Scan the upc on the product
-        scanUPC();
+//        // 1. Scan the upc on the product
+//        scanUPC();
 
         // 2. Check if upc is in database;
         // a. If yes, add product to scannedProducts arraylist
         // b. Else, display error message
         if(inventoryDB.isProductUPCInDB(scannedUPC)) {
             addBarcodedProducts();
+            updateSubtotalPrice();
         } else {
             System.err.println("Scanned upc cannot be found in the inventory database.");
         }
@@ -62,10 +68,22 @@ public class ScanProductsController {
 
     // Define getter method
     public long getScannedUPC() { return scannedUPC; }
-    public List<BarcodedProduct> getScannedProducts() { return  scannedProducts; }
+    public List<BarcodedProduct> getScannedProducts() { return  scannedBarcodedProducts; }
+    public double getSubtotalPrice() { return subtotalPrice; }
 
     public static void main(String[] args) {
         ScanProductsController scanProductsController = new ScanProductsController();
+
+
+        scanProductsController.scanUPC();
         scanProductsController.scanBarcodeProduct();
+
+        scanProductsController.scanUPC();
+        scanProductsController.scanBarcodeProduct();
+
+        scanProductsController.scanUPC();
+        scanProductsController.scanBarcodeProduct();
+
+        System.out.println(scanProductsController.getScannedProducts());
     }
 }
