@@ -12,9 +12,12 @@ public class ScanProductsController {
 
     // Define the instance variables
     private InventoryDatabase inventoryDB;
-    private long scannedUPC;
     private List<BarcodedProduct> scannedBarcodedProducts;
     private BarcodedProduct barcodedProduct;
+    private long scannedUPC;
+    private int scannedProductID;
+    private String inputColour;
+    private String inputSize;
     private double subtotalPrice;
     private double totalPrice;
     private final double GST;
@@ -32,15 +35,29 @@ public class ScanProductsController {
     }
 
     // Scan the upc of the product
-    private void scanUPC() {
+    public void scanProduct() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Scan item here: ");
-        this.scannedUPC = scanner.nextLong();
+
+        if(scanner.hasNextInt()) {
+            this.scannedProductID = scanner.nextInt();
+        } else if(scanner.hasNextLong()) {
+            this.scannedUPC = scanner.nextLong();
+        }
+
+        System.out.println("Product UPC: " + scannedUPC);
+        System.out.println("Product ID: " + scannedProductID);
     }
 
     // Create an instance of the scanned product and add it to the "cart" list
     private void addBarcodedProducts() {
-        barcodedProduct = new BarcodedProduct(this.scannedUPC);
+
+        if(scannedUPC != 0) {
+            barcodedProduct = new BarcodedProduct(this.scannedUPC);
+        } else {
+            barcodedProduct = new BarcodedProduct(this.scannedProductID, this.inputColour, this.inputSize);
+        }
+
         this.scannedBarcodedProducts.add(barcodedProduct);
 
         // Testing purposes
@@ -92,14 +109,6 @@ public class ScanProductsController {
 
     public static void main(String[] args) {
         ScanProductsController scanProductsController = new ScanProductsController();
-
-        scanProductsController.scanUPC();
-        scanProductsController.scanBarcodeProduct();
-
-        scanProductsController.scanUPC();
-        scanProductsController.scanBarcodeProduct();
-
-        scanProductsController.scanUPC();
-        scanProductsController.scanBarcodeProduct();
+        scanProductsController.scanProduct();
     }
 }

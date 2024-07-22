@@ -109,19 +109,6 @@ public class BarcodedProduct {
     public double getShoeSize() { return shoeSize; }
     public int getStockQuantity() { return stockQuantity; }
 
-    public static void main(String[] args) {
-
-        BarcodedProduct barcodedProduct = new BarcodedProduct(25828179, "Birch White", "M");
-        System.out.println(barcodedProduct.getProductID());
-        System.out.println(barcodedProduct.getProductName());
-        System.out.println(barcodedProduct.getProductUPC());
-        System.out.println(barcodedProduct.getProductCategory());
-        System.out.println(barcodedProduct.getPrice());
-        System.out.println(barcodedProduct.getColour());
-        System.out.println(barcodedProduct.getShoeSize());
-        System.out.println(barcodedProduct.getClothingSize());
-        System.out.println(barcodedProduct.getStockQuantity());
-    }
 }
 
 
