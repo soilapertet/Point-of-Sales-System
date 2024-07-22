@@ -2,7 +2,9 @@ package com.PointOfSaleSystem.StoreDatabase;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import java.util.List;
 
@@ -58,6 +60,18 @@ public class InventoryDatabase extends Database {
         return matchingProduct != null;
     }
 
+    // Chec if the provided sku is in the database
+    public boolean isProductSKUInDB(int sku) {
+
+        // Create a filter using the provided sku
+        Bson filter = Filters.eq("product_id", sku);
+
+        // Find document with matching sku
+        Document matchingProduct = inventoryCollection.find(filter).first();
+
+        // Check if matchingProduct exists or is null
+        return matchingProduct != null;
+    }
     // Define getter methods
     public Document getMatchingProduct() {
         return matchingProduct;
@@ -66,9 +80,12 @@ public class InventoryDatabase extends Database {
     public static void main(String[] args) {
         InventoryDatabase inventoryDB = InventoryDatabase.getInstance();
         inventoryDB.initialiseInventoryCollection();
-//        long upc = 4006381333932L;
+
         long upc = 8901030726912L;
         System.out.println(inventoryDB.isProductUPCInDB(upc));
         System.out.println(inventoryDB.getMatchingProduct());
+
+        int sku = 25828179;
+        System.out.println(inventoryDB.isProductSKUInDB(sku));
     }
 }
