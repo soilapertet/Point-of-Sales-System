@@ -88,6 +88,7 @@ public class ScanProductsController {
     public long getScannedUPC() { return scannedUPC; }
     public List<BarcodedProduct> getScannedProducts() { return  scannedBarcodedProducts; }
     public double getSubtotalPrice() { return subtotalPrice; }
+    public double getTotalPrice() { return totalPrice; }
 
     public static void main(String[] args) {
         ScanProductsController scanProductsController = new ScanProductsController();
