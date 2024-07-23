@@ -58,6 +58,8 @@ public class ScanProductsController {
         this.scannedBarcodedProducts.add(barcodedProduct);
 
         // Testing purposes
+        System.out.println(barcodedProduct.getProductUPC());
+        System.out.println(barcodedProduct.getProductID());
         System.out.println(barcodedProduct.getProductName());
         System.out.println(barcodedProduct.getPrice());
         System.out.println(barcodedProduct.getColour());
@@ -79,6 +81,8 @@ public class ScanProductsController {
         this.scannedBarcodedProducts.add(barcodedProduct);
 
         // Testing purposes
+        System.out.println(barcodedProduct.getProductUPC());
+        System.out.println(barcodedProduct.getProductID());
         System.out.println(barcodedProduct.getProductName());
         System.out.println(barcodedProduct.getPrice());
         System.out.println(barcodedProduct.getColour());
@@ -89,6 +93,7 @@ public class ScanProductsController {
     // Update the subtotal price while scanning products
     private void updateSubtotalPrice() {
         this.subtotalPrice += barcodedProduct.getPrice();
+        this.subtotalPrice = Double.parseDouble(DECIMALFORMAT.format(subtotalPrice));
 
         // Testing purposes
         System.out.println("Current subtotal: $ " + this.subtotalPrice);
@@ -107,31 +112,37 @@ public class ScanProductsController {
         // 1. Scan the upc on the product
         // scanUPC();
 
-        // 2a. Check if input is the product upc
-        //  2b. If yes, check if the product upc is in the database
+
         //      2c. If yes, create an instance of the barcoded product using its upc
         //      2d. If no, display error message
         // 2e. Check if input is the product id
         //  2f. If yes, check if the product id is in the database
         //      2g. If yes, create an instance of the barcoded product using its product id
         //      2h. If no, display error message
+        // Check if input is the product upc
         if(scannedUPC != 0) {
+            // Check if the product upc is in the database
             if(inventoryDB.isProductUPCInDB(scannedUPC)) {
+                // Create an instance of a barcoded product using the upc
                 addBarcodedProductsViaUPC();
-                updateSubtotalPrice();
-                calculateTotalPrice();
             } else {
+                // Display error message
                 System.out.println("Scanned UPC cannot be found in the inventory database");
             }
-        } else if(scannedProductID != 0) {
+        }
+        // Check if the input is the product id
+        else if(scannedProductID != 0) {
             if(inventoryDB.isProductIDInDB(scannedProductID)) {
                 addBarcodedProductsViaProductID();
-                updateSubtotalPrice();
-                calculateTotalPrice();
             } else {
+                // Display error message
                 System.out.println("Scanned Product ID cannot be found in the inventory database");
             }
         }
+
+        // Update subtotal price and total price of scanned products
+        updateSubtotalPrice();
+        calculateTotalPrice();
     }
 
     // Get the colour of the scanned product
