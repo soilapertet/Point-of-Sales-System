@@ -74,9 +74,9 @@ public class InventoryDatabase extends Database {
     }
 
     // Define getter methods
-    public Document getMatchingProduct() {
-        return matchingProduct;
-    }
+    public Document getMatchingProduct() { return matchingProduct; }
+
+    public MongoCollection<Document> getInventoryCollection() { return inventoryCollection; }
 
     public static void main(String[] args) {
         InventoryDatabase inventoryDB = InventoryDatabase.getInstance();

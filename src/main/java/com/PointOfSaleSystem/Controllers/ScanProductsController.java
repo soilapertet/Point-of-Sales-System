@@ -106,6 +106,9 @@ public class ScanProductsController {
         System.out.println("Total amount: $" + this.totalPrice);
     }
 
+    // Update the stock quantity once we have scanned the product
+
+
     // Main method which deals with scanning products
     public void scanBarcodeProduct() {
 
