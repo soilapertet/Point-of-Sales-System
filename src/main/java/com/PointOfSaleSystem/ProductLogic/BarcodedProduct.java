@@ -56,7 +56,6 @@ public class BarcodedProduct {
     private void setProductDetails() {
 
         // Get the matched product
-        inventoryDB.isProductIDInDB(productID);
         Document matchedProduct = inventoryDB.getMatchingProduct();
 
         // Set the name, price and category of the product

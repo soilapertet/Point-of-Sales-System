@@ -16,8 +16,9 @@ public class ScanProductsController {
     private BarcodedProduct barcodedProduct;
     private long scannedUPC;
     private int scannedProductID;
-    private String inputColour;
-    private String inputSize;
+    private String inputProductColour;
+    private String inputClothingSize;
+    private int inputShoeSize;
     private double subtotalPrice;
     private double totalPrice;
     private final double GST;
@@ -41,7 +42,9 @@ public class ScanProductsController {
 
         if(scanner.hasNextInt()) {
             this.scannedProductID = scanner.nextInt();
+            this.scannedUPC = 0;
         } else if(scanner.hasNextLong()) {
+            this.scannedProductID = 0;
             this.scannedUPC = scanner.nextLong();
         }
 
@@ -50,12 +53,27 @@ public class ScanProductsController {
     }
 
     // Create an instance of the scanned product and add it to the "cart" list
-    private void addBarcodedProducts() {
+    private void addBarcodedProductsViaUPC() {
+        barcodedProduct = new BarcodedProduct(this.scannedUPC);
+        this.scannedBarcodedProducts.add(barcodedProduct);
 
-        if(scannedUPC != 0) {
-            barcodedProduct = new BarcodedProduct(this.scannedUPC);
-        } else {
-            barcodedProduct = new BarcodedProduct(this.scannedProductID, this.inputColour, this.inputSize);
+        // Testing purposes
+        System.out.println(barcodedProduct.getProductName());
+        System.out.println(barcodedProduct.getPrice());
+        System.out.println(barcodedProduct.getColour());
+        System.out.println(barcodedProduct.getClothingSize());
+        System.out.println(barcodedProduct.getShoeSize());
+    }
+
+    private void addBarcodedProductsViaProductID() {
+
+        getInputProductColour();;
+        getInputProductSize();
+
+        if(inventoryDB.getMatchingProduct().get("category").equals("Softgoods")) {
+            barcodedProduct = new BarcodedProduct(this.scannedProductID, this.inputProductColour, this.inputClothingSize);
+        } else if(inventoryDB.getMatchingProduct().get("category").equals("Footwear")) {
+            // barcodedProduct = new BarcodedProduct(this.scannedProductID, this.inputProductColour, this.inputShoeSize);
         }
 
         this.scannedBarcodedProducts.add(barcodedProduct);
@@ -89,15 +107,49 @@ public class ScanProductsController {
         // 1. Scan the upc on the product
         // scanUPC();
 
-        // 2. Check if upc is in database;
-        // a. If yes, add product to scannedProducts arraylist
-        // b. Else, display error message
-        if(inventoryDB.isProductUPCInDB(scannedUPC)) {
-            addBarcodedProducts();
-            updateSubtotalPrice();
-            calculateTotalPrice();
+        // 2a. Check if input is the product upc
+        //  2b. If yes, check if the product upc is in the database
+        //      2c. If yes, create an instance of the barcoded product using its upc
+        //      2d. If no, display error message
+        // 2e. Check if input is the product id
+        //  2f. If yes, check if the product id is in the database
+        //      2g. If yes, create an instance of the barcoded product using its product id
+        //      2h. If no, display error message
+        if(scannedUPC != 0) {
+            if(inventoryDB.isProductUPCInDB(scannedUPC)) {
+                addBarcodedProductsViaUPC();
+                updateSubtotalPrice();
+                calculateTotalPrice();
+            } else {
+                System.out.println("Scanned UPC cannot be found in the inventory database");
+            }
+        } else if(scannedProductID != 0) {
+            if(inventoryDB.isProductIDInDB(scannedProductID)) {
+                addBarcodedProductsViaProductID();
+                updateSubtotalPrice();
+                calculateTotalPrice();
+            } else {
+                System.out.println("Scanned Product ID cannot be found in the inventory database");
+            }
+        }
+    }
+
+    // Get the colour of the scanned product
+    private void getInputProductColour() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter product colour: ");
+        this.inputProductColour =  scanner.nextLine();
+    }
+
+    // Get the colour of the scanned product
+    private void getInputProductSize() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter product size: ");
+
+        if(scanner.hasNextInt()) {
+            this.inputShoeSize = scanner.nextInt();
         } else {
-            System.err.println("Scanned upc cannot be found in the inventory database.");
+            this.inputClothingSize = scanner.next();
         }
     }
 
@@ -109,6 +161,12 @@ public class ScanProductsController {
 
     public static void main(String[] args) {
         ScanProductsController scanProductsController = new ScanProductsController();
+
         scanProductsController.scanProduct();
+        scanProductsController.scanBarcodeProduct();
+
+        scanProductsController.scanProduct();
+        scanProductsController.scanBarcodeProduct();
+
     }
 }
