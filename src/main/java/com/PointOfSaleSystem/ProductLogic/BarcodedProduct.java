@@ -65,8 +65,6 @@ public class BarcodedProduct {
     // Set product details if the scanned barcode
     private void setProductDetails() {
 
-        inventoryDB.isProductUPCInDB(productUPC);
-
         // Get the matched product
         Document matchedProduct = inventoryDB.getMatchingProduct();
 
@@ -151,12 +149,6 @@ public class BarcodedProduct {
     public String getClothingSize() { return clothingSize; }
     public double getShoeSize() { return shoeSize; }
     public int getStockQuantity() { return stockQuantity; }
-
-    public static void main(String[] args) {
-        long upc = 4006381333931L;
-        BarcodedProduct barcodedProduct = new BarcodedProduct(upc);
-
-    }
 }
 
 
