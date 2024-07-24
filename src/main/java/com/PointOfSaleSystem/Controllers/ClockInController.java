@@ -1,18 +1,22 @@
 package com.PointOfSaleSystem.Controllers;
 
+import com.PointOfSaleSystem.CentralPOSFacade.CentralPointOfSalesFacade;
 import com.PointOfSaleSystem.StoreDatabase.EmployeeDatabase;
 import com.mongodb.client.model.Filters;
 import org.bson.conversions.Bson;
 
-public class ClockInController {
+public class ClockInController  {
 
-    EmployeeDatabase employeeDB;
+    private CentralPointOfSalesFacade centralPOSFacade;
+    private EmployeeDatabase employeeDB;
     private boolean clockedIn;
     private int cashEmployeeID;
     private String clockInPassword;
     private boolean clockedInStatus;
 
     public ClockInController() {
+
+        centralPOSFacade = CentralPointOfSalesFacade.getCentralPOSFacade();
 
         // Connect to store database and initialise "employees" collection
         employeeDB = EmployeeDatabase.getInstance();
@@ -66,11 +70,5 @@ public class ClockInController {
 
     public boolean getClockedInStatus() {
         return clockedInStatus;
-    }
-
-
-    public static void main(String[] args) {
-        ClockInController cic = new ClockInController();
-        cic.clockInEmployee();
     }
 }
