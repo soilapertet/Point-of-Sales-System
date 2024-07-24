@@ -1,5 +1,6 @@
 package com.PointOfSaleSystem.Controllers;
 
+import com.PointOfSaleSystem.CentralPOSFacade.CentralPointOfSalesFacade;
 import com.PointOfSaleSystem.ProductLogic.BarcodedProduct;
 import com.PointOfSaleSystem.StoreDatabase.InventoryDatabase;
 
@@ -11,7 +12,8 @@ import java.util.Scanner;
 public class ScanProductsController {
 
     // Define the instance variables
-    private final InventoryDatabase inventoryDB;
+    private CentralPointOfSalesFacade centralPOSFacade;
+    private InventoryDatabase inventoryDB;
     private List<BarcodedProduct> scannedBarcodedProducts;
     private BarcodedProduct barcodedProduct;
     private long scannedUPC;
@@ -26,8 +28,13 @@ public class ScanProductsController {
 
     // Define the class constructor
     public ScanProductsController() {
+
+        centralPOSFacade = CentralPointOfSalesFacade.getCentralPOSFacade();
+
+        // Connect to store database and initialise "inventory" collection
         inventoryDB = InventoryDatabase.getInstance();
         inventoryDB.initialiseInventoryCollection();
+
         this.scannedBarcodedProducts = new ArrayList<>();
         this.subtotalPrice = 0.0;
         this.totalPrice = 0.0;

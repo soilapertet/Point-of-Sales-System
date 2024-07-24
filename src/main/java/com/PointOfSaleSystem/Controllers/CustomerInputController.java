@@ -1,5 +1,6 @@
 package com.PointOfSaleSystem.Controllers;
 
+import com.PointOfSaleSystem.CentralPOSFacade.CentralPointOfSalesFacade;
 import com.PointOfSaleSystem.StoreDatabase.CustomerDatabase;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
@@ -12,9 +13,10 @@ import org.bson.types.ObjectId;
 
 import java.util.Scanner;
 
-public class CustomerInputController {
+public class CustomerInputController  {
 
     // Define instance variables
+    private CentralPointOfSalesFacade centralPOSFacade;
     private CustomerDatabase customerDB;
     private ObjectId uniqueID;
     private String customerFirstName;
@@ -30,6 +32,10 @@ public class CustomerInputController {
 
     // Define class constructor
     public CustomerInputController() {
+
+        centralPOSFacade = CentralPointOfSalesFacade.getCentralPOSFacade();
+
+        // Connect to store database and initialise "customer_account" collection
         customerDB = CustomerDatabase.getInstance();
         customerDB.initialiseCustomersCollection();
     }
