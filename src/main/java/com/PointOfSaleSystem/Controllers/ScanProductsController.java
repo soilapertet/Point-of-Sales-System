@@ -115,13 +115,6 @@ public class ScanProductsController {
         // 1. Scan the upc on the product
         // scanUPC();
 
-
-        //      2c. If yes, create an instance of the barcoded product using its upc
-        //      2d. If no, display error message
-        // 2e. Check if input is the product id
-        //  2f. If yes, check if the product id is in the database
-        //      2g. If yes, create an instance of the barcoded product using its product id
-        //      2h. If no, display error message
         // Check if input is the product upc
         if(scannedUPC != 0) {
             // Check if the product upc is in the database
@@ -181,6 +174,8 @@ public class ScanProductsController {
 
         scanProductsController.scanProduct();
         scanProductsController.scanBarcodeProduct();
+
+        System.out.println(scanProductsController.getScannedProducts());
 
     }
 }
