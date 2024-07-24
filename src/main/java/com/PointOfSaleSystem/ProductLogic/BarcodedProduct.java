@@ -4,7 +4,6 @@ import com.PointOfSaleSystem.StoreDatabase.InventoryDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
-import com.mongodb.client.model.changestream.UpdateDescription;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -40,10 +39,25 @@ public class BarcodedProduct {
         setProductDetails();
     }
 
+    // Note: Possible bug when create an instance of BarcodedProduct
+    //       User may enter a colour or size that does not exist in the database
+    // Fix: Through GUI; only display appropriate colours and sizes associated with the product
     public BarcodedProduct(int productID, String colour, String clothingSize) {
         this.productID = productID;
         this.colour = colour;
         this.clothingSize = clothingSize;
+
+        // Initialise database and collection for product inventory
+        accessInventoryDatabaseAndCollection();
+
+        // Set the product details base on the provided productID
+        setProductDetails();
+    }
+
+    public BarcodedProduct(int productID, String colour, int shoeSize) {
+        this.productID = productID;
+        this.colour = colour;
+        this.shoeSize = shoeSize;
 
         // Initialise database and collection for product inventory
         accessInventoryDatabaseAndCollection();
@@ -99,13 +113,15 @@ public class BarcodedProduct {
 
             // Enter else-block if productID has been initialised
             else {
-                if(productVariant.get("colour").equals(colour) && productVariant.get("size").equals(clothingSize)) {
+                if(productVariant.get("colour").equals(colour) && (productVariant.get("size").equals(clothingSize)
+                || productVariant.get("size").equals(shoeSize))) {
                     this.productUPC = productVariant.getLong("upc");
                     this.stockQuantity = productVariant.getInteger("stock_quantity");
                 }
             }
         }
 
+        // Update stock quantity once we've scanned the item
         updateStockQuantity();
     }
 

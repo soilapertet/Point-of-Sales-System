@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class ScanProductsController {
 
     // Define the instance variables
-    private InventoryDatabase inventoryDB;
+    private final InventoryDatabase inventoryDB;
     private List<BarcodedProduct> scannedBarcodedProducts;
     private BarcodedProduct barcodedProduct;
     private long scannedUPC;
@@ -69,13 +69,13 @@ public class ScanProductsController {
 
     private void addBarcodedProductsViaProductID() {
 
-        getInputProductColour();;
+        getInputProductColour();
         getInputProductSize();
 
         if(inventoryDB.getMatchingProduct().get("category").equals("Softgoods")) {
             barcodedProduct = new BarcodedProduct(this.scannedProductID, this.inputProductColour, this.inputClothingSize);
         } else if(inventoryDB.getMatchingProduct().get("category").equals("Footwear")) {
-            // barcodedProduct = new BarcodedProduct(this.scannedProductID, this.inputProductColour, this.inputShoeSize);
+             barcodedProduct = new BarcodedProduct(this.scannedProductID, this.inputProductColour, this.inputShoeSize);
         }
 
         this.scannedBarcodedProducts.add(barcodedProduct);
