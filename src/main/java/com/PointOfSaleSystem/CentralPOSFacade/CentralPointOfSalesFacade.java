@@ -8,28 +8,29 @@ import com.PointOfSaleSystem.Controllers.ScanProductsController;
 public class CentralPointOfSalesFacade {
 
     // Define instance variables
-    private static CentralPointOfSalesFacade centralPOSFacade;
+    private CentralPointOfSalesFacade centralPOSFacade = null;
     private ClockInController clockInController;
     private CustomerInputController customerInputController;
     private EmployeeInputController employeeInputController;
     private ScanProductsController scanProductsController;
 
-    // Define the class constructors
+    // Call the private class and initialise the class controllers
+    public static CentralPointOfSalesFacade startSession() {
+        return new CentralPointOfSalesFacade();
+    }
+
+    // Class constructor will be used by child classes
+    public CentralPointOfSalesFacade(CentralPointOfSalesFacade centralPOSFacade) {
+        this.centralPOSFacade = centralPOSFacade;
+    }
+
     private CentralPointOfSalesFacade() {
-        clockInController = new ClockInController();
-        customerInputController = new CustomerInputController();
-        employeeInputController = new EmployeeInputController();
-        scanProductsController = new ScanProductsController();
+        clockInController = new ClockInController(this);
+//        customerInputController = new CustomerInputController();
+//        employeeInputController = new EmployeeInputController();
+//        scanProductsController = new ScanProductsController();
+        System.out.println("Inside class constructor for CentralPOSFacade");
     }
-
-    public static CentralPointOfSalesFacade getCentralPOSFacade() {
-        if(centralPOSFacade == null) {
-            centralPOSFacade = new CentralPointOfSalesFacade();
-        }
-
-        return centralPOSFacade;
-    }
-
 
     // Define getter methods
     public ClockInController getClockInController() { return clockInController; }

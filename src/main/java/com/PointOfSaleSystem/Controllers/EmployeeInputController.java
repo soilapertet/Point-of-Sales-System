@@ -20,8 +20,6 @@ public class EmployeeInputController {
     // Define class constructor
     public EmployeeInputController() {
 
-        centralPOSFacade = CentralPointOfSalesFacade.getCentralPOSFacade();
-
         // Connect to store database and initialise "employees" collection
         employeeDB = EmployeeDatabase.getInstance();
         employeeDB.initialiseEmployeesCollection();

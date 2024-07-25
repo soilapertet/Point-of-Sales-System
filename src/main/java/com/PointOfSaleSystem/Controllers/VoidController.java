@@ -8,15 +8,12 @@ import java.util.List;
 public class VoidController {
 
     // Define instance variables
-    private CentralPointOfSalesFacade centralPOSFacade;
     private long productUPCToVoid;
     private BarcodedProduct voidedProduct;
     private List<BarcodedProduct> scannedProducts;
 
     // Define the class constructor
-    public VoidController() {
-        centralPOSFacade = CentralPointOfSalesFacade.getCentralPOSFacade();
-    }
+    public VoidController() {}
 
     // Remove specified product from scanned products ("cart") using its upc
     public void voidItem(long upc) {
@@ -25,7 +22,7 @@ public class VoidController {
         this.productUPCToVoid = upc;
 
         // initialise the already scanned products
-        scannedProducts = centralPOSFacade.getScanProductsController().getScannedProducts();
+//        scannedProducts = centralPOSFacade.getScanProductsController().getScannedProducts();
 
         // loop through scanned products, look for and remove the product
         for(BarcodedProduct scannedProduct : scannedProducts) {

@@ -29,8 +29,6 @@ public class ScanProductsController {
     // Define the class constructor
     public ScanProductsController() {
 
-        centralPOSFacade = CentralPointOfSalesFacade.getCentralPOSFacade();
-
         // Connect to store database and initialise "inventory" collection
         inventoryDB = InventoryDatabase.getInstance();
         inventoryDB.initialiseInventoryCollection();
@@ -120,7 +118,7 @@ public class ScanProductsController {
     public void scanBarcodeProduct() {
 
         // 1. Scan the upc on the product
-        // scanUPC();
+         scanProduct();
 
         // Check if input is the product upc
         if(scannedUPC != 0) {
@@ -172,17 +170,4 @@ public class ScanProductsController {
     public List<BarcodedProduct> getScannedProducts() { return  scannedBarcodedProducts; }
     public double getSubtotalPrice() { return subtotalPrice; }
     public double getTotalPrice() { return totalPrice; }
-
-    public static void main(String[] args) {
-        ScanProductsController scanProductsController = new ScanProductsController();
-
-        scanProductsController.scanProduct();
-        scanProductsController.scanBarcodeProduct();
-
-        scanProductsController.scanProduct();
-        scanProductsController.scanBarcodeProduct();
-
-        System.out.println(scanProductsController.getScannedProducts());
-
-    }
 }

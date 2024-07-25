@@ -5,18 +5,17 @@ import com.PointOfSaleSystem.StoreDatabase.EmployeeDatabase;
 import com.mongodb.client.model.Filters;
 import org.bson.conversions.Bson;
 
-public class ClockInController  {
+public class ClockInController  extends CentralPointOfSalesFacade {
 
-    private CentralPointOfSalesFacade centralPOSFacade;
     private EmployeeDatabase employeeDB;
     private boolean clockedIn;
     private int cashEmployeeID;
     private String clockInPassword;
     private boolean clockedInStatus;
 
-    public ClockInController() {
+    public ClockInController(CentralPointOfSalesFacade facade) {
 
-        centralPOSFacade = CentralPointOfSalesFacade.getCentralPOSFacade();
+        super(facade);
 
         // Connect to store database and initialise "employees" collection
         employeeDB = EmployeeDatabase.getInstance();

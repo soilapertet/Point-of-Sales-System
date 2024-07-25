@@ -16,7 +16,6 @@ import java.util.Scanner;
 public class CustomerInputController  {
 
     // Define instance variables
-    private CentralPointOfSalesFacade centralPOSFacade;
     private CustomerDatabase customerDB;
     private ObjectId uniqueID;
     private String customerFirstName;
@@ -32,9 +31,6 @@ public class CustomerInputController  {
 
     // Define class constructor
     public CustomerInputController() {
-
-        centralPOSFacade = CentralPointOfSalesFacade.getCentralPOSFacade();
-
         // Connect to store database and initialise "customer_account" collection
         customerDB = CustomerDatabase.getInstance();
         customerDB.initialiseCustomersCollection();
