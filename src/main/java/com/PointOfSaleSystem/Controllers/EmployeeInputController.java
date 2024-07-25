@@ -9,7 +9,7 @@ import org.bson.conversions.Bson;
 
 import java.util.Scanner;
 
-public class EmployeeInputController {
+public class EmployeeInputController extends CentralPointOfSalesFacade {
 
     // Define instance variables
     private CentralPointOfSalesFacade centralPOSFacade;
@@ -18,7 +18,9 @@ public class EmployeeInputController {
     private EmployeeDatabase employeeDB;
 
     // Define class constructor
-    public EmployeeInputController() {
+    public EmployeeInputController(CentralPointOfSalesFacade facade) {
+
+        super(facade);
 
         // Connect to store database and initialise "employees" collection
         employeeDB = EmployeeDatabase.getInstance();

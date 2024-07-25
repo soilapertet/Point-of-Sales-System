@@ -26,9 +26,9 @@ public class CentralPointOfSalesFacade {
 
     private CentralPointOfSalesFacade() {
         clockInController = new ClockInController(this);
-//        customerInputController = new CustomerInputController();
-//        employeeInputController = new EmployeeInputController();
-//        scanProductsController = new ScanProductsController();
+        customerInputController = new CustomerInputController(this);
+        employeeInputController = new EmployeeInputController(this);
+        scanProductsController = new ScanProductsController(this);
         System.out.println("Inside class constructor for CentralPOSFacade");
     }
 
