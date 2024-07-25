@@ -4,6 +4,7 @@ import com.PointOfSaleSystem.Controllers.ClockInController;
 import com.PointOfSaleSystem.Controllers.CustomerInputController;
 import com.PointOfSaleSystem.Controllers.EmployeeInputController;
 import com.PointOfSaleSystem.Controllers.ScanProductsController;
+import com.PointOfSaleSystem.ProductLogic.BarcodedProductManagement;
 
 public class CentralPointOfSalesFacade {
 
@@ -13,6 +14,7 @@ public class CentralPointOfSalesFacade {
     private CustomerInputController customerInputController;
     private EmployeeInputController employeeInputController;
     private ScanProductsController scanProductsController;
+    private BarcodedProductManagement barcodedProductManagement;
 
     // Call the private class and initialise the class controllers
     public static CentralPointOfSalesFacade startSession() {
@@ -29,7 +31,7 @@ public class CentralPointOfSalesFacade {
         customerInputController = new CustomerInputController(this);
         employeeInputController = new EmployeeInputController(this);
         scanProductsController = new ScanProductsController(this);
-        System.out.println("Inside class constructor for CentralPOSFacade");
+        barcodedProductManagement = new BarcodedProductManagement(this);
     }
 
     // Define getter methods
@@ -38,4 +40,7 @@ public class CentralPointOfSalesFacade {
     public CustomerInputController getCustomerInputController() { return customerInputController; }
     public EmployeeInputController getEmployeeInputController() { return employeeInputController; }
     public ScanProductsController getScanProductsController() { return scanProductsController; }
+    public BarcodedProductManagement getBarcodedProductManagement() { return barcodedProductManagement; }
 }
+
+

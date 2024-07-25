@@ -27,6 +27,9 @@ public class BarcodedProduct {
     private String clothingSize;
     private String colour;
     private List<Document> productVariants;
+    private String salesAssociateID;
+    private boolean discountApplied;
+    private String lineComment;
 
     // Define the class constructor
     public BarcodedProduct(long productUPC) {
