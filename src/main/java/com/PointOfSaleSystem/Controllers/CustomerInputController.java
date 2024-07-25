@@ -13,7 +13,7 @@ import org.bson.types.ObjectId;
 
 import java.util.Scanner;
 
-public class CustomerInputController  {
+public class CustomerInputController extends CentralPointOfSalesFacade{
 
     // Define instance variables
     private CustomerDatabase customerDB;
@@ -30,7 +30,10 @@ public class CustomerInputController  {
     private long inputPhoneNumber;
 
     // Define class constructor
-    public CustomerInputController() {
+    public CustomerInputController(CentralPointOfSalesFacade facade) {
+
+        super(facade);
+
         // Connect to store database and initialise "customer_account" collection
         customerDB = CustomerDatabase.getInstance();
         customerDB.initialiseCustomersCollection();

@@ -5,7 +5,7 @@ import com.PointOfSaleSystem.ProductLogic.BarcodedProduct;
 
 import java.util.List;
 
-public class VoidController {
+public class VoidController extends CentralPointOfSalesFacade {
 
     // Define instance variables
     private long productUPCToVoid;
@@ -13,7 +13,9 @@ public class VoidController {
     private List<BarcodedProduct> scannedProducts;
 
     // Define the class constructor
-    public VoidController() {}
+    public VoidController(CentralPointOfSalesFacade facade) {
+        super(facade);
+    }
 
     // Remove specified product from scanned products ("cart") using its upc
     public void voidItem(long upc) {
@@ -22,15 +24,10 @@ public class VoidController {
         this.productUPCToVoid = upc;
 
         // initialise the already scanned products
-//        scannedProducts = centralPOSFacade.getScanProductsController().getScannedProducts();
+        scannedProducts = this.getCentralPOSFacade().getScanProductsController().getScannedProducts();
 
-        // loop through scanned products, look for and remove the product
-        for(BarcodedProduct scannedProduct : scannedProducts) {
-            if(productUPCToVoid == scannedProduct.getProductUPC()) {
-                this.voidedProduct = scannedProduct;
-                scannedProducts.remove(scannedProduct);
-            }
-        }
+        // remove barcoded product with matching upc
+        scannedProducts.removeIf(barcodedProduct -> upc == barcodedProduct.getProductUPC());
     }
 
     // Define getter methods

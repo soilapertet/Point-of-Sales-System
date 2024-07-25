@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ScanProductsController {
+public class ScanProductsController extends CentralPointOfSalesFacade{
 
     // Define the instance variables
     private CentralPointOfSalesFacade centralPOSFacade;
@@ -27,7 +27,9 @@ public class ScanProductsController {
     private final DecimalFormat DECIMALFORMAT;
 
     // Define the class constructor
-    public ScanProductsController() {
+    public ScanProductsController(CentralPointOfSalesFacade facade) {
+
+        super(facade);
 
         // Connect to store database and initialise "inventory" collection
         inventoryDB = InventoryDatabase.getInstance();
@@ -118,7 +120,7 @@ public class ScanProductsController {
     public void scanBarcodeProduct() {
 
         // 1. Scan the upc on the product
-         scanProduct();
+//        scanProduct();
 
         // Check if input is the product upc
         if(scannedUPC != 0) {
