@@ -26,7 +26,7 @@ public class VoidController extends CentralPointOfSalesFacade {
         // initialise the already scanned products
         scannedProducts = this.getCentralPOSFacade().getScanProductsController().getScannedProducts();
 
-        // remove barcoded product with matching upc
+        // remove barcoded product with matching upc (approach removes ConcurrentModificationException)
         scannedProducts.removeIf(barcodedProduct -> upc == barcodedProduct.getProductUPC());
     }
 
