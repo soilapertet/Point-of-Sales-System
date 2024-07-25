@@ -24,7 +24,7 @@ public class ClockInController  extends CentralPointOfSalesFacade {
 
     public void clockInEmployee() {
 
-        EmployeeInputController eic = new EmployeeInputController();
+        EmployeeInputController eic = this.getCentralPOSFacade().getEmployeeInputController();
         boolean isCashEmployee;
 
         // 1. Get employeeID

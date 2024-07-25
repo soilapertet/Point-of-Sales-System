@@ -6,5 +6,6 @@ public class Main {
     public static void main(String[] args) {
         CentralPointOfSalesFacade centralPOSFacade = CentralPointOfSalesFacade.startSession();
         centralPOSFacade.getClockInController().clockInEmployee();
+        centralPOSFacade.getCustomerInputController().promptForCustomerDetails();
     }
 }

@@ -33,6 +33,7 @@ public class CentralPointOfSalesFacade {
     }
 
     // Define getter methods
+    public CentralPointOfSalesFacade getCentralPOSFacade() { return centralPOSFacade; }
     public ClockInController getClockInController() { return clockInController; }
     public CustomerInputController getCustomerInputController() { return customerInputController; }
     public EmployeeInputController getEmployeeInputController() { return employeeInputController; }
