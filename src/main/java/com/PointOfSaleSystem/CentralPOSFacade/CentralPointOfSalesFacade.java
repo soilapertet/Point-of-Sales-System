@@ -29,7 +29,6 @@ public class CentralPointOfSalesFacade {
         customerInputController = new CustomerInputController(this);
         employeeInputController = new EmployeeInputController(this);
         scanProductsController = new ScanProductsController(this);
-        System.out.println("Inside class constructor for CentralPOSFacade");
     }
 
     // Define getter methods
