@@ -125,7 +125,7 @@ public class BarcodedProduct {
         }
 
         // Update stock quantity once we've scanned the item
-        updateStockQuantity();
+        // updateStockQuantity();
     }
 
     // Decrease the value of stock quantity once we create an instance of the barcoded product
@@ -168,6 +168,15 @@ public class BarcodedProduct {
     public String getClothingSize() { return clothingSize; }
     public double getShoeSize() { return shoeSize; }
     public int getStockQuantity() { return stockQuantity; }
+
+    // Define setter methods
+    public void setDiscountApplied(boolean discountApplied) {
+        this.discountApplied = discountApplied;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }
 
 

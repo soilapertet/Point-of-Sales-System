@@ -43,7 +43,7 @@ public class ScanProductsController extends CentralPointOfSalesFacade{
     }
 
     // Scan the upc of the product
-    public void scanProduct() {
+    private void scanProduct() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Scan item here: ");
 
