@@ -167,9 +167,14 @@ public class ScanProductsController extends CentralPointOfSalesFacade{
         }
     }
 
-    // Define getter method
+    // Define getter methods
     public long getScannedUPC() { return scannedUPC; }
     public List<BarcodedProduct> getScannedProducts() { return  scannedBarcodedProducts; }
     public double getSubtotalPrice() { return subtotalPrice; }
     public double getTotalPrice() { return totalPrice; }
+
+    // Define setter methods
+    public void setSubtotalPrice(double price) {
+        this.subtotalPrice = price;
+    }
 }

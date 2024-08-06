@@ -10,6 +10,9 @@ public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
     // Define instance variables
     private boolean discountApplied;
     private double discountedPrice;
+    private double originalProductPrice;
+    private double newSubtotalPrice;
+    private double newTotalPrice;
     private final DecimalFormat DECIMALFORMAT;
 
     // Define class constructor
@@ -26,19 +29,47 @@ public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
 
         for(BarcodedProduct product : scannedProducts) {
             if(product.getProductUPC() == upc) {
-                // 2. Get the current price of the product and apply the discount based on the percent provided
-                discountedPrice = product.getPrice() * ((100 - percent) / 100.0);
-                discountedPrice = Double.parseDouble(DECIMALFORMAT.format(discountedPrice));
-                discountApplied = true;
 
-                // 3. Update values of the product
-                product.setPrice(discountedPrice);
-                product.setDiscountApplied(discountApplied);
+                // 2. Set the original price of the product
+                originalProductPrice = product.getPrice();
 
-                System.out.println("Discount applied. New price: $ " + product.getProductID());
+                // 3. Get the current price of the product and apply the discount based on the percent provided
+                discountedPrice =  originalProductPrice * ((100 - percent) / 100.0);
+
+                updateProductDetails(discountedPrice, product);
+                updateSubtotalPrice();
+
+                System.out.println("Discount applied. New price: $ " + discountedPrice);
                 break;
             }
         }
+    }
+
+    // Update subtotal price after applying discount
+    private void updateSubtotalPrice() {
+
+        // Get the current subtotal price
+        double currentSubtotalPrice = this.getCentralPOSFacade().getScanProductsController().getSubtotalPrice();
+        System.out.println("Current subtotal price: $ " + currentSubtotalPrice);
+
+        // Update the subtotal price
+        newSubtotalPrice = (currentSubtotalPrice - originalProductPrice) + discountedPrice;
+        newSubtotalPrice = Double.parseDouble(DECIMALFORMAT.format(newSubtotalPrice));
+        this.getCentralPOSFacade().getScanProductsController().setSubtotalPrice(newSubtotalPrice);
+
+        System.out.println("New subtotal price: $ " + newSubtotalPrice);
+    }
+
+    // Update details of product
+    private void updateProductDetails(double price, BarcodedProduct product) {
+
+        // Update values of the product
+        this.discountedPrice = Double.parseDouble(DECIMALFORMAT.format(price));
+        this.discountApplied = true;
+
+        product.setPrice(discountedPrice);
+        product.setDiscountApplied(discountApplied);
+
     }
 
     // Define getter method
