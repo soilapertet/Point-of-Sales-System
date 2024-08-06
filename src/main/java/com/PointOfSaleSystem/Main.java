@@ -9,7 +9,9 @@ public class Main {
         centralPOSFacade.getScanProductsController().scanBarcodeProduct();
         centralPOSFacade.getScanProductsController().scanBarcodeProduct();
         centralPOSFacade.getScanProductsController().scanBarcodeProduct();
+        centralPOSFacade.getScanProductsController().scanBarcodeProduct();
 
         centralPOSFacade.getBarcodedProductManagement().applyDiscountByPercent(15, 36000291454L);
+        centralPOSFacade.getBarcodedProductManagement().applyDiscountByAmount(20, 5000112637922L);
     }
 }

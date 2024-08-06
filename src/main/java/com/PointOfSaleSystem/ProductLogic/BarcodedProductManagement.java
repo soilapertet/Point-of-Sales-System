@@ -45,6 +45,31 @@ public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
         }
     }
 
+    // Apply discount by amount
+    public void applyDiscountByAmount(int amount, long upc) {
+
+        // 1. Get the product associated with the provided upc
+        List<BarcodedProduct> scannedProducts = this.getCentralPOSFacade().getScanProductsController().getScannedProducts();
+
+        for(BarcodedProduct product : scannedProducts) {
+            if(product.getProductUPC() == upc) {
+
+                // 2. Set the original price of the product
+                originalProductPrice = product.getPrice();
+
+                // 3. Get the current price of the product and apply the discount based on the percent provided
+                discountedPrice =  originalProductPrice - amount;
+
+                // 4. Update product details and subtotal price
+                updateProductDetails(discountedPrice, product);
+                updateSubtotalPrice();
+
+                System.out.println("Discount applied. New price: $ " + discountedPrice);
+                break;
+            }
+        }
+    }
+
     // Update subtotal price after applying discount
     private void updateSubtotalPrice() {
 
