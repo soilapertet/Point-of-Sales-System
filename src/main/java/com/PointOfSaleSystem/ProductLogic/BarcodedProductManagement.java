@@ -60,8 +60,33 @@ public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
                 // 2. Set the original price of the product
                 originalProductPrice = product.getPrice();
 
-                // 3. Get the current price of the product and apply the discount based on the percent provided
+                // 3. Get the current price of the product and apply the discount based on the amount provided
                 discountedPrice =  originalProductPrice - amount;
+
+                // 4. Update product details, subtotal price and total price
+                updateProductDetails(discountedPrice, product);
+                updateSubtotalPrice();
+                updateTotalPrice();
+
+                System.out.println("Discount applied. New price: $ " + discountedPrice);
+                break;
+            }
+        }
+    }
+
+    // Override current price of product
+    public void overrideProductPrice(double newPrice, long upc) {
+        // 1. Get the product associated with the provided upc
+        List<BarcodedProduct> scannedProducts = this.getCentralPOSFacade().getScanProductsController().getScannedProducts();
+
+        for(BarcodedProduct product : scannedProducts) {
+            if(product.getProductUPC() == upc) {
+
+                // 2. Set the original price of the product
+                originalProductPrice = product.getPrice();
+
+                // 3. Get the current price of the product and set it to the new price provided
+                discountedPrice =  newPrice;
 
                 // 4. Update product details, subtotal price and total price
                 updateProductDetails(discountedPrice, product);
@@ -88,6 +113,7 @@ public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
 
         System.out.println("New subtotal price: $ " + newSubtotalPrice);
     }
+
 
     // Update total price after applying discount
     private void updateTotalPrice()  {

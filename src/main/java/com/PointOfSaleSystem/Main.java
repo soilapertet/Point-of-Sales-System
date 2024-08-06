@@ -13,5 +13,6 @@ public class Main {
 
         centralPOSFacade.getBarcodedProductManagement().applyDiscountByPercent(15, 36000291454L);
         centralPOSFacade.getBarcodedProductManagement().applyDiscountByAmount(20, 5000112637922L);
+        centralPOSFacade.getBarcodedProductManagement().overrideProductPrice(24.94, 763000040440L);
     }
 }
