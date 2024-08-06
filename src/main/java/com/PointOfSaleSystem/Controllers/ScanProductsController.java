@@ -177,4 +177,8 @@ public class ScanProductsController extends CentralPointOfSalesFacade{
     public void setSubtotalPrice(double price) {
         this.subtotalPrice = price;
     }
+
+    public void setTotalPrice(double price) {
+        this.totalPrice = price;
+    }
 }

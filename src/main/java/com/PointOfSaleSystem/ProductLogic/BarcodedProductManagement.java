@@ -14,11 +14,13 @@ public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
     private double newSubtotalPrice;
     private double newTotalPrice;
     private final DecimalFormat DECIMALFORMAT;
+    private final double GST;
 
     // Define class constructor
     public BarcodedProductManagement(CentralPointOfSalesFacade facade) {
         super(facade);
-        DECIMALFORMAT = new DecimalFormat("#.00");
+        this.DECIMALFORMAT = new DecimalFormat("#.00");
+        this.GST = 0.05;
     }
 
     // Apply discount by percent
@@ -38,6 +40,7 @@ public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
 
                 updateProductDetails(discountedPrice, product);
                 updateSubtotalPrice();
+                updateTotalPrice();
 
                 System.out.println("Discount applied. New price: $ " + discountedPrice);
                 break;
@@ -60,9 +63,10 @@ public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
                 // 3. Get the current price of the product and apply the discount based on the percent provided
                 discountedPrice =  originalProductPrice - amount;
 
-                // 4. Update product details and subtotal price
+                // 4. Update product details, subtotal price and total price
                 updateProductDetails(discountedPrice, product);
                 updateSubtotalPrice();
+                updateTotalPrice();
 
                 System.out.println("Discount applied. New price: $ " + discountedPrice);
                 break;
@@ -78,11 +82,20 @@ public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
         System.out.println("Current subtotal price: $ " + currentSubtotalPrice);
 
         // Update the subtotal price
-        newSubtotalPrice = (currentSubtotalPrice - originalProductPrice) + discountedPrice;
-        newSubtotalPrice = Double.parseDouble(DECIMALFORMAT.format(newSubtotalPrice));
+        this.newSubtotalPrice = (currentSubtotalPrice - originalProductPrice) + discountedPrice;
+        this.newSubtotalPrice = Double.parseDouble(DECIMALFORMAT.format(newSubtotalPrice));
         this.getCentralPOSFacade().getScanProductsController().setSubtotalPrice(newSubtotalPrice);
 
         System.out.println("New subtotal price: $ " + newSubtotalPrice);
+    }
+
+    // Update total price after applying discount
+    private void updateTotalPrice()  {
+        this.newTotalPrice = this.newSubtotalPrice + (this.newSubtotalPrice * this.GST);
+        this.newTotalPrice = Double.parseDouble(DECIMALFORMAT.format(newTotalPrice));
+        this.getCentralPOSFacade().getScanProductsController().setTotalPrice(newTotalPrice);
+
+        System.out.println("New total price: $: " + newTotalPrice);
     }
 
     // Update details of product
