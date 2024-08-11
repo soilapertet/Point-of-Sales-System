@@ -1,4 +1,4 @@
-package com.PointOfSaleSystem.CentralPOSFacade;
+package com.PointOfSaleSystem.CentralPOSLogic;
 
 import com.PointOfSaleSystem.Controllers.ClockInController;
 import com.PointOfSaleSystem.Controllers.CustomerInputController;
@@ -6,10 +6,10 @@ import com.PointOfSaleSystem.Controllers.EmployeeInputController;
 import com.PointOfSaleSystem.Controllers.ScanProductsController;
 import com.PointOfSaleSystem.ProductLogic.BarcodedProductManagement;
 
-public class CentralPointOfSalesFacade {
+public class CentralPointOfSalesController {
 
     // Define instance variables
-    private CentralPointOfSalesFacade centralPOSFacade = null;
+    private CentralPointOfSalesController centralPOSFacade = null;
     private ClockInController clockInController;
     private CustomerInputController customerInputController;
     private EmployeeInputController employeeInputController;
@@ -17,16 +17,16 @@ public class CentralPointOfSalesFacade {
     private BarcodedProductManagement barcodedProductManagement;
 
     // Call the private class and initialise the class controllers
-    public static CentralPointOfSalesFacade startSession() {
-        return new CentralPointOfSalesFacade();
+    public static CentralPointOfSalesController startSession() {
+        return new CentralPointOfSalesController();
     }
 
     // Class constructor will be used by child classes
-    public CentralPointOfSalesFacade(CentralPointOfSalesFacade centralPOSFacade) {
+    public CentralPointOfSalesController(CentralPointOfSalesController centralPOSFacade) {
         this.centralPOSFacade = centralPOSFacade;
     }
 
-    private CentralPointOfSalesFacade() {
+    private CentralPointOfSalesController() {
         clockInController = new ClockInController(this);
         customerInputController = new CustomerInputController(this);
         employeeInputController = new EmployeeInputController(this);
@@ -35,7 +35,6 @@ public class CentralPointOfSalesFacade {
     }
 
     // Define getter methods
-    public CentralPointOfSalesFacade getCentralPOSFacade() { return centralPOSFacade; }
     public ClockInController getClockInController() { return clockInController; }
     public CustomerInputController getCustomerInputController() { return customerInputController; }
     public EmployeeInputController getEmployeeInputController() { return employeeInputController; }

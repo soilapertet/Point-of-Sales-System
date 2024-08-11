@@ -1,11 +1,11 @@
 package com.PointOfSaleSystem.ProductLogic;
 
-import com.PointOfSaleSystem.CentralPOSFacade.CentralPointOfSalesFacade;
+import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
+public class BarcodedProductManagement  extends CentralPointOfSalesController {
 
     // Define instance variables
     private boolean discountApplied;
@@ -17,7 +17,7 @@ public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
     private final double GST;
 
     // Define class constructor
-    public BarcodedProductManagement(CentralPointOfSalesFacade facade) {
+    public BarcodedProductManagement(CentralPointOfSalesController facade) {
         super(facade);
         this.DECIMALFORMAT = new DecimalFormat("#.00");
         this.GST = 0.05;
@@ -27,7 +27,7 @@ public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
     public void applyDiscountByPercent(int percent, long upc) {
 
         // 1. Get the product associated with the provided upc
-        List<BarcodedProduct> scannedProducts = this.getCentralPOSFacade().getScanProductsController().getScannedProducts();
+        List<BarcodedProduct> scannedProducts = this.getScanProductsController().getScannedProducts();
 
         for(BarcodedProduct product : scannedProducts) {
             if(product.getProductUPC() == upc) {
@@ -52,7 +52,7 @@ public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
     public void applyDiscountByAmount(int amount, long upc) {
 
         // 1. Get the product associated with the provided upc
-        List<BarcodedProduct> scannedProducts = this.getCentralPOSFacade().getScanProductsController().getScannedProducts();
+        List<BarcodedProduct> scannedProducts = this.getScanProductsController().getScannedProducts();
 
         for(BarcodedProduct product : scannedProducts) {
             if(product.getProductUPC() == upc) {
@@ -77,7 +77,7 @@ public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
     // Override current price of product
     public void overrideProductPrice(double newPrice, long upc) {
         // 1. Get the product associated with the provided upc
-        List<BarcodedProduct> scannedProducts = this.getCentralPOSFacade().getScanProductsController().getScannedProducts();
+        List<BarcodedProduct> scannedProducts = this.getScanProductsController().getScannedProducts();
 
         for(BarcodedProduct product : scannedProducts) {
             if(product.getProductUPC() == upc) {
@@ -103,13 +103,13 @@ public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
     private void updateSubtotalPrice() {
 
         // Get the current subtotal price
-        double currentSubtotalPrice = this.getCentralPOSFacade().getScanProductsController().getSubtotalPrice();
+        double currentSubtotalPrice = this.getScanProductsController().getSubtotalPrice();
         System.out.println("Current subtotal price: $ " + currentSubtotalPrice);
 
         // Update the subtotal price
         this.newSubtotalPrice = (currentSubtotalPrice - originalProductPrice) + discountedPrice;
         this.newSubtotalPrice = Double.parseDouble(DECIMALFORMAT.format(newSubtotalPrice));
-        this.getCentralPOSFacade().getScanProductsController().setSubtotalPrice(newSubtotalPrice);
+        this.getScanProductsController().setSubtotalPrice(newSubtotalPrice);
 
         System.out.println("New subtotal price: $ " + newSubtotalPrice);
     }
@@ -119,7 +119,7 @@ public class BarcodedProductManagement  extends CentralPointOfSalesFacade {
     private void updateTotalPrice()  {
         this.newTotalPrice = this.newSubtotalPrice + (this.newSubtotalPrice * this.GST);
         this.newTotalPrice = Double.parseDouble(DECIMALFORMAT.format(newTotalPrice));
-        this.getCentralPOSFacade().getScanProductsController().setTotalPrice(newTotalPrice);
+        this.getScanProductsController().setTotalPrice(newTotalPrice);
 
         System.out.println("New total price: $: " + newTotalPrice);
     }

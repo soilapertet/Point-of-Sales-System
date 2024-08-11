@@ -1,10 +1,9 @@
 package com.PointOfSaleSystem.Controllers;
 
-import com.PointOfSaleSystem.CentralPOSFacade.CentralPointOfSalesFacade;
+import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
 import com.PointOfSaleSystem.StoreDatabase.CustomerDatabase;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
@@ -13,7 +12,7 @@ import org.bson.types.ObjectId;
 
 import java.util.Scanner;
 
-public class CustomerInputController extends CentralPointOfSalesFacade {
+public class CustomerInputController extends CentralPointOfSalesController {
 
     // Define instance variables
     private CustomerDatabase customerDB;
@@ -30,7 +29,7 @@ public class CustomerInputController extends CentralPointOfSalesFacade {
     private long inputPhoneNumber;
 
     // Define class constructor
-    public CustomerInputController(CentralPointOfSalesFacade facade) {
+    public CustomerInputController(CentralPointOfSalesController facade) {
 
         super(facade);
 

@@ -1,10 +1,10 @@
 package com.PointOfSaleSystem;
 
-import com.PointOfSaleSystem.CentralPOSFacade.CentralPointOfSalesFacade;
+import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
 
 public class Main {
     public static void main(String[] args) {
-        CentralPointOfSalesFacade centralPOSFacade = CentralPointOfSalesFacade.startSession();
+        CentralPointOfSalesController centralPOSFacade = CentralPointOfSalesController.startSession();
 
         centralPOSFacade.getScanProductsController().scanBarcodeProduct();
         centralPOSFacade.getScanProductsController().scanBarcodeProduct();

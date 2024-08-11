@@ -1,6 +1,6 @@
 package com.PointOfSaleSystem.Controllers;
 
-import com.PointOfSaleSystem.CentralPOSFacade.CentralPointOfSalesFacade;
+import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
 import com.PointOfSaleSystem.ProductLogic.BarcodedProduct;
 import com.PointOfSaleSystem.StoreDatabase.InventoryDatabase;
 
@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ScanProductsController extends CentralPointOfSalesFacade{
+public class ScanProductsController extends CentralPointOfSalesController {
 
     // Define the instance variables
-    private CentralPointOfSalesFacade centralPOSFacade;
+    private CentralPointOfSalesController centralPOSFacade;
     private InventoryDatabase inventoryDB;
     private List<BarcodedProduct> scannedBarcodedProducts;
     private BarcodedProduct barcodedProduct;
@@ -27,7 +27,7 @@ public class ScanProductsController extends CentralPointOfSalesFacade{
     private final DecimalFormat DECIMALFORMAT;
 
     // Define the class constructor
-    public ScanProductsController(CentralPointOfSalesFacade facade) {
+    public ScanProductsController(CentralPointOfSalesController facade) {
 
         super(facade);
 

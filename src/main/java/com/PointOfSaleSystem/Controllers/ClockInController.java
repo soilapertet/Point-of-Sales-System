@@ -1,11 +1,11 @@
 package com.PointOfSaleSystem.Controllers;
 
-import com.PointOfSaleSystem.CentralPOSFacade.CentralPointOfSalesFacade;
+import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
 import com.PointOfSaleSystem.StoreDatabase.EmployeeDatabase;
 import com.mongodb.client.model.Filters;
 import org.bson.conversions.Bson;
 
-public class ClockInController  extends CentralPointOfSalesFacade {
+public class ClockInController extends CentralPointOfSalesController {
 
     private EmployeeDatabase employeeDB;
     private boolean clockedIn;
@@ -13,7 +13,7 @@ public class ClockInController  extends CentralPointOfSalesFacade {
     private String clockInPassword;
     private boolean clockedInStatus;
 
-    public ClockInController(CentralPointOfSalesFacade facade) {
+    public ClockInController(CentralPointOfSalesController facade) {
 
         super(facade);
 
@@ -24,7 +24,7 @@ public class ClockInController  extends CentralPointOfSalesFacade {
 
     public void clockInEmployee() {
 
-        EmployeeInputController eic = this.getCentralPOSFacade().getEmployeeInputController();
+        EmployeeInputController eic = this.getEmployeeInputController();
         boolean isCashEmployee;
 
         // 1. Get employeeID
