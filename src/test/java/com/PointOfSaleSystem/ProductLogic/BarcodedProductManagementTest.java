@@ -36,7 +36,7 @@ public class BarcodedProductManagementTest {
     }
 
     @Test
-    public void updateProductQuantityWithDiscountedProduct() {
+    public void updateProductQuantityWithDiscountedProductTest() {
 
         long productUPC = 12345678907L;
         int percentDiscount = 25;
@@ -50,6 +50,19 @@ public class BarcodedProductManagementTest {
         Assert.assertEquals(expectedSubtotalPrice, centralPOSController.getScanProductsController().getSubtotalPrice(), 0.0);
         Assert.assertEquals(expectedTotalPrice, centralPOSController.getScanProductsController().getTotalPrice(), 0.0);
 
+    }
+
+    @Test
+    public void applyPercentDiscountToProductTest() {
+
+        long productUPC = 5000112637921L;
+        int percentDiscount = 15;
+
+        centralPOSController.getBarcodedProductManagement().applyDiscountByPercent(percentDiscount, productUPC);
+
+        double expectedProductPrice = 89.24;
+        double actualProductPrice = centralPOSController.getBarcodedProductManagement().getScannedProduct().getPrice();
+        Assert.assertEquals(expectedProductPrice, actualProductPrice, 0.0 );
     }
 
 }

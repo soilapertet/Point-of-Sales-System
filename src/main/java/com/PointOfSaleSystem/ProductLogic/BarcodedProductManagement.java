@@ -146,4 +146,5 @@ public class BarcodedProductManagement extends CentralPointOfSalesController {
     // Define getter method
     public double getDiscountedPrice() { return discountedPrice; }
     public boolean getDiscountApplied() { return discountApplied; }
+    public BarcodedProduct getScannedProduct() { return scannedProduct; }
 }
