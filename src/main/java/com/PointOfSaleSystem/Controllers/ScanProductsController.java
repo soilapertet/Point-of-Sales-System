@@ -173,6 +173,18 @@ public class ScanProductsController extends CentralPointOfSalesController {
         }
     }
 
+    // Search and return barcoded product using the provided upc
+    public BarcodedProduct getBarcodedProduct(long upc) {
+
+        for(BarcodedProduct barcodedProduct : scannedBarcodedProducts) {
+            if(barcodedProduct.getProductUPC() == upc) {
+                return barcodedProduct;
+            }
+        }
+
+        return null;
+    }
+
     // Define getter methods
     public long getScannedUPC() { return scannedUPC; }
     public List<BarcodedProduct> getScannedProducts() { return  scannedBarcodedProducts; }
