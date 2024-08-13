@@ -9,6 +9,7 @@ import java.util.List;
 public class BarcodedProductManagement extends CentralPointOfSalesController {
 
     // Define instance variables
+    BarcodedProduct scannedProduct;
     private boolean discountApplied;
     private double discountedPrice;
     private double originalProductPrice;
@@ -29,105 +30,80 @@ public class BarcodedProductManagement extends CentralPointOfSalesController {
     public void applyDiscountByPercent(int percent, long upc) {
 
         // 1. Get the product associated with the provided upc
-        List<BarcodedProduct> scannedProducts = this.getCentralPOSController().getScanProductsController().getScannedProducts();
+        scannedProduct = this.getCentralPOSController().getScanProductsController().getBarcodedProduct(upc);
 
-        for(BarcodedProduct product : scannedProducts) {
-            if(product.getProductUPC() == upc) {
+        // 2. Set the original price of the product
+        originalProductPrice = scannedProduct.getPrice();
 
-                // 2. Set the original price of the product
-                originalProductPrice = product.getPrice();
+        // 3. Get the current price of the product and apply the discount based on the percent provided
+        discountedPrice =  originalProductPrice * ((100 - percent) / 100.0);
 
-                // 3. Get the current price of the product and apply the discount based on the percent provided
-                discountedPrice =  originalProductPrice * ((100 - percent) / 100.0);
+        updateProductDetails(discountedPrice, scannedProduct);
+        updateSubtotalPrice();
+        updateTotalPrice();
 
-                updateProductDetails(discountedPrice, product);
-                updateSubtotalPrice();
-                updateTotalPrice();
+        System.out.println("Discount applied. New price: $ " + discountedPrice);
 
-                System.out.println("Discount applied. New price: $ " + discountedPrice);
-                break;
-            }
-        }
     }
 
     // Apply discount by amount
     public void applyDiscountByAmount(int amount, long upc) {
 
         // 1. Get the product associated with the provided upc
-        List<BarcodedProduct> scannedProducts = this.getCentralPOSController().getScanProductsController().getScannedProducts();
+        scannedProduct = this.getCentralPOSController().getScanProductsController().getBarcodedProduct(upc);
 
-        for(BarcodedProduct product : scannedProducts) {
-            if(product.getProductUPC() == upc) {
+        // 2. Set the original price of the product
+        originalProductPrice = scannedProduct.getPrice();
 
-                // 2. Set the original price of the product
-                originalProductPrice = product.getPrice();
+        // 3. Get the current price of the product and apply the discount based on the amount provided
+        discountedPrice =  originalProductPrice - amount;
 
-                // 3. Get the current price of the product and apply the discount based on the amount provided
-                discountedPrice =  originalProductPrice - amount;
+        // 4. Update product details, subtotal price and total price
+        updateProductDetails(discountedPrice, scannedProduct);
+        updateSubtotalPrice();
+        updateTotalPrice();
 
-                // 4. Update product details, subtotal price and total price
-                updateProductDetails(discountedPrice, product);
-                updateSubtotalPrice();
-                updateTotalPrice();
-
-                System.out.println("Discount applied. New price: $ " + discountedPrice);
-                break;
-            }
-        }
+        System.out.println("Discount applied. New price: $ " + discountedPrice);
     }
 
     // Override current price of product
     public void overrideProductPrice(double newPrice, long upc) {
 
         // 1. Get the product associated with the provided upc
-        List<BarcodedProduct> scannedProducts = this.getCentralPOSController().getScanProductsController().getScannedProducts();
+        scannedProduct = this.getCentralPOSController().getScanProductsController().getBarcodedProduct(upc);
 
-        for(BarcodedProduct product : scannedProducts) {
-            if(product.getProductUPC() == upc) {
+        // 2. Set the original price of the product
+        originalProductPrice = scannedProduct.getPrice();
 
-                // 2. Set the original price of the product
-                originalProductPrice = product.getPrice();
+        // 3. Get the current price of the product and set it to the new price provided
+        discountedPrice =  newPrice;
 
-                // 3. Get the current price of the product and set it to the new price provided
-                discountedPrice =  newPrice;
+        // 4. Update product details, subtotal price and total price
+        updateProductDetails(discountedPrice, scannedProduct);
+        updateSubtotalPrice();
+        updateTotalPrice();
 
-                // 4. Update product details, subtotal price and total price
-                updateProductDetails(discountedPrice, product);
-                updateSubtotalPrice();
-                updateTotalPrice();
+        System.out.println("Discount applied. New price: $ " + discountedPrice);
 
-                System.out.println("Discount applied. New price: $ " + discountedPrice);
-                break;
-            }
-        }
     }
 
     // Update the quantity of the products scanned
     public void updateProductQuantity(int quantity, long upc) {
 
-        // Find the product whose quantity needs to updated
-        List<BarcodedProduct> scannedProducts = this.getCentralPOSController().getScanProductsController().getScannedProducts();
+        // 1. Get the product associated with the provided upc
+        scannedProduct = this.getCentralPOSController().getScanProductsController().getBarcodedProduct(upc);
 
-        for(BarcodedProduct product : scannedProducts) {
-            if(product.getProductUPC() == upc) {
+        // 2. Update the current quantity of the product
+        scannedProduct.setProductQuantity(quantity);
 
-                // Update the current quantity of the product
-                product.setProductQuantity(quantity);
+        // 3. Update the subtotal price after updating the product quantity
+        double currentSubtotalPrice = this.getCentralPOSController().getScanProductsController().getSubtotalPrice();
+        this.newSubtotalPrice = currentSubtotalPrice + (scannedProduct.getPrice() * (quantity - 1));
+        this.newSubtotalPrice = Double.parseDouble(DECIMALFORMAT.format(newSubtotalPrice));
+        this.getCentralPOSController().getScanProductsController().setSubtotalPrice(newSubtotalPrice);
 
-                // Update the subtotal price after updating the product quantity
-                double currentSubtotalPrice = this.getCentralPOSController().getScanProductsController().getSubtotalPrice();
-                this.newSubtotalPrice = currentSubtotalPrice + (product.getPrice() * (quantity - 1));
-                this.newSubtotalPrice = Double.parseDouble(DECIMALFORMAT.format(newSubtotalPrice));
-                this.getCentralPOSController().getScanProductsController().setSubtotalPrice(newSubtotalPrice);
-
-                // Update the total price after updating the product quantity
-                updateTotalPrice();
-
-                // Break out of loop since we've found the product
-                break;
-            }
-        }
-
+        // 4. Update the total price after updating the product quantity
+        updateTotalPrice();
     }
 
     // Update subtotal price after applying discount

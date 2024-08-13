@@ -9,7 +9,6 @@ public class BarcodedProductManagementTest {
 
     CentralPointOfSalesController centralPOSController;
 
-
     @Before
     public void initialise() {
         // Start a new session
