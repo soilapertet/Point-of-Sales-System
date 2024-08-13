@@ -15,10 +15,10 @@ public class BarcodedProductManagementTest {
         centralPOSController = CentralPointOfSalesController.startSession();
 
         // Scan 4 product items
-        centralPOSController.getScanProductsController().scanBarcodeProduct(5000112637921L);
-        centralPOSController.getScanProductsController().scanBarcodeProduct(4006381333931L);
-        centralPOSController.getScanProductsController().scanBarcodeProduct(12345678907L);
-        centralPOSController.getScanProductsController().scanBarcodeProduct(29000037984L);
+        centralPOSController.getScanProductsController().scanBarcodeProduct(5000112637921L); // $ 104.99
+        centralPOSController.getScanProductsController().scanBarcodeProduct(4006381333931L); // $ 199.99
+        centralPOSController.getScanProductsController().scanBarcodeProduct(12345678907L); // $ 79.99
+        centralPOSController.getScanProductsController().scanBarcodeProduct(29000037984L); // 44.99
     }
 
     // Test: Update the product quantity of the second scanned product
@@ -61,6 +61,19 @@ public class BarcodedProductManagementTest {
         centralPOSController.getBarcodedProductManagement().applyDiscountByPercent(percentDiscount, productUPC);
 
         double expectedProductPrice = 89.24;
+        double actualProductPrice = centralPOSController.getBarcodedProductManagement().getScannedProduct().getPrice();
+        Assert.assertEquals(expectedProductPrice, actualProductPrice, 0.0 );
+    }
+
+    @Test
+    public void applyAmountDiscountToProductTest() {
+
+        long productUPC = 29000037984L;
+        int amountDiscount = 10;
+
+        centralPOSController.getBarcodedProductManagement().applyDiscountByAmount(amountDiscount, productUPC);
+
+        double expectedProductPrice = 34.99;
         double actualProductPrice = centralPOSController.getBarcodedProductManagement().getScannedProduct().getPrice();
         Assert.assertEquals(expectedProductPrice, actualProductPrice, 0.0 );
     }
