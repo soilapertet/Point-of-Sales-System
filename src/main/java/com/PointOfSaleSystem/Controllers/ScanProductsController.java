@@ -113,14 +113,42 @@ public class ScanProductsController extends CentralPointOfSalesController {
         System.out.println("Total amount: $" + this.totalPrice);
     }
 
-    // Update the stock quantity once we have scanned the product
-
-
-    // Main method which deals with scanning products
+    // Method which deals with scanning products
     public void scanBarcodeProduct() {
 
         // 1. Scan the upc on the product
          scanProduct();
+
+        // Check if input is the product upc
+        if(scannedUPC != 0) {
+            // Check if the product upc is in the database
+            if(inventoryDB.isProductUPCInDB(scannedUPC)) {
+                // Create an instance of a barcoded product using the upc
+                addBarcodedProductsViaUPC();
+            } else {
+                // Display error message
+                System.out.println("Scanned UPC cannot be found in the inventory database");
+            }
+        }
+        // Check if the input is the product id
+        else if(scannedProductID != 0) {
+            if(inventoryDB.isProductIDInDB(scannedProductID)) {
+                addBarcodedProductsViaProductID();
+            } else {
+                // Display error message
+                System.out.println("Scanned Product ID cannot be found in the inventory database");
+            }
+        }
+
+        // Update subtotal price and total price of scanned products
+        updateSubtotalPrice();
+        calculateTotalPrice();
+    }
+
+    //*** Separate method used primarily for testing purpose ***//
+    public void scanBarcodeProduct(long upc) {
+
+        this.scannedUPC = upc;
 
         // Check if input is the product upc
         if(scannedUPC != 0) {

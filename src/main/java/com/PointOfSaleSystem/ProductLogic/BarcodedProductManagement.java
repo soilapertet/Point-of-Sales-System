@@ -1,11 +1,12 @@
 package com.PointOfSaleSystem.ProductLogic;
 
 import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
+import com.PointOfSaleSystem.Controllers.ScanProductsController;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class BarcodedProductManagement  extends CentralPointOfSalesController {
+public class BarcodedProductManagement extends CentralPointOfSalesController {
 
     // Define instance variables
     private boolean discountApplied;
@@ -18,8 +19,8 @@ public class BarcodedProductManagement  extends CentralPointOfSalesController {
     private boolean quantityUpdated;
 
     // Define class constructor
-    public BarcodedProductManagement(CentralPointOfSalesController facade) {
-        super(facade);
+    public BarcodedProductManagement(CentralPointOfSalesController controller) {
+        super(controller);
         this.DECIMALFORMAT = new DecimalFormat("#.00");
         this.GST = 0.05;
     }
@@ -28,7 +29,7 @@ public class BarcodedProductManagement  extends CentralPointOfSalesController {
     public void applyDiscountByPercent(int percent, long upc) {
 
         // 1. Get the product associated with the provided upc
-        List<BarcodedProduct> scannedProducts = this.getScanProductsController().getScannedProducts();
+        List<BarcodedProduct> scannedProducts = this.getCentralPOSController().getScanProductsController().getScannedProducts();
 
         for(BarcodedProduct product : scannedProducts) {
             if(product.getProductUPC() == upc) {
@@ -53,7 +54,7 @@ public class BarcodedProductManagement  extends CentralPointOfSalesController {
     public void applyDiscountByAmount(int amount, long upc) {
 
         // 1. Get the product associated with the provided upc
-        List<BarcodedProduct> scannedProducts = this.getScanProductsController().getScannedProducts();
+        List<BarcodedProduct> scannedProducts = this.getCentralPOSController().getScanProductsController().getScannedProducts();
 
         for(BarcodedProduct product : scannedProducts) {
             if(product.getProductUPC() == upc) {
@@ -79,7 +80,7 @@ public class BarcodedProductManagement  extends CentralPointOfSalesController {
     public void overrideProductPrice(double newPrice, long upc) {
 
         // 1. Get the product associated with the provided upc
-        List<BarcodedProduct> scannedProducts = this.getScanProductsController().getScannedProducts();
+        List<BarcodedProduct> scannedProducts = this.getCentralPOSController().getScanProductsController().getScannedProducts();
 
         for(BarcodedProduct product : scannedProducts) {
             if(product.getProductUPC() == upc) {
@@ -102,19 +103,21 @@ public class BarcodedProductManagement  extends CentralPointOfSalesController {
     }
 
     // Update the quantity of the products scanned
-    private void updateProductQuantity(int quantity, long upc) {
+    public void updateProductQuantity(int quantity, long upc) {
 
         // Find the product whose quantity needs to updated
-        for(BarcodedProduct product : this.getScanProductsController().getScannedProducts()) {
+        List<BarcodedProduct> scannedProducts = this.getCentralPOSController().getScanProductsController().getScannedProducts();
+
+        for(BarcodedProduct product : scannedProducts) {
             if(product.getProductUPC() == upc) {
 
                 // Update the current quantity of the product
                 product.setProductQuantity(quantity);
 
                 // Update the subtotal price after updating the product quantity
-                double currentSubtotalPrice = this.getScanProductsController().getSubtotalPrice();
+                double currentSubtotalPrice = this.getCentralPOSController().getScanProductsController().getSubtotalPrice();
                 this.newSubtotalPrice = currentSubtotalPrice + (product.getPrice() * (quantity - 1));
-                this.getScanProductsController().setSubtotalPrice(newSubtotalPrice);
+                this.getCentralPOSController().getScanProductsController().setSubtotalPrice(newSubtotalPrice);
 
                 // Update the total price after updating the product quantity
                 updateTotalPrice();
@@ -130,13 +133,13 @@ public class BarcodedProductManagement  extends CentralPointOfSalesController {
     private void updateSubtotalPrice() {
 
         // Get the current subtotal price
-        double currentSubtotalPrice = this.getScanProductsController().getSubtotalPrice();
+        double currentSubtotalPrice = this.getCentralPOSController().getScanProductsController().getSubtotalPrice();
         System.out.println("Current subtotal price: $ " + currentSubtotalPrice);
 
         // Update the subtotal price
         this.newSubtotalPrice = (currentSubtotalPrice - originalProductPrice) + discountedPrice;
         this.newSubtotalPrice = Double.parseDouble(DECIMALFORMAT.format(newSubtotalPrice));
-        this.getScanProductsController().setSubtotalPrice(newSubtotalPrice);
+        this.getCentralPOSController().getScanProductsController().setSubtotalPrice(newSubtotalPrice);
 
         System.out.println("New subtotal price: $ " + newSubtotalPrice);
     }
@@ -146,7 +149,7 @@ public class BarcodedProductManagement  extends CentralPointOfSalesController {
     private void updateTotalPrice()  {
         this.newTotalPrice = this.newSubtotalPrice + (this.newSubtotalPrice * this.GST);
         this.newTotalPrice = Double.parseDouble(DECIMALFORMAT.format(newTotalPrice));
-        this.getScanProductsController().setTotalPrice(newTotalPrice);
+        this.getCentralPOSController().getScanProductsController().setTotalPrice(newTotalPrice);
 
         System.out.println("New total price: $: " + newTotalPrice);
     }
