@@ -63,15 +63,6 @@ public class ScanProductsController extends CentralPointOfSalesController {
     private void addBarcodedProductsViaUPC() {
         barcodedProduct = new BarcodedProduct(this.scannedUPC);
         this.scannedBarcodedProducts.add(barcodedProduct);
-
-        // Testing purposes
-        System.out.println(barcodedProduct.getProductUPC());
-        System.out.println(barcodedProduct.getProductID());
-        System.out.println(barcodedProduct.getProductName());
-        System.out.println(barcodedProduct.getPrice());
-        System.out.println(barcodedProduct.getColour());
-        System.out.println(barcodedProduct.getClothingSize());
-        System.out.println(barcodedProduct.getShoeSize());
     }
 
     private void addBarcodedProductsViaProductID() {
@@ -86,31 +77,18 @@ public class ScanProductsController extends CentralPointOfSalesController {
         }
 
         this.scannedBarcodedProducts.add(barcodedProduct);
-
-        // Testing purposes
-        System.out.println(barcodedProduct.getProductUPC());
-        System.out.println(barcodedProduct.getProductID());
-        System.out.println(barcodedProduct.getProductName());
-        System.out.println(barcodedProduct.getPrice());
-        System.out.println(barcodedProduct.getColour());
-        System.out.println(barcodedProduct.getClothingSize());
-        System.out.println(barcodedProduct.getShoeSize());
     }
 
     // Update the subtotal price while scanning products
     private void updateSubtotalPrice() {
         this.subtotalPrice += barcodedProduct.getPrice();
         this.subtotalPrice = Double.parseDouble(DECIMALFORMAT.format(subtotalPrice));
-
-        // Testing purposes
-        System.out.println("Current subtotal: $ " + this.subtotalPrice);
     }
 
     // Calculate the total price with taxes
     private void calculateTotalPrice() {
         this.totalPrice = (this.subtotalPrice * this.GST) + this.subtotalPrice;
         this.totalPrice = Double.parseDouble(DECIMALFORMAT.format(totalPrice));
-        System.out.println("Total amount: $" + this.totalPrice);
     }
 
     // Method which deals with scanning products
