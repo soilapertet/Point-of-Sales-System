@@ -24,13 +24,33 @@ public class BarcodedProductManagementTest {
 
     // Test: Update the product quantity of the second scanned product
     @Test
-    public void testUpdateProductQuantityTest() {
+    public void updateProductQuantityTest() {
 
         long productUPC = 4006381333931L;
         centralPOSController.getBarcodedProductManagement().updateProductQuantity(5, productUPC);
 
         double expectedSubtotalPrice = 1229.92;
+        double expectedTotalPrice = 1291.42;
+
         Assert.assertEquals(expectedSubtotalPrice, centralPOSController.getScanProductsController().getSubtotalPrice(), 0.0);
+        Assert.assertEquals(expectedTotalPrice, centralPOSController.getScanProductsController().getTotalPrice(), 0.0);
+    }
+
+    @Test
+    public void updateProductQuantityWithDiscountedProduct() {
+
+        long productUPC = 12345678907L;
+        int percentDiscount = 25;
+
+        centralPOSController.getBarcodedProductManagement().applyDiscountByPercent(percentDiscount, productUPC);
+        centralPOSController.getBarcodedProductManagement().updateProductQuantity(3, productUPC);
+
+        double expectedSubtotalPrice = 529.94;
+        double expectedTotalPrice = 556.44;
+
+        Assert.assertEquals(expectedSubtotalPrice, centralPOSController.getScanProductsController().getSubtotalPrice(), 0.0);
+        Assert.assertEquals(expectedTotalPrice, centralPOSController.getScanProductsController().getTotalPrice(), 0.0);
+
     }
 
 }

@@ -117,6 +117,7 @@ public class BarcodedProductManagement extends CentralPointOfSalesController {
                 // Update the subtotal price after updating the product quantity
                 double currentSubtotalPrice = this.getCentralPOSController().getScanProductsController().getSubtotalPrice();
                 this.newSubtotalPrice = currentSubtotalPrice + (product.getPrice() * (quantity - 1));
+                this.newSubtotalPrice = Double.parseDouble(DECIMALFORMAT.format(newSubtotalPrice));
                 this.getCentralPOSController().getScanProductsController().setSubtotalPrice(newSubtotalPrice);
 
                 // Update the total price after updating the product quantity
