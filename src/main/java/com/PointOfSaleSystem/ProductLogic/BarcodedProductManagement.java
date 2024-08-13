@@ -15,6 +15,7 @@ public class BarcodedProductManagement  extends CentralPointOfSalesController {
     private double newTotalPrice;
     private final DecimalFormat DECIMALFORMAT;
     private final double GST;
+    private boolean quantityUpdated;
 
     // Define class constructor
     public BarcodedProductManagement(CentralPointOfSalesController facade) {
@@ -76,6 +77,7 @@ public class BarcodedProductManagement  extends CentralPointOfSalesController {
 
     // Override current price of product
     public void overrideProductPrice(double newPrice, long upc) {
+
         // 1. Get the product associated with the provided upc
         List<BarcodedProduct> scannedProducts = this.getScanProductsController().getScannedProducts();
 
@@ -97,6 +99,31 @@ public class BarcodedProductManagement  extends CentralPointOfSalesController {
                 break;
             }
         }
+    }
+
+    // Update the quantity of the products scanned
+    private void updateProductQuantity(int quantity, long upc) {
+
+        // Find the product whose quantity needs to updated
+        for(BarcodedProduct product : this.getScanProductsController().getScannedProducts()) {
+            if(product.getProductUPC() == upc) {
+
+                // Update the current quantity of the product
+                product.setProductQuantity(quantity);
+
+                // Update the subtotal price after updating the product quantity
+                double currentSubtotalPrice = this.getScanProductsController().getSubtotalPrice();
+                this.newSubtotalPrice = currentSubtotalPrice + (product.getPrice() * (quantity - 1));
+                this.getScanProductsController().setSubtotalPrice(newSubtotalPrice);
+
+                // Update the total price after updating the product quantity
+                updateTotalPrice();
+
+                // Break out of loop since we've found the product
+                break;
+            }
+        }
+
     }
 
     // Update subtotal price after applying discount
