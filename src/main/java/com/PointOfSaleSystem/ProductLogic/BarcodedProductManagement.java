@@ -143,6 +143,16 @@ public class BarcodedProductManagement extends CentralPointOfSalesController {
 
     }
 
+    // Add sales associate to product
+    public void addSalesAssociateID(long upc, int associateID) {
+
+        // 1. Get the scanned product to which we assign the sales associate
+        scannedProduct = this.getCentralPOSController().getScanProductsController().getBarcodedProduct(upc);
+
+        // 2. Set the sales associate ID
+        scannedProduct.setSalesAssociateID(associateID);
+    }
+
     // Define getter method
     public double getDiscountedPrice() { return discountedPrice; }
     public boolean getDiscountApplied() { return discountApplied; }

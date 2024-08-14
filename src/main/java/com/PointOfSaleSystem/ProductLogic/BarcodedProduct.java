@@ -28,7 +28,7 @@ public class BarcodedProduct {
     private String clothingSize;
     private String colour;
     private List<Document> productVariants;
-    private String salesAssociateID;
+    private int salesAssociateID;
     private boolean discountApplied;
     private String lineComment;
 
@@ -171,11 +171,13 @@ public class BarcodedProduct {
     public String getClothingSize() { return clothingSize; }
     public double getShoeSize() { return shoeSize; }
     public int getStockQuantity() { return stockQuantity; }
+    public int getSalesAssociateID() { return salesAssociateID; }
 
     // Define setter methods
     public void setDiscountApplied(boolean discountApplied) { this.discountApplied = discountApplied; }
     public void setPrice(double price) { this.price = price; }
     public void setProductQuantity(int quantity) { this.productQuantity = quantity; }
+    public void setSalesAssociateID(int associateID) { this.salesAssociateID = associateID; }
 }
 
 
