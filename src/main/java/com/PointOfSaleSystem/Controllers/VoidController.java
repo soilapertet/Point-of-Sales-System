@@ -1,11 +1,11 @@
 package com.PointOfSaleSystem.Controllers;
 
-import com.PointOfSaleSystem.CentralPOSFacade.CentralPointOfSalesFacade;
+import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
 import com.PointOfSaleSystem.ProductLogic.BarcodedProduct;
 
 import java.util.List;
 
-public class VoidController extends CentralPointOfSalesFacade {
+public class VoidController extends CentralPointOfSalesController {
 
     // Define instance variables
     private long productUPCToVoid;
@@ -13,7 +13,7 @@ public class VoidController extends CentralPointOfSalesFacade {
     private List<BarcodedProduct> scannedProducts;
 
     // Define the class constructor
-    public VoidController(CentralPointOfSalesFacade facade) {
+    public VoidController(CentralPointOfSalesController facade) {
         super(facade);
     }
 

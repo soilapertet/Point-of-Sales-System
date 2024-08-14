@@ -1,24 +1,22 @@
 package com.PointOfSaleSystem.Controllers;
 
-import com.PointOfSaleSystem.CentralPOSFacade.CentralPointOfSalesFacade;
+import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
 import com.PointOfSaleSystem.StoreDatabase.EmployeeDatabase;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
-import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.util.Scanner;
 
-public class EmployeeInputController extends CentralPointOfSalesFacade {
+public class EmployeeInputController extends CentralPointOfSalesController {
 
     // Define instance variables
-    private CentralPointOfSalesFacade centralPOSFacade;
+    private CentralPointOfSalesController centralPOSFacade;
     private int employeeID;
     private String loginPassword;
     private EmployeeDatabase employeeDB;
 
     // Define class constructor
-    public EmployeeInputController(CentralPointOfSalesFacade facade) {
+    public EmployeeInputController(CentralPointOfSalesController facade) {
 
         super(facade);
 

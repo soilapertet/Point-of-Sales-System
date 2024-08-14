@@ -1,14 +1,11 @@
 package com.PointOfSaleSystem.Controllers;
 
-import com.PointOfSaleSystem.CentralPOSFacade.CentralPointOfSalesFacade;
+import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
 import com.PointOfSaleSystem.StoreDatabase.EmployeeDatabase;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Updates;
-import com.mongodb.client.result.UpdateResult;
-import org.bson.Document;
 import org.bson.conversions.Bson;
 
-public class ClockInController  extends CentralPointOfSalesFacade {
+public class ClockInController extends CentralPointOfSalesController {
 
     private EmployeeDatabase employeeDB;
     private boolean clockedIn;
@@ -16,7 +13,7 @@ public class ClockInController  extends CentralPointOfSalesFacade {
     private String clockInPassword;
     private boolean clockedInStatus;
 
-    public ClockInController(CentralPointOfSalesFacade facade) {
+    public ClockInController(CentralPointOfSalesController facade) {
 
         super(facade);
 
@@ -27,8 +24,7 @@ public class ClockInController  extends CentralPointOfSalesFacade {
 
     public void clockInEmployee() {
 
-        // Access the current EmployerInputController instead of initialising a new one
-        EmployeeInputController eic = this.getCentralPOSFacade().getEmployeeInputController();
+        EmployeeInputController eic = this.getEmployeeInputController();
         boolean isCashEmployee;
 
         // 1. Get employeeID
@@ -43,7 +39,7 @@ public class ClockInController  extends CentralPointOfSalesFacade {
             eic.getLoginPasswordInput();
             clockInPassword = eic.getLoginPassword();
             clockedIn = true;
-            setClockedInStatus();
+            System.out.println("You have successfully clocked in!!!");
         } else {
             System.err.println("Error: You are not authorised to clock into the cash register.");
         }
@@ -56,22 +52,6 @@ public class ClockInController  extends CentralPointOfSalesFacade {
                 Filters.eq("loginPassword", clockInPassword));
 
         clockedInStatus = employeeDB.getEmployeesCollection().find(filter).first().getBoolean("clockedIn");
-    }
-
-    // Update clockedIn status of the user
-    private void setClockedInStatus() {
-
-        // Initialise filter using employeeID
-        Bson filter = Filters.eq("employeeID", cashEmployeeID);
-
-        // Specify the update
-        Bson update = Updates.set("clockedIn", true);
-
-        // Find document and update clock in status
-        UpdateResult result = employeeDB.getEmployeesCollection().updateOne(filter, update);
-
-        System.out.println("Successfully update clockedIn status of employee");
-
     }
 
     // Define getter methods
