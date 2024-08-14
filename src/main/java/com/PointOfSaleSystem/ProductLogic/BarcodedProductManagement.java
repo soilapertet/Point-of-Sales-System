@@ -1,10 +1,8 @@
 package com.PointOfSaleSystem.ProductLogic;
 
 import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
-import com.PointOfSaleSystem.Controllers.ScanProductsController;
 
 import java.text.DecimalFormat;
-import java.util.List;
 
 public class BarcodedProductManagement extends CentralPointOfSalesController {
 
@@ -151,6 +149,16 @@ public class BarcodedProductManagement extends CentralPointOfSalesController {
 
         // 2. Set the sales associate ID
         scannedProduct.setSalesAssociateID(associateID);
+    }
+
+    // Add line comment to product
+    public void addLineComment(long upc, String note) {
+
+        // 1. Get the scanned product to which we add a note
+        scannedProduct = this.getCentralPOSController().getScanProductsController().getBarcodedProduct(upc);
+
+        // 2. Set the product note
+        scannedProduct.setProductNote(note);
     }
 
     // Define getter method

@@ -30,7 +30,7 @@ public class BarcodedProduct {
     private List<Document> productVariants;
     private int salesAssociateID;
     private boolean discountApplied;
-    private String lineComment;
+    private String productNote;
 
     // Define the class constructor
     public BarcodedProduct(long productUPC) {
@@ -178,6 +178,7 @@ public class BarcodedProduct {
     public void setPrice(double price) { this.price = price; }
     public void setProductQuantity(int quantity) { this.productQuantity = quantity; }
     public void setSalesAssociateID(int associateID) { this.salesAssociateID = associateID; }
+    public void setProductNote(String note) { this.productNote = note; }
 }
 
 
