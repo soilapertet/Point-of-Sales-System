@@ -13,35 +13,48 @@ public class ClockInController extends CentralPointOfSalesController {
     private String clockInPassword;
     private boolean clockedInStatus;
 
-    public ClockInController(CentralPointOfSalesController facade) {
+    public ClockInController(CentralPointOfSalesController controller) {
 
-        super(facade);
+        super(controller);
 
         // Connect to store database and initialise "employees" collection
         employeeDB = EmployeeDatabase.getInstance();
         employeeDB.initialiseEmployeesCollection();
     }
 
-    public void clockInEmployee() {
+    public void clockInEmployee(int idInput, String passwordInput) throws Exception {
 
-        EmployeeInputController eic = this.getEmployeeInputController();
+        EmployeeInputController eic = this.getCentralPOSController().getEmployeeInputController();
+//        int associateID = eic.getEmployeeIDInput();
+        int associateID;
+        String associatePassword;
         boolean isCashEmployee;
 
         // 1. Get employeeID
-        eic.getEmployeeIDInput();
+        try {
+            associateID = idInput;
+            eic.verifyEmployeeIDInput(associateID);
+        } catch(Exception e) {
+            System.err.println(e.getMessage());
+        }
 
         // 2. Check if employee is in Cash department
-        cashEmployeeID = eic.getEmployeeID();
-        isCashEmployee = employeeDB.isInCashDep(cashEmployeeID);
+        isCashEmployee = employeeDB.isInCashDep(eic.getEmployeeID());
 
         // 3. Update clock in status if they are cash-trained; else, display error message
         if(isCashEmployee) {
-            eic.getLoginPasswordInput();
-            clockInPassword = eic.getLoginPassword();
-            clockedIn = true;
-            System.out.println("You have successfully clocked in!!!");
+            cashEmployeeID = eic.getEmployeeID();
+            try{
+                associatePassword = passwordInput;
+                eic.verifyLoginPasswordInput(associatePassword);
+                clockInPassword = eic.getLoginPassword();
+                clockedIn = true;
+                System.out.println("You have successfully clocked in!!!");
+            } catch(Exception e) {
+                System.err.println(e.getMessage());
+            }
         } else {
-            System.err.println("Error: You are not authorised to clock into the cash register.");
+            throw new Exception("Error: You are not authorised to clock into the cash register.");
         }
     }
 

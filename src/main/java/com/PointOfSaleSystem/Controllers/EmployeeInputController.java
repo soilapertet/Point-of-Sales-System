@@ -26,7 +26,7 @@ public class EmployeeInputController extends CentralPointOfSalesController {
     }
 
     // Prompt user for their employee ID
-    private int promptForEmployeeID() {
+    public int getEmployeeIDInput() {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your Employee ID here: ");
@@ -34,7 +34,7 @@ public class EmployeeInputController extends CentralPointOfSalesController {
     }
 
     // Prompt user for their login password
-    private String promptForLoginPassword() {
+    public String getLoginPasswordInput() {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your login password here: ");
@@ -42,7 +42,7 @@ public class EmployeeInputController extends CentralPointOfSalesController {
     }
 
     // Check if user's employee ID is valid
-    private boolean checkIfEmployeeIDIsValid(int id) {
+    private boolean isEmployeeIDValid(int id) {
 
         boolean isValidEmployeeID;
         isValidEmployeeID = employeeDB.isInEmployeeDatabase(id);
@@ -50,7 +50,7 @@ public class EmployeeInputController extends CentralPointOfSalesController {
     }
 
     // Check if user's login password is valid
-    private boolean checkIfLoginPasswordIsValid(int employeeID, String password) {
+    private boolean isLoginPasswordValid(int employeeID, String password) {
 
         boolean isValidLoginPassword;
 
@@ -62,30 +62,23 @@ public class EmployeeInputController extends CentralPointOfSalesController {
         return isValidLoginPassword;
     }
 
-    // Get user's employee ID
-    public void getEmployeeIDInput() {
+    // Manage employee ID input
+    public void verifyEmployeeIDInput(int associateID) throws Exception{
 
-        int idInput = promptForEmployeeID();
-
-        while(!checkIfEmployeeIDIsValid(idInput)) {
-            System.err.println("Employee ID not in database. Please try again.\n");
-            idInput = promptForEmployeeID();
+        if(isEmployeeIDValid(associateID)) {
+            this.employeeID = associateID;
+        } else {
+            throw new Exception("Employee ID could not be found in database. Please try again.\n");
         }
-
-        this.employeeID = idInput;
     }
 
-    // Get user's login password
-    public void getLoginPasswordInput() {
-
-        String passwordInput = promptForLoginPassword();
-
-        while(!checkIfLoginPasswordIsValid(getEmployeeID(), passwordInput)) {
-            System.err.println("Incorrect password. Please try again.\n");
-            passwordInput = promptForLoginPassword();
+    // Manage login password input
+    public void verifyLoginPasswordInput(String passwordInput) throws Exception {
+        if(isLoginPasswordValid(getEmployeeID(), passwordInput)) {
+            this.loginPassword = passwordInput;
+        } else {
+            throw new Exception("Incorrect password. Please try again.");
         }
-
-        this.loginPassword = passwordInput;
     }
 
     // Define getter methods
