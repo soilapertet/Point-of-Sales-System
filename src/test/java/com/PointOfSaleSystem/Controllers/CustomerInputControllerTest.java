@@ -21,7 +21,7 @@ public class CustomerInputControllerTest {
     public void checkForCustomerAccountWithPhoneNumberInDBTest() {
 
         long inputPhoneNum = 4032553653L;
-        customerInputController.accessCustomerAccount(inputPhoneNum);
+        customerInputController.checkForCustomerAccount(inputPhoneNum);
 
         String expectedFName = "Taylor";
         String expectedLName = "Patel";
