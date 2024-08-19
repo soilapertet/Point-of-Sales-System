@@ -146,6 +146,7 @@ public class CustomerInputController extends CentralPointOfSalesController {
         this.customerLastName = matchingDocs.first().getString("lastName");
         this.phoneNumber = matchingDocs.first().getLong("phoneNumber");
         this.emailAddress = matchingDocs.first().getString("emailAddress");
+        this.membershipID = matchingDocs.first().getInteger("membershipID");
         this.guestMode = false;
 
         System.out.println("Customer info has been set for transaction");
@@ -199,4 +200,6 @@ public class CustomerInputController extends CentralPointOfSalesController {
     public boolean getGuestModeStatus() {return guestMode;}
 
     public ObjectId getUniqueID() { return uniqueID;}
+
+    public int getMembershipID() { return membershipID; }
 }
