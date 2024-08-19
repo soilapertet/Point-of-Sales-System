@@ -54,6 +54,8 @@ public class CustomerInputController extends CentralPointOfSalesController {
         // Set customer details if they have a membership
         if(isCustomerAMember) {
             setCustomerInfo();
+        } else {
+            System.err.println("Customer account could not be found with the provided phone number.");
         }
     }
 
@@ -70,6 +72,8 @@ public class CustomerInputController extends CentralPointOfSalesController {
         // Set customer details if they have a membership
         if(isCustomerAMember) {
             setCustomerInfo();
+        } else {
+            System.err.println("Customer account could not be found with the provided membership ID.");
         }
     }
 
@@ -86,6 +90,8 @@ public class CustomerInputController extends CentralPointOfSalesController {
         // Set customer details if they have a membership
         if(isCustomerAMember) {
             setCustomerInfo();
+        } else {
+            System.err.println("Customer account could not be found with the provided email address.");
         }
     }
 
@@ -103,6 +109,8 @@ public class CustomerInputController extends CentralPointOfSalesController {
         // Set customer details if they have a membership
         if(isCustomerAMember) {
             setCustomerInfo();
+        } else {
+            System.err.println("Customer account could not be found with the provided customer name.");
         }
     }
 

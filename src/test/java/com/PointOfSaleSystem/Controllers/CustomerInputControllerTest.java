@@ -2,7 +2,9 @@ package com.PointOfSaleSystem.Controllers;
 
 import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
 
@@ -57,5 +59,30 @@ public class CustomerInputControllerTest {
 
         assertEquals(expectedEmail, customerInputController.getEmailAddress());
         assertEquals(expectedPhoneNum, customerInputController.getPhoneNumber());
+    }
+
+    @Test
+    public void checkForCustomerAccountWithEmailNotInDbTest() {
+
+        String inputEmail = "theattacktitanrules@me.ca";
+        customerInputController.checkForCustomerAccount(inputEmail);
+        assertTrue(customerInputController.getGuestModeStatus());
+    }
+
+    @Test
+    public void checkForCustomerAccountWithPhoneNumNotInDbTest() {
+
+        long inputPhoneNum = 3063685363L;
+        customerInputController.checkForCustomerAccount(inputPhoneNum);
+        assertTrue(customerInputController.getGuestModeStatus());
+    }
+
+    @Test
+    public void checkForCustomerAccountWithNameNotInDbTest() {
+
+        String inputFName = "Rob";
+        String inputLName = "Lucci";
+        customerInputController.checkForCustomerAccount(inputFName, inputLName);
+        assertTrue(customerInputController.getGuestModeStatus());
     }
 }
