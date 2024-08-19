@@ -50,7 +50,7 @@ public class CustomerInputController extends CentralPointOfSalesController {
 
         // Check if customer has an account
         isCustomerAMember = hasACustomerAccount();
-        setCustomerInfo(isCustomerAMember);
+        setCustomerInfo();
     }
 
     public void checkForCustomerAccount(int inputMembershipID) {
@@ -62,7 +62,7 @@ public class CustomerInputController extends CentralPointOfSalesController {
 
         // Check if customer has an account
         isCustomerAMember = hasACustomerAccount();
-        setCustomerInfo(isCustomerAMember);
+        setCustomerInfo();
     }
 
     public void checkForCustomerAccount(String inputEmail) {
@@ -74,7 +74,7 @@ public class CustomerInputController extends CentralPointOfSalesController {
 
         // Check if customer has an account
         isCustomerAMember = hasACustomerAccount();
-        setCustomerInfo(isCustomerAMember);
+        setCustomerInfo();
     }
 
     public void checkForCustomerAccount(String fNameInput, String lNameInput) {
