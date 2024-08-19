@@ -38,28 +38,8 @@ public class CustomerInputController extends CentralPointOfSalesController {
         // Connect to store database and initialise "customer_account" collection
         customerDB = CustomerDatabase.getInstance();
         customerDB.initialiseCustomersCollection();
+        this.guestMode = true;
     }
-
-//    // Prompt for customer details : Phone number, Email address, First name, Last name
-//    public void promptForCustomerDetails() {
-//
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.println("Enter customer information here: ");
-//
-//        // check if input is a phone number; else check if it's an email address or customer name+0
-//        if(scanner.hasNextLong()) {
-//            inputPhoneNumber = scanner.nextLong();
-//        } else {
-//            String input = scanner.nextLine();
-//
-//            if(input.contains("@")) {
-//                inputEmail = input;
-//            } else {
-//                firstNameInput = input.split(" ")[0];
-//                lastNameInput = input.split(" ")[1];
-//            }
-//        }
-//    }
 
     public void accessCustomerAccount(long inputPhoneNumber) {
 
@@ -73,7 +53,7 @@ public class CustomerInputController extends CentralPointOfSalesController {
         setCustomerInfo(isCustomerAMember);
     }
 
-    public void accessCustomerAccount(int inputMembershipID) {
+    public void checkForCustomerAccount(int inputMembershipID) {
 
         boolean isCustomerAMember;
 
@@ -85,7 +65,7 @@ public class CustomerInputController extends CentralPointOfSalesController {
         setCustomerInfo(isCustomerAMember);
     }
 
-    public void accessCustomerAccount(String inputEmail) {
+    public void checkForCustomerAccount(String inputEmail) {
 
         boolean isCustomerAMember;
 
@@ -97,7 +77,7 @@ public class CustomerInputController extends CentralPointOfSalesController {
         setCustomerInfo(isCustomerAMember);
     }
 
-    public void accessCustomerAccount(String fNameInput, String lNameInput) {
+    public void checkForCustomerAccount(String fNameInput, String lNameInput) {
 
         boolean isCustomerAMember;
 
@@ -107,7 +87,11 @@ public class CustomerInputController extends CentralPointOfSalesController {
 
         // Check if customer has an account
         isCustomerAMember = hasACustomerAccount();
-        setCustomerInfo(isCustomerAMember);
+
+        // Set customer details if they have a membership
+        if(isCustomerAMember) {
+            setCustomerInfo();
+        }
     }
 
     // Define a method to check if the user has a customer account
@@ -123,29 +107,29 @@ public class CustomerInputController extends CentralPointOfSalesController {
     }
 
     // Set the customer info based on customer details in customer DB
-    private void setCustomerInfo(boolean inDB) {
+    private void setCustomerInfo() {
 
         Bson filter; FindIterable<Document> matchingDocs;
 
-        if(inDB) {
-            if(inputEmail != null) {
-                filter = Filters.eq("emailAddress", inputEmail);
-            } else if(inputPhoneNumber != 0) {
-                filter = Filters.eq("phoneNumber", inputPhoneNumber);
-            } else {
-                filter = Filters.and(Filters.eq("firstName", firstNameInput),
-                        Filters.eq("lastName", lastNameInput));
-            }
-
-            matchingDocs = customerDB.getCustomersCollection().find(filter);
-            this.uniqueID = matchingDocs.first().getObjectId("_id");
-            this.customerFirstName = matchingDocs.first().getString("firstName");
-            this.customerLastName = matchingDocs.first().getString("lastName");
-            this.phoneNumber = matchingDocs.first().getLong("phoneNumber");
-            this.emailAddress = matchingDocs.first().getString("emailAddress");
-            this.guestMode = false;
-            System.out.println("Customer info has been set for transaction");
+        if(inputEmail != null) {
+            filter = Filters.eq("emailAddress", inputEmail);
+        } else if(inputPhoneNumber != 0) {
+            filter = Filters.eq("phoneNumber", inputPhoneNumber);
+        } else {
+            filter = Filters.and(Filters.eq("firstName", firstNameInput),
+                    Filters.eq("lastName", lastNameInput));
         }
+
+        matchingDocs = customerDB.getCustomersCollection().find(filter);
+        this.uniqueID = matchingDocs.first().getObjectId("_id");
+        this.customerFirstName = matchingDocs.first().getString("firstName");
+        this.customerLastName = matchingDocs.first().getString("lastName");
+        this.phoneNumber = matchingDocs.first().getLong("phoneNumber");
+        this.emailAddress = matchingDocs.first().getString("emailAddress");
+        this.guestMode = false;
+
+        System.out.println("Customer info has been set for transaction");
+
     }
 
     // Create a customer account based on user input
