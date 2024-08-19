@@ -9,7 +9,7 @@ import com.PointOfSaleSystem.ProductLogic.BarcodedProductManagement;
 public class CentralPointOfSalesController {
 
     // Define instance variables
-    private CentralPointOfSalesController centralPOSFacade = null;
+    private CentralPointOfSalesController centralPOSController = null;
     private ClockInController clockInController;
     private CustomerInputController customerInputController;
     private EmployeeInputController employeeInputController;
@@ -22,8 +22,8 @@ public class CentralPointOfSalesController {
     }
 
     // Class constructor will be used by child classes
-    public CentralPointOfSalesController(CentralPointOfSalesController centralPOSFacade) {
-        this.centralPOSFacade = centralPOSFacade;
+    public CentralPointOfSalesController(CentralPointOfSalesController centralPOSController) {
+        this.centralPOSController = centralPOSController;
     }
 
     private CentralPointOfSalesController() {

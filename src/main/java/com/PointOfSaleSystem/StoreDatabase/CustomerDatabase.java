@@ -74,6 +74,7 @@ public class CustomerDatabase extends Database {
         return matchingDocs.iterator().hasNext();
     }
 
+
     // Define a method to create a new customer and add them to the database
     public void addCustomerToDB(String fName, String lName, long phoneNumber, String email) {
 
