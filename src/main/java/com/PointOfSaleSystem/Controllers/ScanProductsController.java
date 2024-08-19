@@ -27,9 +27,9 @@ public class ScanProductsController extends CentralPointOfSalesController {
     private final DecimalFormat DECIMALFORMAT;
 
     // Define the class constructor
-    public ScanProductsController(CentralPointOfSalesController facade) {
+    public ScanProductsController(CentralPointOfSalesController controller) {
 
-        super(facade);
+        super(controller);
 
         // Connect to store database and initialise "inventory" collection
         inventoryDB = InventoryDatabase.getInstance();
@@ -63,15 +63,6 @@ public class ScanProductsController extends CentralPointOfSalesController {
     private void addBarcodedProductsViaUPC() {
         barcodedProduct = new BarcodedProduct(this.scannedUPC);
         this.scannedBarcodedProducts.add(barcodedProduct);
-
-        // Testing purposes
-        System.out.println(barcodedProduct.getProductUPC());
-        System.out.println(barcodedProduct.getProductID());
-        System.out.println(barcodedProduct.getProductName());
-        System.out.println(barcodedProduct.getPrice());
-        System.out.println(barcodedProduct.getColour());
-        System.out.println(barcodedProduct.getClothingSize());
-        System.out.println(barcodedProduct.getShoeSize());
     }
 
     private void addBarcodedProductsViaProductID() {
@@ -86,41 +77,56 @@ public class ScanProductsController extends CentralPointOfSalesController {
         }
 
         this.scannedBarcodedProducts.add(barcodedProduct);
-
-        // Testing purposes
-        System.out.println(barcodedProduct.getProductUPC());
-        System.out.println(barcodedProduct.getProductID());
-        System.out.println(barcodedProduct.getProductName());
-        System.out.println(barcodedProduct.getPrice());
-        System.out.println(barcodedProduct.getColour());
-        System.out.println(barcodedProduct.getClothingSize());
-        System.out.println(barcodedProduct.getShoeSize());
     }
 
     // Update the subtotal price while scanning products
     private void updateSubtotalPrice() {
         this.subtotalPrice += barcodedProduct.getPrice();
         this.subtotalPrice = Double.parseDouble(DECIMALFORMAT.format(subtotalPrice));
-
-        // Testing purposes
-        System.out.println("Current subtotal: $ " + this.subtotalPrice);
     }
 
     // Calculate the total price with taxes
     private void calculateTotalPrice() {
         this.totalPrice = (this.subtotalPrice * this.GST) + this.subtotalPrice;
         this.totalPrice = Double.parseDouble(DECIMALFORMAT.format(totalPrice));
-        System.out.println("Total amount: $" + this.totalPrice);
     }
 
-    // Update the stock quantity once we have scanned the product
-
-
-    // Main method which deals with scanning products
+    // Method which deals with scanning products
     public void scanBarcodeProduct() {
 
         // 1. Scan the upc on the product
          scanProduct();
+
+        // Check if input is the product upc
+        if(scannedUPC != 0) {
+            // Check if the product upc is in the database
+            if(inventoryDB.isProductUPCInDB(scannedUPC)) {
+                // Create an instance of a barcoded product using the upc
+                addBarcodedProductsViaUPC();
+            } else {
+                // Display error message
+                System.out.println("Scanned UPC cannot be found in the inventory database");
+            }
+        }
+        // Check if the input is the product id
+        else if(scannedProductID != 0) {
+            if(inventoryDB.isProductIDInDB(scannedProductID)) {
+                addBarcodedProductsViaProductID();
+            } else {
+                // Display error message
+                System.out.println("Scanned Product ID cannot be found in the inventory database");
+            }
+        }
+
+        // Update subtotal price and total price of scanned products
+        updateSubtotalPrice();
+        calculateTotalPrice();
+    }
+
+    //*** Separate method used primarily for testing purpose ***//
+    public void scanBarcodeProduct(long upc) {
+
+        this.scannedUPC = upc;
 
         // Check if input is the product upc
         if(scannedUPC != 0) {
@@ -165,6 +171,18 @@ public class ScanProductsController extends CentralPointOfSalesController {
         } else {
             this.inputClothingSize = scanner.next();
         }
+    }
+
+    // Search and return barcoded product using the provided upc
+    public BarcodedProduct getBarcodedProduct(long upc) {
+
+        for(BarcodedProduct barcodedProduct : scannedBarcodedProducts) {
+            if(barcodedProduct.getProductUPC() == upc) {
+                return barcodedProduct;
+            }
+        }
+
+        return null;
     }
 
     // Define getter methods

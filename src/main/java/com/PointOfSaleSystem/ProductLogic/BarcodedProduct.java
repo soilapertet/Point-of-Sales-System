@@ -21,6 +21,7 @@ public class BarcodedProduct {
     private long productUPC;
     private int productID;
     private String productCategory;
+    private int productQuantity;
     private double price;
     private int stockQuantity;
     private double shoeSize;
@@ -90,6 +91,7 @@ public class BarcodedProduct {
         this.productName = matchedProduct.getString("abbreviation");
         this.productCategory = matchedProduct.getString("category");
         this.price = matchedProduct.getDouble("price");
+        this.productQuantity = 1;
 
         // Get the product variants
         this.productVariants = (List<Document>) matchedProduct.get("variants");
@@ -163,6 +165,7 @@ public class BarcodedProduct {
     public int getProductID() { return productID; }
     public String getProductName() { return productName; }
     public String getProductCategory() { return productCategory; }
+    public int getProductQuantity() { return productQuantity; }
     public double getPrice() { return price; }
     public String getColour() { return colour; }
     public String getClothingSize() { return clothingSize; }
@@ -170,13 +173,9 @@ public class BarcodedProduct {
     public int getStockQuantity() { return stockQuantity; }
 
     // Define setter methods
-    public void setDiscountApplied(boolean discountApplied) {
-        this.discountApplied = discountApplied;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
+    public void setDiscountApplied(boolean discountApplied) { this.discountApplied = discountApplied; }
+    public void setPrice(double price) { this.price = price; }
+    public void setProductQuantity(int quantity) { this.productQuantity = quantity; }
 }
 
 

@@ -35,11 +35,12 @@ public class CentralPointOfSalesController {
     }
 
     // Define getter methods
-    public ClockInController getClockInController() { return clockInController; }
-    public CustomerInputController getCustomerInputController() { return customerInputController; }
-    public EmployeeInputController getEmployeeInputController() { return employeeInputController; }
-    public ScanProductsController getScanProductsController() { return scanProductsController; }
-    public BarcodedProductManagement getBarcodedProductManagement() { return barcodedProductManagement; }
+    public CentralPointOfSalesController getCentralPOSController() { return this.centralPOSController; }
+    public ClockInController getClockInController() { return this.clockInController; }
+    public CustomerInputController getCustomerInputController() { return this.customerInputController; }
+    public EmployeeInputController getEmployeeInputController() { return this.employeeInputController; }
+    public ScanProductsController getScanProductsController() { return this.scanProductsController; }
+    public BarcodedProductManagement getBarcodedProductManagement() { return this.barcodedProductManagement; }
 }
 
 
