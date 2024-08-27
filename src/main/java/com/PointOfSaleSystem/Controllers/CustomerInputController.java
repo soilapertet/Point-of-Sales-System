@@ -41,7 +41,7 @@ public class CustomerInputController extends CentralPointOfSalesController {
         this.guestMode = true;
     }
 
-    public void checkForCustomerAccount(long inputPhoneNumber) {
+    public void checkForCustomerAccount(long inputPhoneNumber) throws Exception {
 
         boolean isCustomerAMember;
 
@@ -55,11 +55,11 @@ public class CustomerInputController extends CentralPointOfSalesController {
         if(isCustomerAMember) {
             setCustomerInfo();
         } else {
-            System.err.println("Customer account could not be found with the provided phone number.");
+            throw new Exception ("Customer account could not be found with the provided phone number.");
         }
     }
 
-    public void checkForCustomerAccount(int inputMembershipID) {
+    public void checkForCustomerAccount(int inputMembershipID) throws Exception {
 
         boolean isCustomerAMember;
 
@@ -73,11 +73,11 @@ public class CustomerInputController extends CentralPointOfSalesController {
         if(isCustomerAMember) {
             setCustomerInfo();
         } else {
-            System.err.println("Customer account could not be found with the provided membership ID.");
+            throw new Exception("Customer account could not be found with the provided membership ID.");
         }
     }
 
-    public void checkForCustomerAccount(String inputEmail) {
+    public void checkForCustomerAccount(String inputEmail) throws Exception {
 
         boolean isCustomerAMember;
 
@@ -91,11 +91,11 @@ public class CustomerInputController extends CentralPointOfSalesController {
         if(isCustomerAMember) {
             setCustomerInfo();
         } else {
-            System.err.println("Customer account could not be found with the provided email address.");
+            throw new Exception("Customer account could not be found with the provided email address.");
         }
     }
 
-    public void checkForCustomerAccount(String fNameInput, String lNameInput) {
+    public void checkForCustomerAccount(String fNameInput, String lNameInput) throws Exception {
 
         boolean isCustomerAMember;
 
@@ -110,7 +110,7 @@ public class CustomerInputController extends CentralPointOfSalesController {
         if(isCustomerAMember) {
             setCustomerInfo();
         } else {
-            System.err.println("Customer account could not be found with the provided customer name.");
+            throw new Exception("Customer account could not be found with the provided customer name.");
         }
     }
 
