@@ -121,6 +121,8 @@ public class CustomerInputController extends CentralPointOfSalesController {
             return customerDB.isInCustomerDatabase(inputPhoneNumber);
         } else if(inputEmail != null) {
             return customerDB.isInCustomerDatabase(inputEmail);
+        } else if(inputMembershipID != 0) {
+            return customerDB.isInCustomerDatabase(inputMembershipID);
         } else {
             return customerDB.isInCustomerDatabase(firstNameInput, lastNameInput);
         }
@@ -135,6 +137,8 @@ public class CustomerInputController extends CentralPointOfSalesController {
             filter = Filters.eq("emailAddress", inputEmail);
         } else if(inputPhoneNumber != 0) {
             filter = Filters.eq("phoneNumber", inputPhoneNumber);
+        } else if(inputMembershipID != 0) {
+            filter = Filters.eq("membershipID", inputMembershipID);
         } else {
             filter = Filters.and(Filters.eq("firstName", firstNameInput),
                     Filters.eq("lastName", lastNameInput));
@@ -142,6 +146,7 @@ public class CustomerInputController extends CentralPointOfSalesController {
 
         matchingDocs = customerDB.getCustomersCollection().find(filter);
         this.uniqueID = matchingDocs.first().getObjectId("_id");
+        this.membershipID = matchingDocs.first().getInteger("membershipID");
         this.customerFirstName = matchingDocs.first().getString("firstName");
         this.customerLastName = matchingDocs.first().getString("lastName");
         this.phoneNumber = matchingDocs.first().getLong("phoneNumber");
@@ -198,5 +203,5 @@ public class CustomerInputController extends CentralPointOfSalesController {
 
     public boolean getGuestModeStatus() {return guestMode;}
 
-    public ObjectId getUniqueID() { return uniqueID;}
+    public ObjectId getUniqueID() { return uniqueID; }
 }

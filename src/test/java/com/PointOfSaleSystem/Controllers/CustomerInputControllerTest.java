@@ -20,6 +20,19 @@ public class CustomerInputControllerTest {
     }
 
     @Test
+    public void checkForCustomerAccountWithMembershipIDInDBTest() {
+
+        int inputMembershipID = 827491;
+        customerInputController.checkForCustomerAccount(inputMembershipID);
+
+        String expectedFName = "Ginny";
+        String expectedLName = "Weasley";
+
+        assertEquals(expectedFName, customerInputController.getCustomerFirstName());
+        assertEquals(expectedLName, customerInputController.getCustomerLastName());
+    }
+
+    @Test
     public void checkForCustomerAccountWithPhoneNumberInDBTest() {
 
         long inputPhoneNum = 4032553653L;

@@ -74,6 +74,13 @@ public class CustomerDatabase extends Database {
         return matchingDocs.iterator().hasNext();
     }
 
+    // Check if customer is in database through their membership ID
+    public boolean isInCustomerDatabase(int membershipID) {
+        Bson filter = Filters.eq("membershipID", membershipID);
+        FindIterable<Document> matchingDocs = customersCollection.find(filter);
+        return matchingDocs.iterator().hasNext();
+    }
+
 
     // Define a method to create a new customer and add them to the database
     public void addCustomerToDB(String fName, String lName, long phoneNumber, String email) {
