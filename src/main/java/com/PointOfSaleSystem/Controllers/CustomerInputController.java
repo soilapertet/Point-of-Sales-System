@@ -238,7 +238,9 @@ public class CustomerInputController extends CentralPointOfSalesController {
 
     public String getEmailAddress() {return emailAddress;}
 
-    public boolean getGuestModeStatus() {return guestMode;}
-
     public ObjectId getUniqueID() { return uniqueID; }
+
+    public boolean isStaffPurchase() { return staffPurchase; }
+
+    public boolean isGuestMode() { return guestMode; }
 }
