@@ -182,9 +182,13 @@ public class CustomerInputController extends CentralPointOfSalesController {
 
     private void setEmployeeInfo() {
 
-        Bson filter; FindIterable<Document> matchingDocs;
+        Bson filter = null;
+        FindIterable<Document> matchingDocs;
 
-        filter = Filters.eq("employeeId", inputMembershipID);
+        if(inputMembershipID != 0) {
+            filter = Filters.eq("employeeID", inputMembershipID);
+        }
+
         matchingDocs = employeeDB.getEmployeesCollection().find(filter);
         this.uniqueID = matchingDocs.first().getObjectId("_id");
         this.membershipID = matchingDocs.first().getInteger("employeeID");
@@ -230,17 +234,22 @@ public class CustomerInputController extends CentralPointOfSalesController {
     }
 
     // Define getter methods
-    public long getPhoneNumber() {return phoneNumber;}
+    public long getPhoneNumber() { return phoneNumber; }
 
-    public String getCustomerFirstName() {return customerFirstName;}
+    public String getCustomerFirstName() { return customerFirstName; }
 
-    public String getCustomerLastName() {return customerLastName;}
+    public String getCustomerLastName() { return customerLastName; }
 
-    public String getEmailAddress() {return emailAddress;}
+    public String getEmailAddress() { return emailAddress; }
+
+    public String getEmployeeName() { return employeeName; }
+
+    public int getMembershipID() { return membershipID; }
 
     public ObjectId getUniqueID() { return uniqueID; }
 
     public boolean isStaffPurchase() { return staffPurchase; }
 
     public boolean isGuestMode() { return guestMode; }
+
 }

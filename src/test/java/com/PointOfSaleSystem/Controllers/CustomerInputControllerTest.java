@@ -85,7 +85,7 @@ public class CustomerInputControllerTest {
 
         String inputEmail = "theattacktitanrules@me.ca";
         customerInputController.checkForCustomerAccount(inputEmail);
-        assertTrue(customerInputController.getGuestModeStatus());
+        assertTrue(customerInputController.isGuestMode());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class CustomerInputControllerTest {
 
         long inputPhoneNum = 3063685363L;
         customerInputController.checkForCustomerAccount(inputPhoneNum);
-        assertTrue(customerInputController.getGuestModeStatus());
+        assertTrue(customerInputController.isGuestMode());
     }
 
     @Test
@@ -108,7 +108,7 @@ public class CustomerInputControllerTest {
         String inputFName = "Rob";
         String inputLName = "Lucci";
         customerInputController.checkForCustomerAccount(inputFName, inputLName);
-        assertTrue(customerInputController.getGuestModeStatus());
+        assertTrue(customerInputController.isGuestMode());
     }
 
     @Test
@@ -119,6 +119,18 @@ public class CustomerInputControllerTest {
 
         int inputMembershipID = 270820;
         customerInputController.checkForCustomerAccount(inputMembershipID);
-        assertTrue(customerInputController.getGuestModeStatus());
+        assertTrue(customerInputController.isGuestMode());
+    }
+
+    @Test
+    public void initialiseStaffPurchaseTest() throws Exception {
+
+        int inputMembershipID = 113542;
+        customerInputController.checkForCustomerAccount(inputMembershipID);
+
+        String expected = "Ellison Harbich";
+        String actual = customerInputController.getEmployeeName();
+        assertEquals(expected, actual);
+        assertTrue(customerInputController.isStaffPurchase());
     }
 }
