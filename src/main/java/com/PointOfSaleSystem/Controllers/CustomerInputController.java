@@ -41,7 +41,7 @@ public class CustomerInputController extends CentralPointOfSalesController {
         this.guestMode = true;
     }
 
-    public void checkForCustomerAccount(long inputPhoneNumber) {
+    public void checkForCustomerAccount(long inputPhoneNumber) throws Exception {
 
         boolean isCustomerAMember;
 
@@ -55,11 +55,11 @@ public class CustomerInputController extends CentralPointOfSalesController {
         if(isCustomerAMember) {
             setCustomerInfo();
         } else {
-            System.err.println("Customer account could not be found with the provided phone number.");
+            throw new Exception ("Customer account could not be found with the provided phone number.");
         }
     }
 
-    public void checkForCustomerAccount(int inputMembershipID) {
+    public void checkForCustomerAccount(int inputMembershipID) throws Exception {
 
         boolean isCustomerAMember;
 
@@ -73,11 +73,11 @@ public class CustomerInputController extends CentralPointOfSalesController {
         if(isCustomerAMember) {
             setCustomerInfo();
         } else {
-            System.err.println("Customer account could not be found with the provided membership ID.");
+            throw new Exception("Customer account could not be found with the provided membership ID.");
         }
     }
 
-    public void checkForCustomerAccount(String inputEmail) {
+    public void checkForCustomerAccount(String inputEmail) throws Exception {
 
         boolean isCustomerAMember;
 
@@ -91,11 +91,11 @@ public class CustomerInputController extends CentralPointOfSalesController {
         if(isCustomerAMember) {
             setCustomerInfo();
         } else {
-            System.err.println("Customer account could not be found with the provided email address.");
+            throw new Exception("Customer account could not be found with the provided email address.");
         }
     }
 
-    public void checkForCustomerAccount(String fNameInput, String lNameInput) {
+    public void checkForCustomerAccount(String fNameInput, String lNameInput) throws Exception {
 
         boolean isCustomerAMember;
 
@@ -110,7 +110,7 @@ public class CustomerInputController extends CentralPointOfSalesController {
         if(isCustomerAMember) {
             setCustomerInfo();
         } else {
-            System.err.println("Customer account could not be found with the provided customer name.");
+            throw new Exception("Customer account could not be found with the provided customer name.");
         }
     }
 
@@ -121,6 +121,8 @@ public class CustomerInputController extends CentralPointOfSalesController {
             return customerDB.isInCustomerDatabase(inputPhoneNumber);
         } else if(inputEmail != null) {
             return customerDB.isInCustomerDatabase(inputEmail);
+        } else if(inputMembershipID != 0) {
+            return customerDB.isInCustomerDatabase(inputMembershipID);
         } else {
             return customerDB.isInCustomerDatabase(firstNameInput, lastNameInput);
         }
@@ -135,6 +137,8 @@ public class CustomerInputController extends CentralPointOfSalesController {
             filter = Filters.eq("emailAddress", inputEmail);
         } else if(inputPhoneNumber != 0) {
             filter = Filters.eq("phoneNumber", inputPhoneNumber);
+        } else if(inputMembershipID != 0) {
+            filter = Filters.eq("membershipID", inputMembershipID);
         } else {
             filter = Filters.and(Filters.eq("firstName", firstNameInput),
                     Filters.eq("lastName", lastNameInput));
@@ -142,11 +146,11 @@ public class CustomerInputController extends CentralPointOfSalesController {
 
         matchingDocs = customerDB.getCustomersCollection().find(filter);
         this.uniqueID = matchingDocs.first().getObjectId("_id");
+        this.membershipID = matchingDocs.first().getInteger("membershipID");
         this.customerFirstName = matchingDocs.first().getString("firstName");
         this.customerLastName = matchingDocs.first().getString("lastName");
         this.phoneNumber = matchingDocs.first().getLong("phoneNumber");
         this.emailAddress = matchingDocs.first().getString("emailAddress");
-        this.membershipID = matchingDocs.first().getInteger("membershipID");
         this.guestMode = false;
 
         System.out.println("Customer info has been set for transaction");
@@ -199,7 +203,5 @@ public class CustomerInputController extends CentralPointOfSalesController {
 
     public boolean getGuestModeStatus() {return guestMode;}
 
-    public ObjectId getUniqueID() { return uniqueID;}
-
-    public int getMembershipID() { return membershipID; }
+    public ObjectId getUniqueID() { return uniqueID; }
 }
