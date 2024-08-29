@@ -123,7 +123,7 @@ public class CustomerInputControllerTest {
     }
 
     @Test
-    public void initialiseStaffPurchaseTest() throws Exception {
+    public void staffPurchaseWithValidEmployeeIDTest() throws Exception {
 
         int inputMembershipID = 113542;
         customerInputController.checkForCustomerAccount(inputMembershipID);
@@ -132,5 +132,20 @@ public class CustomerInputControllerTest {
         String actual = customerInputController.getEmployeeName();
         assertEquals(expected, actual);
         assertTrue(customerInputController.isStaffPurchase());
+    }
+
+    @Test
+    public void staffPurchaseWithInvalidEmployeeIDTest() throws Exception {
+
+        exception.expect(Exception.class);
+        exception.expectMessage("Customer account could not be found with the provided membership ID.");
+
+        int inputMembershipID = 111881;
+        customerInputController.checkForCustomerAccount(inputMembershipID);
+
+        customerInputController.checkForCustomerAccount(inputMembershipID);
+        assertTrue(customerInputController.isGuestMode());
+        assertFalse(customerInputController.isStaffPurchase());
+
     }
 }
