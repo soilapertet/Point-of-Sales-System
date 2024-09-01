@@ -23,10 +23,10 @@ public class CustomerInputControllerTest {
     }
 
     @Test
-    public void checkForCustomerAccountWithMembershipIDInDBTest() throws Exception {
+    public void searchForCustomerAccountWithMembershipIDInDBTest() throws Exception {
 
         int inputMembershipID = 827491;
-        customerInputController.checkForCustomerAccount(inputMembershipID);
+        customerInputController.searchForCustomerAccount(inputMembershipID);
 
         String expectedFName = "Ginny";
         String expectedLName = "Weasley";
@@ -36,10 +36,10 @@ public class CustomerInputControllerTest {
     }
 
     @Test
-    public void checkForCustomerAccountWithPhoneNumberInDBTest() throws Exception {
+    public void searchForCustomerAccountWithPhoneNumberInDBTest() throws Exception {
 
         long inputPhoneNum = 4032553653L;
-        customerInputController.checkForCustomerAccount(inputPhoneNum);
+        customerInputController.searchForCustomerAccount(inputPhoneNum);
 
         String expectedFName = "Taylor";
         String expectedLName = "Patel";
@@ -49,10 +49,10 @@ public class CustomerInputControllerTest {
     }
 
     @Test
-    public void checkForCustomerAccountWithEmailAddressInDBTest() throws Exception {
+    public void searchForCustomerAccountWithEmailAddressInDBTest() throws Exception {
 
         String inputEmail = "heWhoShallNotBeNamed@telus.net";
-        customerInputController.checkForCustomerAccount(inputEmail);
+        customerInputController.searchForCustomerAccount(inputEmail);
 
         String expectedFName = "Alex";
         String expectedLName = "Nguyen";
@@ -64,11 +64,11 @@ public class CustomerInputControllerTest {
     }
 
     @Test
-    public void checkForCustomerAccountWithNamesInDBTest() throws Exception {
+    public void searchForCustomerAccountWithNamesInDBTest() throws Exception {
 
         String inputFName = "Nate";
         String inputLName = "Archibald";
-        customerInputController.checkForCustomerAccount(inputFName, inputLName);
+        customerInputController.searchForCustomerAccount(inputFName, inputLName);
 
         String expectedEmail = "goldenboy3000@gmail.com";
         long expectedPhoneNum = 4034574464L;
@@ -78,47 +78,47 @@ public class CustomerInputControllerTest {
     }
 
     @Test
-    public void checkForCustomerAccountWithEmailNotInDbTest() throws Exception {
+    public void searchForCustomerAccountWithEmailNotInDbTest() throws Exception {
 
         exception.expect(Exception.class);
         exception.expectMessage("Customer account could not be found with the provided email address.");
 
         String inputEmail = "theattacktitanrules@me.ca";
-        customerInputController.checkForCustomerAccount(inputEmail);
+        customerInputController.searchForCustomerAccount(inputEmail);
         assertTrue(customerInputController.isGuestMode());
     }
 
     @Test
-    public void checkForCustomerAccountWithPhoneNumNotInDbTest() throws Exception {
+    public void searchForCustomerAccountWithPhoneNumNotInDbTest() throws Exception {
 
         exception.expect(Exception.class);
         exception.expectMessage("Customer account could not be found with the provided phone number.");
 
         long inputPhoneNum = 3063685363L;
-        customerInputController.checkForCustomerAccount(inputPhoneNum);
+        customerInputController.searchForCustomerAccount(inputPhoneNum);
         assertTrue(customerInputController.isGuestMode());
     }
 
     @Test
-    public void checkForCustomerAccountWithNameNotInDbTest() throws Exception {
+    public void searchForCustomerAccountWithNameNotInDbTest() throws Exception {
 
         exception.expect(Exception.class);
         exception.expectMessage("Customer account could not be found with the provided customer name.");
 
         String inputFName = "Rob";
         String inputLName = "Lucci";
-        customerInputController.checkForCustomerAccount(inputFName, inputLName);
+        customerInputController.searchForCustomerAccount(inputFName, inputLName);
         assertTrue(customerInputController.isGuestMode());
     }
 
     @Test
-    public void checkForCustomerAccountWithMembershipIDNotInDbTest() throws Exception {
+    public void searchForCustomerAccountWithMembershipIDNotInDbTest() throws Exception {
 
         exception.expect(Exception.class);
-        exception.expectMessage("Customer account could not be found with the provided membership ID.");
+        exception.expectMessage("Customer account could not be found with the provided ID.");
 
         int inputMembershipID = 270820;
-        customerInputController.checkForCustomerAccount(inputMembershipID);
+        customerInputController.searchForCustomerAccount(inputMembershipID);
         assertTrue(customerInputController.isGuestMode());
     }
 
@@ -126,7 +126,7 @@ public class CustomerInputControllerTest {
     public void staffPurchaseWithValidEmployeeIDTest() throws Exception {
 
         int inputMembershipID = 113542;
-        customerInputController.checkForCustomerAccount(inputMembershipID);
+        customerInputController.searchForCustomerAccount(inputMembershipID);
 
         String expected = "Ellison Harbich";
         String actual = customerInputController.getEmployeeName();
@@ -138,12 +138,12 @@ public class CustomerInputControllerTest {
     public void staffPurchaseWithInvalidEmployeeIDTest() throws Exception {
 
         exception.expect(Exception.class);
-        exception.expectMessage("Customer account could not be found with the provided membership ID.");
+        exception.expectMessage("Customer account could not be found with the provided ID.");
 
         int inputMembershipID = 111881;
-        customerInputController.checkForCustomerAccount(inputMembershipID);
+        customerInputController.searchForCustomerAccount(inputMembershipID);
 
-        customerInputController.checkForCustomerAccount(inputMembershipID);
+        customerInputController.searchForCustomerAccount(inputMembershipID);
         assertTrue(customerInputController.isGuestMode());
         assertFalse(customerInputController.isStaffPurchase());
 
