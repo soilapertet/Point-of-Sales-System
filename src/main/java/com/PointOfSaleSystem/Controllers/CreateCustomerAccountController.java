@@ -14,21 +14,8 @@ public class CreateCustomerAccountController extends CentralPointOfSalesControll
     // Define instance variables
     private CustomerDatabase customerDB;
     private EmployeeDatabase employeeDB;
-    private ObjectId uniqueID;
-    private String customerFirstName;
-    private String customerLastName;
-    private String employeeName;
-    private long phoneNumber;
-    private String emailAddress;
-    private int membershipID;
-    private boolean guestMode;
-    private boolean staffPurchase;
-
-    private String inputEmail;
-    private String firstNameInput;
-    private String lastNameInput;
-    private long inputPhoneNumber;
-    private int inputID;
+    private CentralPointOfSalesController centralPointOfSalesController;
+    private CustomerAccountInfoController customerAccountInfoController;
 
     // Define class constructor
     public CreateCustomerAccountController(CentralPointOfSalesController controller) {
@@ -39,6 +26,9 @@ public class CreateCustomerAccountController extends CentralPointOfSalesControll
         customerDB = CustomerDatabase.getInstance();
         customerDB.initialiseCustomersCollection();
 
+        // Get the CustomerAccountInfoController
+        customerAccountInfoController = centralPointOfSalesController.getCustomerAccountInfoController();
+
     }
 
     // Create a customer account based on user input
@@ -47,11 +37,11 @@ public class CreateCustomerAccountController extends CentralPointOfSalesControll
             long phoneNumber, String emailAddress
     ) {
         System.out.println("Creating customer account: ");
-        this.customerFirstName =  customerFirstName;
-        this.customerLastName = customerLastName;
-        this.phoneNumber = phoneNumber;
-        this.emailAddress = emailAddress;
-        this.guestMode = false;
+        customerAccountInfoController.setCustomerFirstName(customerFirstName);
+        customerAccountInfoController.setCustomerLastName(customerLastName);
+        customerAccountInfoController.setPhoneNumber(phoneNumber);
+        customerAccountInfoController.setEmailAddress(emailAddress);
+        customerAccountInfoController.setGuestMode(false);
         customerDB.addCustomerToDB(customerFirstName, customerLastName, phoneNumber, emailAddress);
     }
 
@@ -75,19 +65,4 @@ public class CreateCustomerAccountController extends CentralPointOfSalesControll
         // Prints the number of updated documents and the upserted document ID, if an upsert was performed
         System.out.println("Modified document count: " + result.getModifiedCount());
     }
-
-    // Define getter methods
-    public long getPhoneNumber() { return phoneNumber; }
-
-    public String getCustomerFirstName() { return customerFirstName; }
-
-    public String getCustomerLastName() { return customerLastName; }
-
-    public String getEmailAddress() { return emailAddress; }
-
-    public String getEmployeeName() { return employeeName; }
-
-    public int getMembershipID() { return membershipID; }
-
-    public ObjectId getUniqueID() { return uniqueID; }
 }

@@ -1,9 +1,6 @@
 package com.PointOfSaleSystem.CentralPOSLogic;
 
-import com.PointOfSaleSystem.Controllers.ClockInController;
-import com.PointOfSaleSystem.Controllers.CustomerInputController;
-import com.PointOfSaleSystem.Controllers.EmployeeInputController;
-import com.PointOfSaleSystem.Controllers.ScanProductsController;
+import com.PointOfSaleSystem.Controllers.*;
 import com.PointOfSaleSystem.ProductLogic.BarcodedProductManagement;
 
 public class CentralPointOfSalesController {
@@ -11,7 +8,8 @@ public class CentralPointOfSalesController {
     // Define instance variables
     private CentralPointOfSalesController centralPOSController = null;
     private ClockInController clockInController;
-    private CustomerInputController customerInputController;
+    private CustomerAccountInfoController customerAccountInfoController;
+    private CreateCustomerAccountController createCustomerAccountController;
     private EmployeeInputController employeeInputController;
     private ScanProductsController scanProductsController;
     private BarcodedProductManagement barcodedProductManagement;
@@ -28,19 +26,21 @@ public class CentralPointOfSalesController {
 
     private CentralPointOfSalesController() {
         clockInController = new ClockInController(this);
-        customerInputController = new CustomerInputController(this);
         employeeInputController = new EmployeeInputController(this);
         scanProductsController = new ScanProductsController(this);
         barcodedProductManagement = new BarcodedProductManagement(this);
+        customerAccountInfoController = new CustomerAccountInfoController(this);
+        createCustomerAccountController = new CreateCustomerAccountController(this);
     }
 
     // Define getter methods
     public CentralPointOfSalesController getCentralPOSController() { return this.centralPOSController; }
     public ClockInController getClockInController() { return this.clockInController; }
-    public CustomerInputController getCustomerInputController() { return this.customerInputController; }
     public EmployeeInputController getEmployeeInputController() { return this.employeeInputController; }
     public ScanProductsController getScanProductsController() { return this.scanProductsController; }
     public BarcodedProductManagement getBarcodedProductManagement() { return this.barcodedProductManagement; }
+    public CustomerAccountInfoController getCustomerAccountInfoController() { return customerAccountInfoController; }
+    public CreateCustomerAccountController getCreateCustomerAccountController() { return createCustomerAccountController; }
 }
 
 
