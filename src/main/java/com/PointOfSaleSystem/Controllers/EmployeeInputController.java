@@ -10,15 +10,15 @@ import java.util.Scanner;
 public class EmployeeInputController extends CentralPointOfSalesController {
 
     // Define instance variables
-    private CentralPointOfSalesController centralPOSFacade;
+    private CentralPointOfSalesController centralPointOfSalesController;
     private int employeeID;
     private String loginPassword;
     private EmployeeDatabase employeeDB;
 
     // Define class constructor
-    public EmployeeInputController(CentralPointOfSalesController facade) {
+    public EmployeeInputController(CentralPointOfSalesController controller) {
 
-        super(facade);
+        super(controller);
 
         // Connect to store database and initialise "employees" collection
         employeeDB = EmployeeDatabase.getInstance();
@@ -85,7 +85,6 @@ public class EmployeeInputController extends CentralPointOfSalesController {
     public int getEmployeeID() {
         return employeeID;
     }
-
     public String getLoginPassword() {
         return loginPassword;
     }
