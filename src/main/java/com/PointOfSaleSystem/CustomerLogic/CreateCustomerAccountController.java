@@ -48,7 +48,7 @@ public class CreateCustomerAccountController extends CentralPointOfSalesControll
     public void updateCustomerInfo(String fName, String lName, long phoneNumber, String email) {
 
         // Define a filter for the document
-        Bson filter = Filters.eq("_id", getUniqueID());
+        Bson filter = Filters.eq("_id", customerAccountInfoController.getUniqueID());
 
         // Define the updates to the documents (making changes to all the fields if there are any)
         Bson updates = Updates.combine(
