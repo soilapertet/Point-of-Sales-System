@@ -1,4 +1,4 @@
-package com.PointOfSaleSystem.Controllers;
+package com.PointOfSaleSystem.CustomerLogic;
 
 import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
 import com.PointOfSaleSystem.StoreDatabase.CustomerDatabase;
@@ -7,7 +7,6 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
 
 public class CreateCustomerAccountController extends CentralPointOfSalesController {
 

@@ -1,6 +1,8 @@
 package com.PointOfSaleSystem.CentralPOSLogic;
 
 import com.PointOfSaleSystem.Controllers.*;
+import com.PointOfSaleSystem.CustomerLogic.CreateCustomerAccountController;
+import com.PointOfSaleSystem.CustomerLogic.CustomerAccountInfoController;
 import com.PointOfSaleSystem.ProductLogic.BarcodedProductManagement;
 
 public class CentralPointOfSalesController {

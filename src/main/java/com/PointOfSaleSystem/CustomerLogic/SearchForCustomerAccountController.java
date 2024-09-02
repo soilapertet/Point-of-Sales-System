@@ -1,4 +1,4 @@
-package com.PointOfSaleSystem.Controllers;
+package com.PointOfSaleSystem.CustomerLogic;
 
 import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
 import com.PointOfSaleSystem.StoreDatabase.CustomerDatabase;
@@ -14,14 +14,10 @@ public class SearchForCustomerAccountController extends CentralPointOfSalesContr
     // Define instance variables
     private CustomerDatabase customerDB;
     private EmployeeDatabase employeeDB;
-    private ObjectId uniqueID;
-    private String customerFirstName;
-    private String customerLastName;
+    private CustomerAccountInfoController customerAccountInfoController;
     private String employeeName;
-    private long phoneNumber;
-    private String emailAddress;
+    private ObjectId uniqueID;
     private int membershipID;
-    private boolean guestMode;
     private boolean staffPurchase;
 
     private String inputEmail;
@@ -43,8 +39,9 @@ public class SearchForCustomerAccountController extends CentralPointOfSalesContr
         employeeDB = EmployeeDatabase.getInstance();
         employeeDB.initialiseEmployeesCollection();
 
-        this.guestMode = true;
-        this.staffPurchase = false;
+        // Get the instance of the CustomerAccountInfoController class
+        customerAccountInfoController = this.getCentralPOSController().getCustomerAccountInfoController();
+
     }
 
     // Search for customer by phone number
@@ -157,7 +154,7 @@ public class SearchForCustomerAccountController extends CentralPointOfSalesContr
     // Set the customer info based on customer details in customer DB
     private void setCustomerInfo() {
 
-        Bson filter; FindIterable<Document> matchingDocs;
+        Bson filter; Document matchingDoc;
 
         if(inputEmail != null) {
             filter = Filters.eq("emailAddress", inputEmail);
@@ -170,14 +167,14 @@ public class SearchForCustomerAccountController extends CentralPointOfSalesContr
                     Filters.eq("lastName", lastNameInput));
         }
 
-        matchingDocs = customerDB.getCustomersCollection().find(filter);
-        this.uniqueID = matchingDocs.first().getObjectId("_id");
-        this.membershipID = matchingDocs.first().getInteger("membershipID");
-        this.customerFirstName = matchingDocs.first().getString("firstName");
-        this.customerLastName = matchingDocs.first().getString("lastName");
-        this.phoneNumber = matchingDocs.first().getLong("phoneNumber");
-        this.emailAddress = matchingDocs.first().getString("emailAddress");
-        this.guestMode = false;
+        matchingDoc = customerDB.getCustomersCollection().find(filter).first();
+        customerAccountInfoController.setUniqueID(matchingDoc.getObjectId("_id"));
+        customerAccountInfoController.setMembershipID(matchingDoc.getInteger("membershipID"));
+        customerAccountInfoController.setCustomerFirstName(matchingDoc.getString("firstName"));
+        customerAccountInfoController.setCustomerLastName(matchingDoc.getString("lastName"));
+        customerAccountInfoController.setPhoneNumber(matchingDoc.getLong("phoneNumber"));
+        customerAccountInfoController.setEmailAddress(matchingDoc.getString("emailAddress"));
+        customerAccountInfoController.setGuestMode(false);
     }
 
     private void setEmployeeInfo() {
@@ -199,21 +196,9 @@ public class SearchForCustomerAccountController extends CentralPointOfSalesContr
     }
 
     // Define getter methods
-    public long getPhoneNumber() { return phoneNumber; }
-
-    public String getCustomerFirstName() { return customerFirstName; }
-
-    public String getCustomerLastName() { return customerLastName; }
-
-    public String getEmailAddress() { return emailAddress; }
-
     public String getEmployeeName() { return employeeName; }
-
     public int getMembershipID() { return membershipID; }
-
-    public ObjectId getUniqueID() { return uniqueID; }
-
     public boolean isStaffPurchase() { return staffPurchase; }
 
-    public boolean isGuestMode() { return guestMode; }
+
 }
