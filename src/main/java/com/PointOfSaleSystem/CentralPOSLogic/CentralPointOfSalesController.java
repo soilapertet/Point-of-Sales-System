@@ -7,7 +7,7 @@ public class CentralPointOfSalesController {
 
     // Define instance variables
     private CentralPointOfSalesController centralPOSController = null;
-    private ClockInController clockInController;
+    private EmployeeLoginController employeeLoginController;
     private CustomerAccountInfoController customerAccountInfoController;
     private CreateCustomerAccountController createCustomerAccountController;
     private EmployeeInputController employeeInputController;
@@ -25,7 +25,7 @@ public class CentralPointOfSalesController {
     }
 
     private CentralPointOfSalesController() {
-        clockInController = new ClockInController(this);
+        employeeLoginController = new EmployeeLoginController(this);
         employeeInputController = new EmployeeInputController(this);
         scanProductsController = new ScanProductsController(this);
         barcodedProductManagement = new BarcodedProductManagement(this);
@@ -35,7 +35,7 @@ public class CentralPointOfSalesController {
 
     // Define getter methods
     public CentralPointOfSalesController getCentralPOSController() { return this.centralPOSController; }
-    public ClockInController getClockInController() { return this.clockInController; }
+    public EmployeeLoginController getClockInController() { return this.employeeLoginController; }
     public EmployeeInputController getEmployeeInputController() { return this.employeeInputController; }
     public ScanProductsController getScanProductsController() { return this.scanProductsController; }
     public BarcodedProductManagement getBarcodedProductManagement() { return this.barcodedProductManagement; }
