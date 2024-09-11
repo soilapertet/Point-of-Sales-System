@@ -1,7 +1,6 @@
-package com.PointOfSaleSystem.Controllers;
+package com.PointOfSaleSystem.ProductLogic;
 
 import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
-import com.PointOfSaleSystem.ProductLogic.BarcodedProduct;
 import com.PointOfSaleSystem.StoreDatabase.InventoryDatabase;
 
 import java.text.DecimalFormat;
@@ -42,7 +41,7 @@ public class ScanProductsController extends CentralPointOfSalesController {
         this.DECIMALFORMAT  = new DecimalFormat("#.00");
     }
 
-    // Scan the upc of the product
+    // Get the input for the product upc
     private void scanProduct() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Scan item here: ");

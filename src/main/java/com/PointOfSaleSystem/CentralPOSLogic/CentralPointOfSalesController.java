@@ -4,6 +4,7 @@ import com.PointOfSaleSystem.Controllers.*;
 import com.PointOfSaleSystem.CustomerLogic.CreateCustomerAccountController;
 import com.PointOfSaleSystem.CustomerLogic.CustomerAccountInfoController;
 import com.PointOfSaleSystem.ProductLogic.BarcodedProductManagement;
+import com.PointOfSaleSystem.ProductLogic.ScanProductsController;
 import com.PointOfSaleSystem.StaffPurchase.EmployeeInfoController;
 
 public class CentralPointOfSalesController {

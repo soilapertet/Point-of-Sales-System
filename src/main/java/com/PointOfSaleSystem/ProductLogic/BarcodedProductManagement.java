@@ -1,10 +1,8 @@
 package com.PointOfSaleSystem.ProductLogic;
 
 import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
-import com.PointOfSaleSystem.Controllers.ScanProductsController;
 
 import java.text.DecimalFormat;
-import java.util.List;
 
 public class BarcodedProductManagement extends CentralPointOfSalesController {
 
