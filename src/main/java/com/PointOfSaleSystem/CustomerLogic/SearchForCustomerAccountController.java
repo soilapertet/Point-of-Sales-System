@@ -17,10 +17,6 @@ public class SearchForCustomerAccountController extends CentralPointOfSalesContr
     private EmployeeDatabase employeeDB;
     private CustomerAccountInfoController customerAccountInfoController;
     private EmployeeInfoController employeeInfoController;
-    private String employeeName;
-    private ObjectId uniqueID;
-    private int membershipID;
-    private boolean staffPurchase;
 
     private String inputEmail;
     private String firstNameInput;
@@ -43,7 +39,7 @@ public class SearchForCustomerAccountController extends CentralPointOfSalesContr
 
         // Get the instance of the CustomerAccountInfoController class
         customerAccountInfoController = this.getCentralPOSController().getCustomerAccountInfoController();
-
+        employeeInfoController = this.getCentralPOSController().getEmployeeInfoController();
     }
 
     // Search for customer by phone number
@@ -183,7 +179,7 @@ public class SearchForCustomerAccountController extends CentralPointOfSalesContr
 
         Bson filter = null; Document matchingDoc;
 
-        // Checks if the input ID has been provided i.e not empty
+        // Checks if the input ID has been provided i.e. not empty
         if(inputID != 0) {
             filter = Filters.eq("employeeID", inputID);
         }
@@ -191,18 +187,12 @@ public class SearchForCustomerAccountController extends CentralPointOfSalesContr
         // Return the first result
         matchingDoc = employeeDB.getEmployeesCollection().find(filter).first();
 
-        this.uniqueID = matchingDocs.first().getObjectId("_id");
-        this.membershipID = matchingDocs.first().getInteger("employeeID");
-        this.employeeName = matchingDocs.first().getString("employeeName");
-
-        this.staffPurchase = true;
-        this.guestMode = false;
+        // Set the employee info for the staff purchase
+        employeeInfoController.setUniqueID(matchingDoc.getObjectId("_id"));
+        employeeInfoController.setEmployeeID(matchingDoc.getInteger("employeeID"));
+        employeeInfoController.setEmployeeName(matchingDoc.getString("employeeName"));
+        employeeInfoController.setEmploymentType(matchingDoc.getString("employmentType"));
+        employeeInfoController.setStaffPurchase(true);
+        employeeInfoController.setGuestMode(false);
     }
-
-    // Define getter methods
-    public String getEmployeeName() { return employeeName; }
-    public int getMembershipID() { return membershipID; }
-    public boolean isStaffPurchase() { return staffPurchase; }
-
-
 }

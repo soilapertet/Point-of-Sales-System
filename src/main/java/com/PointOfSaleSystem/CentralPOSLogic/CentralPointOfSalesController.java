@@ -4,12 +4,14 @@ import com.PointOfSaleSystem.Controllers.*;
 import com.PointOfSaleSystem.CustomerLogic.CreateCustomerAccountController;
 import com.PointOfSaleSystem.CustomerLogic.CustomerAccountInfoController;
 import com.PointOfSaleSystem.ProductLogic.BarcodedProductManagement;
+import com.PointOfSaleSystem.StaffPurchase.EmployeeInfoController;
 
 public class CentralPointOfSalesController {
 
     // Define instance variables
     private CentralPointOfSalesController centralPOSController = null;
     private EmployeeLoginController employeeLoginController;
+    private EmployeeInfoController employeeInfoController;
     private CustomerAccountInfoController customerAccountInfoController;
     private CreateCustomerAccountController createCustomerAccountController;
     private EmployeeInputController employeeInputController;
@@ -29,6 +31,7 @@ public class CentralPointOfSalesController {
     private CentralPointOfSalesController() {
         employeeLoginController = new EmployeeLoginController(this);
         employeeInputController = new EmployeeInputController(this);
+        employeeInfoController = new EmployeeInfoController(this);
         scanProductsController = new ScanProductsController(this);
         barcodedProductManagement = new BarcodedProductManagement(this);
         customerAccountInfoController = new CustomerAccountInfoController(this);
@@ -43,6 +46,7 @@ public class CentralPointOfSalesController {
     public BarcodedProductManagement getBarcodedProductManagement() { return this.barcodedProductManagement; }
     public CustomerAccountInfoController getCustomerAccountInfoController() { return customerAccountInfoController; }
     public CreateCustomerAccountController getCreateCustomerAccountController() { return createCustomerAccountController; }
+    public EmployeeInfoController getEmployeeInfoController() { return employeeInfoController; }
 }
 
 
