@@ -1,6 +1,7 @@
 package com.PointOfSaleSystem.CustomerLogic;
 
 import com.PointOfSaleSystem.CentralPOSLogic.CentralPointOfSalesController;
+import com.PointOfSaleSystem.StaffPurchase.EmployeeInfoController;
 import com.PointOfSaleSystem.StoreDatabase.CustomerDatabase;
 import com.PointOfSaleSystem.StoreDatabase.EmployeeDatabase;
 import com.mongodb.client.FindIterable;
@@ -15,6 +16,7 @@ public class SearchForCustomerAccountController extends CentralPointOfSalesContr
     private CustomerDatabase customerDB;
     private EmployeeDatabase employeeDB;
     private CustomerAccountInfoController customerAccountInfoController;
+    private EmployeeInfoController employeeInfoController;
     private String employeeName;
     private ObjectId uniqueID;
     private int membershipID;
@@ -179,14 +181,16 @@ public class SearchForCustomerAccountController extends CentralPointOfSalesContr
 
     private void setEmployeeInfo() {
 
-        Bson filter = null;
-        FindIterable<Document> matchingDocs;
+        Bson filter = null; Document matchingDoc;
 
+        // Checks if the input ID has been provided i.e not empty
         if(inputID != 0) {
             filter = Filters.eq("employeeID", inputID);
         }
 
-        matchingDocs = employeeDB.getEmployeesCollection().find(filter);
+        // Return the first result
+        matchingDoc = employeeDB.getEmployeesCollection().find(filter).first();
+
         this.uniqueID = matchingDocs.first().getObjectId("_id");
         this.membershipID = matchingDocs.first().getInteger("employeeID");
         this.employeeName = matchingDocs.first().getString("employeeName");
