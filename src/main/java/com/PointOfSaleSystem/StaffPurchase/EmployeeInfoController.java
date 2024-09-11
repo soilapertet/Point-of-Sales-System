@@ -14,6 +14,7 @@ public class EmployeeInfoController extends CentralPointOfSalesController {
     private boolean guestMode;
     private double staffDiscountPercent;
     private double discountBufferPercent;
+    private double staffDiscountLimit;
 
     public EmployeeInfoController(CentralPointOfSalesController controller) {
         super(controller);
@@ -29,6 +30,7 @@ public class EmployeeInfoController extends CentralPointOfSalesController {
     public String getEmploymentType() { return employmentType; }
     public boolean isStaffPurchase() { return staffPurchase; }
     public boolean isGuestMode() { return guestMode; }
+    public double getStaffDiscountLimit() { return staffDiscountLimit; }
 
     // Define setter methods
     public void setEmployeeName(String employeeName) { this.employeeName = employeeName; }
@@ -37,4 +39,5 @@ public class EmployeeInfoController extends CentralPointOfSalesController {
     public void setEmploymentType(String employmentType) { this.employmentType = employmentType; }
     public void setStaffPurchase(boolean staffPurchase) { this.staffPurchase = staffPurchase; }
     public void setGuestMode(boolean guestMode) { this.guestMode = guestMode; }
+    public void setStaffDiscountLimit(double staffDiscountLimit) { this.staffDiscountLimit = staffDiscountLimit; }
 }

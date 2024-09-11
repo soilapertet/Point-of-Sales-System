@@ -194,5 +194,18 @@ public class SearchForCustomerAccountController extends CentralPointOfSalesContr
         employeeInfoController.setEmploymentType(matchingDoc.getString("employmentType"));
         employeeInfoController.setStaffPurchase(true);
         employeeInfoController.setGuestMode(false);
+
+        initialiseDiscountLimit();
+    }
+
+    // Set staff purchase discount limit according to employment type
+    private void initialiseDiscountLimit() {
+        if(employeeInfoController.getEmploymentType().equals("Full time")) {
+            employeeInfoController.setStaffDiscountLimit(4000.0);
+        } else if(employeeInfoController.getEmploymentType().equals("Part time")) {
+            employeeInfoController.setStaffDiscountLimit(2000.0);
+        } else {
+            employeeInfoController.setStaffDiscountLimit(1000.0);
+        }
     }
 }
